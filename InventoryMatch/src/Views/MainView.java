@@ -27,17 +27,210 @@ public class MainView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jpChooseFiles = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtInventory = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtConsumptions = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtShopping = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jrbInventory = new javax.swing.JRadioButton();
+        jrbConsumptions = new javax.swing.JRadioButton();
+        jrbShopping = new javax.swing.JRadioButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jpActions = new javax.swing.JPanel();
+        btnResults = new javax.swing.JButton();
+        btnExport = new javax.swing.JButton();
+        jpData = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblData = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jpChooseFiles.setBorder(javax.swing.BorderFactory.createTitledBorder("Eleccion de Archivos"));
+
+        jLabel1.setText(" Inventario:");
+
+        txtInventory.setEditable(false);
+        txtInventory.setText("direccion del archivo");
+
+        jLabel2.setText("Consumo:");
+
+        txtConsumptions.setEditable(false);
+        txtConsumptions.setText("direccion del archivo");
+
+        jLabel3.setText("Compras:");
+
+        txtShopping.setEditable(false);
+        txtShopping.setText("direccion del archivo");
+
+        jLabel4.setText("Mostrar tabla:");
+
+        jrbInventory.setText("Inventario");
+
+        jrbConsumptions.setText("Consumo");
+
+        jrbShopping.setText("Compras");
+
+        jButton1.setText("Cargar");
+
+        jButton2.setText("Cargar");
+
+        jButton3.setText("Cargar");
+
+        javax.swing.GroupLayout jpChooseFilesLayout = new javax.swing.GroupLayout(jpChooseFiles);
+        jpChooseFiles.setLayout(jpChooseFilesLayout);
+        jpChooseFilesLayout.setHorizontalGroup(
+            jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpChooseFilesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtConsumptions, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                    .addComponent(txtInventory, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtShopping))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jrbShopping)
+                    .addComponent(jLabel4)
+                    .addComponent(jrbInventory)
+                    .addComponent(jrbConsumptions))
+                .addContainerGap())
+        );
+        jpChooseFilesLayout.setVerticalGroup(
+            jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpChooseFilesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtConsumptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtShopping, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addContainerGap(26, Short.MAX_VALUE))
+            .addGroup(jpChooseFilesLayout.createSequentialGroup()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jrbInventory)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jrbConsumptions)
+                .addGap(0, 0, 0)
+                .addComponent(jrbShopping)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jpActions.setBorder(javax.swing.BorderFactory.createTitledBorder("Acciones"));
+
+        btnResults.setText("Mostrar Resultados");
+
+        btnExport.setText("Exportar archivo");
+
+        javax.swing.GroupLayout jpActionsLayout = new javax.swing.GroupLayout(jpActions);
+        jpActions.setLayout(jpActionsLayout);
+        jpActionsLayout.setHorizontalGroup(
+            jpActionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpActionsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpActionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnExport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnResults, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
+        );
+        jpActionsLayout.setVerticalGroup(
+            jpActionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpActionsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnResults, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jpData.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos"));
+
+        tblData.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Codigo", "Decripcion", "Cant", "Costo"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblData);
+
+        javax.swing.GroupLayout jpDataLayout = new javax.swing.GroupLayout(jpData);
+        jpData.setLayout(jpDataLayout);
+        jpDataLayout.setHorizontalGroup(
+            jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpDataLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+        );
+        jpDataLayout.setVerticalGroup(
+            jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpDataLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jpChooseFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jpActions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jpActions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpChooseFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -79,5 +272,25 @@ public class MainView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExport;
+    private javax.swing.JButton btnResults;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jpActions;
+    private javax.swing.JPanel jpChooseFiles;
+    private javax.swing.JPanel jpData;
+    private javax.swing.JRadioButton jrbConsumptions;
+    private javax.swing.JRadioButton jrbInventory;
+    private javax.swing.JRadioButton jrbShopping;
+    private javax.swing.JTable tblData;
+    private javax.swing.JTextField txtConsumptions;
+    private javax.swing.JTextField txtInventory;
+    private javax.swing.JTextField txtShopping;
     // End of variables declaration//GEN-END:variables
 }
