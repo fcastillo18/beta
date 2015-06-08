@@ -8,6 +8,7 @@ package Classes;
 import java.util.ArrayList;
 import java.util.List;
 import com.csvreader.CsvReader;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author Franklin
@@ -43,6 +44,14 @@ public class ManagmentCSV {
     
     }
     
+    public DefaultTableModel getTableModel(){
+        DefaultTableModel model = null;
+        
+        for (Items items : listItems ) {
+            
+        }
+        return null;
     
-
+    }
+    
 }
