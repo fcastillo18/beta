@@ -65,6 +65,7 @@ public class MainView extends javax.swing.JFrame {
         tblData = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Vista general");
 
         jpChooseFiles.setBorder(javax.swing.BorderFactory.createTitledBorder("Eleccion de Archivos"));
 
@@ -126,9 +127,9 @@ public class MainView extends javax.swing.JFrame {
             .addGroup(jpChooseFilesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(txtConsumptions, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
@@ -179,7 +180,7 @@ public class MainView extends javax.swing.JFrame {
 
         jpActions.setBorder(javax.swing.BorderFactory.createTitledBorder("Acciones"));
 
-        btnResults.setText("Mostrar Resultados");
+        btnResults.setText("Generar inventario Final");
 
         btnExport.setText("Exportar archivo");
 
@@ -208,13 +209,10 @@ public class MainView extends javax.swing.JFrame {
 
         tblData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Codigo", "Decripcion", "Cant", "Costo"
+                "Codigo", "Descripcion", "Cantidad", "Costo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -226,6 +224,12 @@ public class MainView extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblData);
+        if (tblData.getColumnModel().getColumnCount() > 0) {
+            tblData.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tblData.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tblData.getColumnModel().getColumn(2).setPreferredWidth(20);
+            tblData.getColumnModel().getColumn(3).setPreferredWidth(50);
+        }
 
         javax.swing.GroupLayout jpDataLayout = new javax.swing.GroupLayout(jpData);
         jpData.setLayout(jpDataLayout);
@@ -288,11 +292,14 @@ public class MainView extends javax.swing.JFrame {
         jfcIventory.setCurrentDirectory(file);
         jfcIventory.showOpenDialog(this);
         */
+        File file = new File("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
+        jfcIventory.setCurrentDirectory(file);
+        
         int result = jfcIventory.showOpenDialog(this);
                
         if (result == JFileChooser.APPROVE_OPTION) {
             ManagmentCSV adminCSV = new ManagmentCSV();
-            File file = jfcIventory.getSelectedFile();
+            file = jfcIventory.getSelectedFile();
             //to open the file
             String filePath = jfcIventory.getCurrentDirectory().toString()+ "\\" + jfcIventory.getName(file);
             System.out.println(filePath + " or " + file.getPath());
@@ -328,11 +335,13 @@ public class MainView extends javax.swing.JFrame {
         jfcIventory.setCurrentDirectory(file);
         jfcIventory.showOpenDialog(this);
         */
+        File file = new File("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
+        jfcIventory.setCurrentDirectory(file);
         int result = jfcIventory.showOpenDialog(this);
                
         if (result == JFileChooser.APPROVE_OPTION) {
             ManagmentCSV adminCSV = new ManagmentCSV();
-            File file = jfcIventory.getSelectedFile();
+            file = jfcIventory.getSelectedFile();
             //to open the file
             String filePath = jfcIventory.getCurrentDirectory().toString()+ "\\" + jfcIventory.getName(file);
             System.out.println(filePath);
@@ -362,11 +371,14 @@ public class MainView extends javax.swing.JFrame {
         jfcIventory.setCurrentDirectory(file);
         jfcIventory.showOpenDialog(this);
         */
+        File file = new File("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
+        jfcIventory.setCurrentDirectory(file);
+        
         int result = jfcIventory.showOpenDialog(this);
                
         if (result == JFileChooser.APPROVE_OPTION) {
             ManagmentCSV adminCSV = new ManagmentCSV();
-            File file = jfcIventory.getSelectedFile();
+            file = jfcIventory.getSelectedFile();
             //to open the file
             String filePath = jfcIventory.getCurrentDirectory().toString()+ "\\" + jfcIventory.getName(file);
             System.out.println(filePath);

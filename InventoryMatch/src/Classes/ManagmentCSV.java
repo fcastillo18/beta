@@ -8,9 +8,7 @@ package Classes;
 import java.util.ArrayList;
 import java.util.List;
 import com.csvreader.CsvReader;
-import com.sun.media.sound.ModelOscillator;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 /**
  *
  * @author Franklin
@@ -71,13 +69,6 @@ public class ManagmentCSV {
         return model;
     
     }
-    
-    public static void restartJTable(javax.swing.JTable Tabla){
-        DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
-        while(modelo.getRowCount()>0)modelo.removeRow(0);
- 
-        TableColumnModel modCol = Tabla.getColumnModel();
-        while(modCol.getColumnCount()>0)modCol.removeColumn(modCol.getColumn(0));
-    }
+   
     
 }
