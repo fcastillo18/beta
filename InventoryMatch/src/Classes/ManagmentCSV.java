@@ -8,7 +8,9 @@ package Classes;
 import java.util.ArrayList;
 import java.util.List;
 import com.csvreader.CsvReader;
+import com.sun.media.sound.ModelOscillator;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 /**
  *
  * @author Franklin
@@ -43,15 +45,39 @@ public class ManagmentCSV {
     } 
     
     }
-    
-    public DefaultTableModel getTableModel(){
-        DefaultTableModel model = null;
-        
-        for (Items items : listItems ) {
-            
+
+    public DefaultTableModel getTableModel(){        
+        String [][] data = {};
+        String [] columns = {"Codigo", "Descripcion", "Cantidad", "Costo"};
+        DefaultTableModel model = new DefaultTableModel(data, columns);
+        //to delete the columns and rows from the old table
+//                model.setColumnCount(0);
+        model.setRowCount(0);
+        while(model.getRowCount()>0)model.removeRow(0);
+        for (int i = 0; i < listItems.size(); i++) {
+            Object [] row= {listItems.get(i).getCodigo(), listItems.get(i).getDescripcion(), listItems.get(i).getCantidad(), listItems.get(i).getCosto()};
+            model.addRow(row);
         }
-        return null;
+//        other way to make
+//        Object [] row=new Object[4];
+//        for (int i = 0; i < listItems.size(); i++) {
+//            row[0] = listItems.get(i).getCodigo();
+//            row[1] = listItems.get(i).getDescripcion();
+//            row[2] = listItems.get(i).getCantidad();
+//            row[3] = listItems.get(i).getCosto();
+//            model.addRow(row);
+//        }
+        
+        return model;
     
+    }
+    
+    public static void restartJTable(javax.swing.JTable Tabla){
+        DefaultTableModel modelo = (DefaultTableModel) Tabla.getModel();
+        while(modelo.getRowCount()>0)modelo.removeRow(0);
+ 
+        TableColumnModel modCol = Tabla.getColumnModel();
+        while(modCol.getColumnCount()>0)modCol.removeColumn(modCol.getColumn(0));
     }
     
 }

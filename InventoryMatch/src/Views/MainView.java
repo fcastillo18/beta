@@ -5,6 +5,14 @@
  */
 package Views;
 
+import Classes.ManagmentCSV;
+import java.io.File;
+import javax.swing.ButtonGroup;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  *
  * @author Franklin
@@ -16,8 +24,16 @@ public class MainView extends javax.swing.JFrame {
      */
     public MainView() {
         initComponents();
+        btnGroup = new ButtonGroup();
+        btnGroup.add(jrbInventory);
+        btnGroup.add(jrbConsumptions);
+        btnGroup.add(jrbShopping);
     }
-
+    String inventory;
+    String consumptions;
+    String shopping;
+    public ButtonGroup btnGroup;
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,9 +54,9 @@ public class MainView extends javax.swing.JFrame {
         jrbInventory = new javax.swing.JRadioButton();
         jrbConsumptions = new javax.swing.JRadioButton();
         jrbShopping = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnLoadIventory = new javax.swing.JButton();
+        btnLoadConsumptions = new javax.swing.JButton();
+        btnLoaShopping = new javax.swing.JButton();
         jpActions = new javax.swing.JPanel();
         btnResults = new javax.swing.JButton();
         btnExport = new javax.swing.JButton();
@@ -55,31 +71,53 @@ public class MainView extends javax.swing.JFrame {
         jLabel1.setText(" Inventario:");
 
         txtInventory.setEditable(false);
-        txtInventory.setText("direccion del archivo");
+        txtInventory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtInventoryActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Consumo:");
 
         txtConsumptions.setEditable(false);
-        txtConsumptions.setText("direccion del archivo");
 
         jLabel3.setText("Compras:");
 
         txtShopping.setEditable(false);
-        txtShopping.setText("direccion del archivo");
 
         jLabel4.setText("Mostrar tabla:");
 
         jrbInventory.setText("Inventario");
+        jrbInventory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbInventoryActionPerformed(evt);
+            }
+        });
 
         jrbConsumptions.setText("Consumo");
 
         jrbShopping.setText("Compras");
 
-        jButton1.setText("Cargar");
+        btnLoadIventory.setText("Cargar");
+        btnLoadIventory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadIventoryActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Cargar");
+        btnLoadConsumptions.setText("Cargar");
+        btnLoadConsumptions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadConsumptionsActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Cargar");
+        btnLoaShopping.setText("Cargar");
+        btnLoaShopping.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoaShoppingActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpChooseFilesLayout = new javax.swing.GroupLayout(jpChooseFiles);
         jpChooseFiles.setLayout(jpChooseFilesLayout);
@@ -98,9 +136,9 @@ public class MainView extends javax.swing.JFrame {
                     .addComponent(txtShopping))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnLoadIventory)
+                    .addComponent(btnLoadConsumptions)
+                    .addComponent(btnLoaShopping))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jrbShopping)
@@ -116,17 +154,17 @@ public class MainView extends javax.swing.JFrame {
                 .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnLoadIventory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtConsumptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(btnLoadConsumptions))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpChooseFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtShopping, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(btnLoaShopping))
                 .addContainerGap(26, Short.MAX_VALUE))
             .addGroup(jpChooseFilesLayout.createSequentialGroup()
                 .addComponent(jLabel4)
@@ -236,6 +274,121 @@ public class MainView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLoadIventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadIventoryActionPerformed
+        //to create a filter of files
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de Excel CSV", "csv");
+        JFileChooser jfcIventory = new JFileChooser();
+        //setting the filter to the fileChooser
+        jfcIventory.setFileFilter(filter);
+        //to change the name of the window
+        jfcIventory.setDialogTitle("Abrir archivo de Existencia");
+        /*
+        /to change the directory when the dialog is open
+        File file = new File("Ruta del directorio");
+        jfcIventory.setCurrentDirectory(file);
+        jfcIventory.showOpenDialog(this);
+        */
+        int result = jfcIventory.showOpenDialog(this);
+               
+        if (result == JFileChooser.APPROVE_OPTION) {
+            ManagmentCSV adminCSV = new ManagmentCSV();
+            File file = jfcIventory.getSelectedFile();
+            //to open the file
+            String filePath = jfcIventory.getCurrentDirectory().toString()+ "\\" + jfcIventory.getName(file);
+            System.out.println(filePath + " or " + file.getPath());
+            adminCSV.readCSV(filePath);
+            tblData.setModel(adminCSV.getTableModel());
+            txtInventory.setText(String.valueOf(file));
+            //to use the JRadioButtoms
+            inventory = filePath;
+        }else if (result == JFileChooser.CANCEL_OPTION){
+            //the user push cancel, nothing happen
+        }else if (result == JFileChooser.ERROR_OPTION){
+            JOptionPane.showMessageDialog(null, "Se a producido un error. Favor verificar que haya cargado el archivo correcto e internar de nuevo", "Error al cargar el archivo", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnLoadIventoryActionPerformed
+
+    private void txtInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtInventoryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtInventoryActionPerformed
+
+    private void btnLoadConsumptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadConsumptionsActionPerformed
+//        ManagmentCSV.restartJTable(tblData);
+        //to create a filter of files
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de Excel CSV", "csv");
+        JFileChooser jfcIventory = new JFileChooser();
+        //setting the filter to the fileChooser
+        jfcIventory.setFileFilter(filter);
+        //to change the name of the window
+        jfcIventory.setDialogTitle("Abrir archivo de Consumo");
+        /*
+        /to change the directory when the dialog is open
+        File file = new File("Ruta del directorio");
+        jfcIventory.setCurrentDirectory(file);
+        jfcIventory.showOpenDialog(this);
+        */
+        int result = jfcIventory.showOpenDialog(this);
+               
+        if (result == JFileChooser.APPROVE_OPTION) {
+            ManagmentCSV adminCSV = new ManagmentCSV();
+            File file = jfcIventory.getSelectedFile();
+            //to open the file
+            String filePath = jfcIventory.getCurrentDirectory().toString()+ "\\" + jfcIventory.getName(file);
+            System.out.println(filePath);
+            adminCSV.readCSV(filePath);
+            tblData.setModel(adminCSV.getTableModel());
+            txtConsumptions.setText(String.valueOf(file));
+            //to use the JRadioButtoms
+            consumptions = filePath;
+        }else if (result == JFileChooser.CANCEL_OPTION){
+            //the user push cancel, nothing happen
+        }else if (result == JFileChooser.ERROR_OPTION){
+            JOptionPane.showMessageDialog(null, "Se a producido un error. Favor verificar que haya cargado el archivo correcto e internar de nuevo", "Error al cargar el archivo", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnLoadConsumptionsActionPerformed
+
+    private void btnLoaShoppingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoaShoppingActionPerformed
+        //to create a filter of files
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de Excel CSV", "csv");
+        JFileChooser jfcIventory = new JFileChooser();
+        //setting the filter to the fileChooser
+        jfcIventory.setFileFilter(filter);
+        //to change the name of the window
+        jfcIventory.setDialogTitle("Abrir archivo de Compras");
+        /*
+        /to change the directory when the dialog is open
+        File file = new File("Ruta del directorio");
+        jfcIventory.setCurrentDirectory(file);
+        jfcIventory.showOpenDialog(this);
+        */
+        int result = jfcIventory.showOpenDialog(this);
+               
+        if (result == JFileChooser.APPROVE_OPTION) {
+            ManagmentCSV adminCSV = new ManagmentCSV();
+            File file = jfcIventory.getSelectedFile();
+            //to open the file
+            String filePath = jfcIventory.getCurrentDirectory().toString()+ "\\" + jfcIventory.getName(file);
+            System.out.println(filePath);
+            adminCSV.readCSV(filePath);
+            tblData.setModel(adminCSV.getTableModel());
+            txtShopping.setText(String.valueOf(file));
+            //to use the JRadioButtoms
+            shopping = filePath;
+        }else if (result == JFileChooser.CANCEL_OPTION){
+            //the user push cancel, nothing happen
+        }else if (result == JFileChooser.ERROR_OPTION){
+            JOptionPane.showMessageDialog(null, "Se a producido un error. Favor verificar que haya cargado el archivo correcto e internar de nuevo", "Error al cargar el archivo", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnLoaShoppingActionPerformed
+
+    private void jrbInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbInventoryActionPerformed
+//        ManagmentCSV.restartJTable(tblData);
+        ManagmentCSV adminCSV = new ManagmentCSV();
+        adminCSV.readCSV(inventory);
+        tblData.setModel(adminCSV.getTableModel());
+    }//GEN-LAST:event_jrbInventoryActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -273,10 +426,10 @@ public class MainView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExport;
+    private javax.swing.JButton btnLoaShopping;
+    private javax.swing.JButton btnLoadConsumptions;
+    private javax.swing.JButton btnLoadIventory;
     private javax.swing.JButton btnResults;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
