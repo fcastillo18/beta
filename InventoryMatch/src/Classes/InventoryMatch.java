@@ -5,6 +5,12 @@
  */
 package Classes;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Franklin
@@ -14,11 +20,24 @@ public class InventoryMatch {
     /**
      * @param args the command line arguments
      */
+    
+    
     public static void main(String[] args) {
         System.out.println("Hola Mundo");
         ManagmentCSV manCsv = new ManagmentCSV();
-        new Conexion().getConnection();
 //        manCsv.readCSV("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program\\Existencia CSV.csv");
+//    Conexion con = new Conexion();
+//    con.getConnection();
+//        try {
+//            ResultSet result = manCsv.queryToDB("select * from Inventory");
+//            while (result.next()) {
+//              String data = result.getString(1)+ " " + result.getString(2) + " " + result.getString(3) + " " + result.getString(4);
+//              System.out.println(data);
+//}
+//        } catch (SQLException ex) {
+//            System.out.println("Error al leer datos" + ex.getMessage());
+//            ex.printStackTrace();
+//        }
     }
     
  /*

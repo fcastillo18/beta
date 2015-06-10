@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.csvreader.CsvReader;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
- * @author Franklin
+ * @author fcastillo
  */
 public class ManagmentCSV {
     
@@ -105,30 +106,33 @@ public class ManagmentCSV {
         DefaultTableModel model = new DefaultTableModel(data, columns);
         model.setRowCount(0);
         try {
-            for (int i = 0; result.next(); i++) {
-                Object [] row = {result.getString(i), result.getString(1), result.getInt(i), result.getFloat(i)};
+//            for (int i = 0; result.next(); i++)
+//            int i = 0;
+            while(result.next()){
+                Object [] row = {result.getString(1), result.getString(2), result.getString(3), result.getString(4)};
                 model.addRow(row);
+                
             }
         } catch (SQLException ex) {
             System.out.println("error al leer datos");
         }
-    return null;
+    return model;
     }
     
     //to read from the database
      public ResultSet queryToDB(String query) throws SQLException{
     
-        Connection con = new Conexion().getConnection();
-        ResultSet result = null;
-        Statement statement;
-        statement = con.createStatement();
+        ResultSet result;
+//        statement = con.preparedStatement();
         try {
-            result = statement.executeQuery(query);
+            PreparedStatement statement = Conexion.getConnection().prepareStatement(query);
+            result = statement.executeQuery();
             return result;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error "+ex.getMessage(), "Error de Conexion", JOptionPane.ERROR_MESSAGE);
             return null;
         }
+        
 //        finally{
 //            if (result != null) {
 //                result.close();
@@ -139,4 +143,22 @@ public class ManagmentCSV {
 //        }
 
     }
+     
+     public void insertToDB(){
+         
+         ResultSet result;
+         for (Items item1 : listInventory) {
+             try {
+                PreparedStatement stm = Conexion.getConnection().prepareStatement("insert into Inventory values codigo, descripcion, cantidad, costo");
+                stm.setString(1, item1.getCodigo());
+                stm.setString(2, item1.getDescripcion());
+                stm.setString(3, item1.getCantidad());
+                stm.setString(4, item1.getCosto());
+                stm.executeUpdate();
+                 System.out.println("Registros insertados");
+             } catch (SQLException ex) {
+                 Logger.getLogger(ManagmentCSV.class.getName()).log(Level.SEVERE, null, ex);
+             }
+         }
+     }
 }

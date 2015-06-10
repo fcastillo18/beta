@@ -20,7 +20,7 @@ import javax.swing.JRadioButton;
 import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  *
- * @author Franklin
+ * @author fcastillo
  */
 public class MainView extends javax.swing.JFrame {
 
@@ -33,15 +33,9 @@ public class MainView extends javax.swing.JFrame {
         btnGroup.add(jrbInventory);
         btnGroup.add(jrbConsumptions);
         btnGroup.add(jrbShopping);
-        new Conexion().getConnection();
-        ManagmentCSV managment = new ManagmentCSV();
-        try {
-            ResultSet re = managment.queryToDB("Select * from Inventory");
-            tblData.setModel(managment.getTableModelDB(re));
-        } catch (SQLException ex) {
-            Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        new Conexion().createConnection();
     }
+    
     String inventory;
     String consumptions;
     String shopping;
@@ -210,6 +204,11 @@ public class MainView extends javax.swing.JFrame {
         btnResults.setText("Generar inventario Final");
 
         btnExport.setText("Exportar archivo");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpActionsLayout = new javax.swing.GroupLayout(jpActions);
         jpActions.setLayout(jpActionsLayout);
@@ -319,7 +318,7 @@ public class MainView extends javax.swing.JFrame {
         jfcIventory.setCurrentDirectory(file);
         jfcIventory.showOpenDialog(this);
         */
-        File file = new File("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
+        File file = new File("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
         jfcIventory.setCurrentDirectory(file);
 
         int result = jfcIventory.showOpenDialog(this);
@@ -357,7 +356,7 @@ public class MainView extends javax.swing.JFrame {
         jfcIventory.setCurrentDirectory(file);
         jfcIventory.showOpenDialog(this);
         */
-        File file = new File("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
+        File file = new File("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
         jfcIventory.setCurrentDirectory(file);
         int result = jfcIventory.showOpenDialog(this);
 
@@ -393,7 +392,7 @@ public class MainView extends javax.swing.JFrame {
         jfcIventory.setCurrentDirectory(file);
         jfcIventory.showOpenDialog(this);
         */
-        File file = new File("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
+        File file = new File("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
         jfcIventory.setCurrentDirectory(file);
 
         int result = jfcIventory.showOpenDialog(this);
@@ -404,16 +403,19 @@ public class MainView extends javax.swing.JFrame {
             //to open the file
             String filePath = jfcIventory.getCurrentDirectory().toString()+ "\\" + jfcIventory.getName(file);
             System.out.println(filePath + " or " + file.getPath());
-            adminCSV.readCSV(filePath, "Inventario");
+            adminCSV.readCSV(filePath, "Existencia");
             tblData.setModel(adminCSV.getTableModel());
             txtInventory.setText(String.valueOf(file));
             //to use the JRadioButtoms
             inventory = filePath;
+            
         }else if (result == JFileChooser.CANCEL_OPTION){
             //the user push cancel, nothing happen
         }else if (result == JFileChooser.ERROR_OPTION){
             JOptionPane.showMessageDialog(null, "Se a producido un error. Favor verificar que haya cargado el archivo correcto e internar de nuevo", "Error al cargar el archivo", JOptionPane.ERROR_MESSAGE);
-        }
+        }        
+ 
+       
     }//GEN-LAST:event_btnLoadIventoryActionPerformed
 
     private void jrbShoppingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbShoppingActionPerformed
@@ -436,8 +438,12 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_jrbInventoryActionPerformed
 
     private void txtInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtInventoryActionPerformed
-        // TODO add your handling code here:
+         new ManagmentCSV().insertToDB();
     }//GEN-LAST:event_txtInventoryActionPerformed
+
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        
+    }//GEN-LAST:event_btnExportActionPerformed
 
     /**
      * @param args the command line arguments

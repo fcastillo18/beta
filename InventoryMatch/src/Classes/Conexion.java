@@ -18,10 +18,10 @@ import javax.swing.JOptionPane;
  */
 public class Conexion {
 
-   Connection conexion = null;
-   
-   public Connection getConnection(){
-   
+   static Connection conexion = null; 
+    
+   public Connection createConnection(){
+       
        String url = "jdbc:sqlserver://localhost:1433;databaseName=CuadreInventario";
        
        try{
@@ -48,11 +48,15 @@ public class Conexion {
        
     return conexion;
    }
+   public static Connection getConnection(){
+   
+       return conexion;
+   }
    
    //to read from the database
     public ResultSet queryToDB(String query) throws SQLException{
     
-        Connection con = new Conexion().getConnection();
+        Connection con = getConnection();
         ResultSet result = null;
         Statement statement;
         statement = con.createStatement();
