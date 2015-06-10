@@ -8,6 +8,13 @@ package Classes;
 import java.util.ArrayList;
 import java.util.List;
 import com.csvreader.CsvReader;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -16,9 +23,15 @@ import javax.swing.table.DefaultTableModel;
 public class ManagmentCSV {
     
     List<Items> listItems = new ArrayList<>();
+    List<Items> listInventory = new ArrayList<>();
+    List<Items> listConsumption = new ArrayList<>();
+    List<Items> listShopping = new ArrayList<>();
+    List<Object> listFinalIventory;
+    
+    
     Items item = null;
     
-    public void readCSV(String fileCsv){
+    public void readCSV(String fileCsv, String fileName){
         
         try {
             CsvReader itemsImport = new CsvReader(fileCsv);
@@ -40,7 +53,23 @@ public class ManagmentCSV {
         }
         catch (Exception ex){
             ex.getMessage();
-    } 
+        }
+        //to save the data into List, later in a database
+        switch(fileName) {
+        
+        case "Existencia":
+            listInventory = listItems;
+            break;
+        case "Consumo":
+            listConsumption = listItems;
+            break;
+        case "Compras":
+            listShopping = listItems;
+            break;
+            
+        default:
+            
+    }
     
     }
 
@@ -69,6 +98,44 @@ public class ManagmentCSV {
         return model;
     
     }
-   
+   //Create a method that return a model but, from a database
+    public DefaultTableModel getTableModelDB(ResultSet result){
+        String [][] data = {};
+        String [] columns = {"Codigo", "Descripcion", "Cantidad", "Costo"};
+        DefaultTableModel model = new DefaultTableModel(data, columns);
+        model.setRowCount(0);
+        try {
+            for (int i = 0; result.next(); i++) {
+                Object [] row = {result.getString(i), result.getString(1), result.getInt(i), result.getFloat(i)}; 
+            }
+        } catch (SQLException ex) {
+            //error
+        }
+    return null;
+    }
     
+    //to read from the database
+     public ResultSet queryToDB(String query) throws SQLException{
+    
+        Connection con = new Conexion().getConnection();
+        ResultSet result = null;
+        Statement statement;
+        statement = con.createStatement();
+        try {
+            result = statement.executeQuery(query);
+            return result;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error "+ex.getMessage(), "Error de Conexion", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+//        finally{
+//            if (result != null) {
+//                result.close();
+//            }
+//            if (statement != null) {
+//                statement.close();
+//            }
+//        }
+
+    }
 }
