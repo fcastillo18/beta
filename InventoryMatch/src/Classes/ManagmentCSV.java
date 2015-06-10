@@ -106,10 +106,11 @@ public class ManagmentCSV {
         model.setRowCount(0);
         try {
             for (int i = 0; result.next(); i++) {
-                Object [] row = {result.getString(i), result.getString(1), result.getInt(i), result.getFloat(i)}; 
+                Object [] row = {result.getString(i), result.getString(1), result.getInt(i), result.getFloat(i)};
+                model.addRow(row);
             }
         } catch (SQLException ex) {
-            //error
+            System.out.println("error al leer datos");
         }
     return null;
     }

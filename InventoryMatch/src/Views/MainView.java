@@ -8,6 +8,7 @@ package Views;
 import Classes.Conexion;
 import Classes.ManagmentCSV;
 import java.io.File;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +36,8 @@ public class MainView extends javax.swing.JFrame {
         new Conexion().getConnection();
         ManagmentCSV managment = new ManagmentCSV();
         try {
-            tblData.setModel(managment.getTableModelDB(managment.queryToDB("Select x from Inventory")));
+            ResultSet re = managment.queryToDB("Select * from Inventory");
+            tblData.setModel(managment.getTableModelDB(re));
         } catch (SQLException ex) {
             Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
         }
