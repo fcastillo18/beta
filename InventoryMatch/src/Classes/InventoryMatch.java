@@ -5,8 +5,6 @@
  */
 package Classes;
 
-import com.sun.javafx.scene.accessibility.Attribute;
-
 /**
  *
  * @author Franklin
@@ -19,7 +17,8 @@ public class InventoryMatch {
     public static void main(String[] args) {
         System.out.println("Hola Mundo");
         ManagmentCSV manCsv = new ManagmentCSV();
-        manCsv.readCSV("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program\\Existencia CSV.csv");
+        new Conexion().getConnection();
+//        manCsv.readCSV("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program\\Existencia CSV.csv");
     }
     
  /*
