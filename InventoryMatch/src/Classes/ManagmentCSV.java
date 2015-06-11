@@ -182,7 +182,8 @@ public class ManagmentCSV {
 
     }
      public void executeProcedure(String tableName, String date){
-         
+        boolean resultVal;
+        
         switch(tableName){
         
             case "Inventory":
@@ -194,7 +195,8 @@ public class ManagmentCSV {
                         callStm.setInt(3, Integer.parseInt(itemInv.getCantidad()));
                         callStm.setFloat(4, Float.parseFloat(itemInv.getCosto()));
                         callStm.setString(5, date);
-                        ResultSet resultSet = callStm.executeQuery();
+//                        ResultSet resultSet = callStm.executeQuery();
+                        resultVal = callStm.executeUpdate() > 0;
                         System.out.println("Datos almacenados por Store Procedured");
                     }
                     
