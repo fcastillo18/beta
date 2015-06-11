@@ -9,6 +9,7 @@ import Views.MainView;
 import java.util.ArrayList;
 import java.util.List;
 import com.csvreader.CsvReader;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -180,7 +181,38 @@ public class ManagmentCSV {
 //        }
 
     }
-     
+     public void executeProcedure(String tableName, String date){
+         
+        switch(tableName){
+        
+            case "Inventory":
+                try {
+                    for (Items itemInv : listInventory) {
+                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertInventory(?, ?, ?, ?, ?)}");
+                        callStm.setString(1, itemInv.getCodigo());
+                        callStm.setString(2, itemInv.getDescripcion());
+                        callStm.setInt(3, Integer.parseInt(itemInv.getCantidad()));
+                        callStm.setFloat(4, Float.parseFloat(itemInv.getCosto()));
+                        callStm.setString(5, date);
+                        ResultSet resultSet = callStm.executeQuery();
+                        System.out.println("Datos almacenados por Store Procedured");
+                    }
+                    
+                } catch (SQLException ex) {
+                 Logger.getLogger(ManagmentCSV.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+         
+                break;
+            
+        }
+         try {
+            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertInventory(?, ?, ?, ?)}");
+        } catch (SQLException ex) {
+            Logger.getLogger(ManagmentCSV.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+     }
      public void insertToDB(String tableName){
          
          ResultSet result;

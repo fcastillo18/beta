@@ -15,6 +15,15 @@ public class Items {
     public String descripcion;
     public String cantidad;
     public String costo;
+    public String fecha;
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
 
     public Items() {
     }
