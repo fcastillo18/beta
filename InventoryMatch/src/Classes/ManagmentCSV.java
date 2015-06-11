@@ -5,6 +5,7 @@
  */
 package Classes;
 
+import Views.MainView;
 import java.util.ArrayList;
 import java.util.List;
 import com.csvreader.CsvReader;
@@ -13,17 +14,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.AbstractList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 /**
  *
  * @author fcastillo
  */
 public class ManagmentCSV {
     
-    List<Items> listItems = new ArrayList<>();
+    List<Items> listItems;
     List<Items> listInventory = new ArrayList<>();
     List<Items> listConsumption = new ArrayList<>();
     List<Items> listShopping = new ArrayList<>();
@@ -33,7 +36,7 @@ public class ManagmentCSV {
     Items item = null;
     
     public void readCSV(String fileCsv, String fileName){
-        
+        listItems = new ArrayList<>();
         try {
             CsvReader itemsImport = new CsvReader(fileCsv);
             itemsImport.readHeaders();//con este metodo se elimina el primer registro de la tabla (la barra de titulo)
@@ -59,13 +62,19 @@ public class ManagmentCSV {
         switch(fileName) {
         
         case "Existencia":
-            listInventory = listItems;
+            for (Items items : listItems) {
+                listInventory.add(items);
+            }
             break;
         case "Consumo":
-            listConsumption = listItems;
+            for (Items items : listItems) {
+                listConsumption.add(items);
+            }
             break;
         case "Compras":
-            listShopping = listItems;
+            for (Items items : listItems) {
+                listShopping.add(items);
+            }
             break;
             
         default:
@@ -73,7 +82,37 @@ public class ManagmentCSV {
     }
     
     }
-
+    
+    public DefaultTableModel getTableModelToJRB(String jrbName){
+        String [][] data = {};
+        String [] columns = {"Codigo", "Descripcion", "Cantidad", "Costo"};
+        DefaultTableModel model = new DefaultTableModel(data, columns);
+        //to delete the columns and rows from the old table
+//                model.setColumnCount(0);
+        model.setRowCount(0);
+        List<Items> listItemInter = new ArrayList<Items>();
+        switch (jrbName){
+        
+            case "inventory":
+                listItemInter = listInventory;
+            break;
+                
+            case "consumptions":
+                listItemInter = listConsumption;
+            break;    
+                    
+            case "shopping":
+                listItemInter = listShopping;
+            break;    
+        }
+ 
+        for (int i = 0; i < listItemInter.size(); i++) {
+            Object [] row= {listItemInter.get(i).getCodigo(), listItemInter.get(i).getDescripcion(), listItemInter.get(i).getCantidad(), listItemInter.get(i).getCosto()};
+            model.addRow(row);
+        }
+        return model;
+    }
+    
     public DefaultTableModel getTableModel(){        
         String [][] data = {};
         String [] columns = {"Codigo", "Descripcion", "Cantidad", "Costo"};
@@ -106,8 +145,6 @@ public class ManagmentCSV {
         DefaultTableModel model = new DefaultTableModel(data, columns);
         model.setRowCount(0);
         try {
-//            for (int i = 0; result.next(); i++)
-//            int i = 0;
             while(result.next()){
                 Object [] row = {result.getString(1), result.getString(2), result.getString(3), result.getString(4)};
                 model.addRow(row);
@@ -144,17 +181,19 @@ public class ManagmentCSV {
 
     }
      
-     public void insertToDB(){
+     public void insertToDB(String tableName){
          
          ResultSet result;
          for (Items item1 : listInventory) {
              try {
-                PreparedStatement stm = Conexion.getConnection().prepareStatement("insert into Inventory values codigo, descripcion, cantidad, costo");
+                PreparedStatement stm = Conexion.getConnection().prepareStatement
+                ("insert into "+ tableName + "(codigo, descripcion, cantidad, costo)"+ " values (?, ?, ?, ?)");
                 stm.setString(1, item1.getCodigo());
                 stm.setString(2, item1.getDescripcion());
-                stm.setString(3, item1.getCantidad());
-                stm.setString(4, item1.getCosto());
+                stm.setInt(3, Integer.parseInt(item1.getCantidad()));
+                stm.setFloat(4, Float.parseFloat(item1.getCosto()));
                 stm.executeUpdate();
+//                stm.execute();
                  System.out.println("Registros insertados");
              } catch (SQLException ex) {
                  Logger.getLogger(ManagmentCSV.class.getName()).log(Level.SEVERE, null, ex);
