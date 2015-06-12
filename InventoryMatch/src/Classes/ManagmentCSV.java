@@ -52,9 +52,9 @@ public class ManagmentCSV {
             }
             itemsImport.close();
             
-            for (Items item1 :  listItems) {
-                System.out.println(item1.getCodigo() + " : " + item1.getDescripcion() + " : " + item1.getCantidad() +item1.getCosto());
-            }
+//            for (Items item1 :  listItems) {
+//                System.out.println(item1.getCodigo() + " : " + item1.getDescripcion() + " : " + item1.getCantidad() +item1.getCosto());
+//            }
         }
         catch (Exception ex){
             ex.getMessage();
@@ -149,7 +149,6 @@ public class ManagmentCSV {
             while(result.next()){
                 Object [] row = {result.getString(1), result.getString(2), result.getString(3), result.getString(4)};
                 model.addRow(row);
-                
             }
         } catch (SQLException ex) {
             System.out.println("error al leer datos");
@@ -181,12 +180,21 @@ public class ManagmentCSV {
 //        }
 
     }
+     public ResultSet readDataFromDB(){
+        ResultSet result = null;
+        try {
+            CallableStatement ctm = Conexion.getConnection().prepareCall("{call sp_viewFinalInventory}");
+            result = ctm.executeQuery();
+            System.out.println("Datos INV Cargados");
+        } catch (SQLException ex) {
+            System.out.println("Error al leer Inventario final de la base de datos");
+        }
+        return result;
+     }
+     
      public void executeProcedure(String tableName, String date){
         boolean resultVal;
         
-        switch(tableName){
-        
-            case "Inventory":
                 try {
                     for (Items itemInv : listInventory) {
                         CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertInventory(?, ?, ?, ?, ?)}");
@@ -197,24 +205,49 @@ public class ManagmentCSV {
                         callStm.setString(5, date);
 //                        ResultSet resultSet = callStm.executeQuery();
                         resultVal = callStm.executeUpdate() > 0;
-                        System.out.println("Datos almacenados por Store Procedured");
                     }
-                    
+                    System.out.println("Datos de Existencia almacenados por Store Procedured");
                 } catch (SQLException ex) {
-                 Logger.getLogger(ManagmentCSV.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Error al exportar datos de inventario "+ex.getMessage());
+                    ex.printStackTrace();
                 }
                 
-         
-                break;
-            
-        }
-         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertInventory(?, ?, ?, ?)}");
-        } catch (SQLException ex) {
-            Logger.getLogger(ManagmentCSV.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                try {
+                    for (Items itemInv : listConsumption) {
+                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertConsumptions(?, ?, ?, ?, ?)}");
+                        callStm.setString(1, itemInv.getCodigo());
+                        callStm.setString(2, itemInv.getDescripcion());
+                        callStm.setInt(3, Integer.parseInt(itemInv.getCantidad()));
+                        callStm.setFloat(4, Float.parseFloat(itemInv.getCosto()));
+                        callStm.setString(5, date);
+//                        ResultSet resultSet = callStm.executeQuery();
+                        resultVal = callStm.executeUpdate() > 0;
+                    }
+                    System.out.println("Datos de Consumo almacenados por Store Procedured");
+                } catch (SQLException ex) {
+                    System.out.println("Error al exportar datos de Consumo "+ex.getMessage());
+                    ex.printStackTrace();
+                }
+                
+                try {
+                    for (Items itemInv : listShopping) {
+                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertShopping(?, ?, ?, ?, ?)}");
+                        callStm.setString(1, itemInv.getCodigo());
+                        callStm.setString(2, itemInv.getDescripcion());
+                        callStm.setInt(3, Integer.parseInt(itemInv.getCantidad()));
+                        callStm.setFloat(4, Float.parseFloat(itemInv.getCosto()));
+                        callStm.setString(5, date);
+//                        ResultSet resultSet = callStm.executeQuery();
+                        resultVal = callStm.executeUpdate() > 0;
+                    }
+                    System.out.println("Datos de Compras almacenados por Store Procedured");
+                } catch (SQLException ex) {
+                    System.out.println("Error al exportar datos de Compras "+ex.getMessage());
+                    ex.printStackTrace();
+                }
          
      }
+     
      public void insertToDB(String tableName){
          
          ResultSet result;
@@ -229,7 +262,8 @@ public class ManagmentCSV {
                 stm.executeUpdate();
 //                stm.execute();
                  System.out.println("Registros insertados");
-             } catch (SQLException ex) {
+             } 
+             catch (SQLException ex) {
                  Logger.getLogger(ManagmentCSV.class.getName()).log(Level.SEVERE, null, ex);
              }
          }

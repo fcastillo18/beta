@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -51,6 +53,14 @@ public class Conexion {
    public static Connection getConnection(){
    
        return conexion;
+   }
+   
+   public static void closeConnection(){
+       try {
+           conexion.close();
+       } catch (SQLException ex) {
+           //
+       }
    }
    
    //to read from the database
