@@ -58,6 +58,11 @@ public class MainFrame extends javax.swing.JFrame {
         Inventory.setText("   Inventario");
 
         jmnConsultInv.setText("Consultar inventarios anteriores");
+        jmnConsultInv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmnConsultInvActionPerformed(evt);
+            }
+        });
         Inventory.add(jmnConsultInv);
 
         jmnMatchInv.setText("Cuadrar inventario");
@@ -94,10 +99,16 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jmnMatchInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnMatchInvActionPerformed
-        JMainView mainView = new JMainView();
+        JMatchInventory mainView = new JMatchInventory();
         deskPanel.add(mainView);
         mainView.show();
     }//GEN-LAST:event_jmnMatchInvActionPerformed
+
+    private void jmnConsultInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnConsultInvActionPerformed
+        JConsultInventory2 jConsultInv = new JConsultInventory2();
+        deskPanel.add(jConsultInv);
+        jConsultInv.show();
+    }//GEN-LAST:event_jmnConsultInvActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,7 +139,7 @@ public class MainFrame extends javax.swing.JFrame {
 
 //        Synth look and feel
         try {
-            UIManager.setLookAndFeel(new SyntheticaSkyMetallicLookAndFeel());
+            UIManager.setLookAndFeel(new SyntheticaBlueLightLookAndFeel());
         } catch (Exception e) {
         }
         /* Create and display the form */

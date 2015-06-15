@@ -5,7 +5,7 @@
  */
 package Classes;
 
-import Views.MainView;
+import Views.MainViewOBSOLETO;
 import java.util.ArrayList;
 import java.util.List;
 import com.csvreader.CsvReader;
@@ -32,7 +32,7 @@ public class ManagmentCSV {
     List<Items> listConsumption = new ArrayList<>();
     List<Items> listShopping = new ArrayList<>();
     List<Object> listFinalIventory;
-    
+    public float finalCost;
     
     Items item = null;
     
@@ -49,6 +49,7 @@ public class ManagmentCSV {
                 item.setCantidad(itemsImport.get(2));
                 item.setCosto(itemsImport.get("Costo"));
                 listItems.add(item);
+                System.out.println(item.getCosto());
             }
             itemsImport.close();
             
@@ -140,22 +141,42 @@ public class ManagmentCSV {
     
     }
    //Create a method that return a model but, from a database
-    public DefaultTableModel getTableModelDB(ResultSet result){
+    public DefaultTableModel getTableModelDB(ResultSet result) throws SQLException{
         String [][] data = {};
         String [] columns = {"Codigo", "Descripcion", "Cantidad", "Costo"};
         DefaultTableModel model = new DefaultTableModel(data, columns);
         model.setRowCount(0);
-        try {
-            while(result.next()){
-                Object [] row = {result.getString(1), result.getString(2), result.getString(3), result.getString(4)};
-                model.addRow(row);
+        String fecha = "";
+        if (result.next() != false) {
+            try {
+                while(result.next()){
+                    Object [] row = {result.getString(1), result.getString(2), result.getString(3), result.getString(4)};
+                    model.addRow(row);
+                    finalCost = finalCost + Float.parseFloat(result.getString(4));
+                }
+            } catch (SQLException ex) {
+                System.out.println("error al leer datos en metodo: getTableModelDB "+ ex.getMessage());
+                ex.printStackTrace();
             }
-        } catch (SQLException ex) {
-            System.out.println("error al leer datos");
+            JOptionPane.showMessageDialog(null, "Mostrando Inventario final del ultimo cuadre realizado");
+        }else{
+            //
         }
     return model;
     }
     
+    public String totalCost(ResultSet rs){
+        String totalCost = "";
+        try {
+            if (rs.next()) {
+                totalCost = rs.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ManagmentCSV.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    return totalCost;
+    }
     //to read from the database
      public ResultSet queryToDB(String query) throws SQLException{
     
@@ -185,7 +206,9 @@ public class ManagmentCSV {
         try {
             CallableStatement ctm = Conexion.getConnection().prepareCall("{call sp_viewFinalInventory}");
             result = ctm.executeQuery();
-            JOptionPane.showMessageDialog(null, "Operacion exitosa");
+            if (result.next() == false) {
+                JOptionPane.showMessageDialog(null, "No hay datos para mostrar, favor intente de nuevo");
+            }
 //            System.out.println("Datos INV Cargados");
         } catch (SQLException ex) {
             System.out.println("Error al leer Inventario final de la base de datos");
@@ -201,7 +224,7 @@ public class ManagmentCSV {
                         CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertInventory(?, ?, ?, ?, ?)}");
                         callStm.setString(1, itemInv.getCodigo());
                         callStm.setString(2, itemInv.getDescripcion());
-                        callStm.setInt(3, Integer.parseInt(itemInv.getCantidad()));
+                        callStm.setFloat(3, Float.parseFloat(itemInv.getCantidad()));
                         callStm.setFloat(4, Float.parseFloat(itemInv.getCosto()));
                         callStm.setString(5, date);
 //                        ResultSet resultSet = callStm.executeQuery();
@@ -218,7 +241,7 @@ public class ManagmentCSV {
                         CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertConsumptions(?, ?, ?, ?, ?)}");
                         callStm.setString(1, itemInv.getCodigo());
                         callStm.setString(2, itemInv.getDescripcion());
-                        callStm.setInt(3, Integer.parseInt(itemInv.getCantidad()));
+                        callStm.setFloat(3, Float.parseFloat(itemInv.getCantidad()));
                         callStm.setFloat(4, Float.parseFloat(itemInv.getCosto()));
                         callStm.setString(5, date);
 //                        ResultSet resultSet = callStm.executeQuery();
@@ -235,7 +258,7 @@ public class ManagmentCSV {
                         CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertShopping(?, ?, ?, ?, ?)}");
                         callStm.setString(1, itemInv.getCodigo());
                         callStm.setString(2, itemInv.getDescripcion());
-                        callStm.setInt(3, Integer.parseInt(itemInv.getCantidad()));
+                        callStm.setFloat(3, Float.parseFloat(itemInv.getCantidad()));
                         callStm.setFloat(4, Float.parseFloat(itemInv.getCosto()));
                         callStm.setString(5, date);
 //                        ResultSet resultSet = callStm.executeQuery();
@@ -258,7 +281,7 @@ public class ManagmentCSV {
                 ("insert into "+ tableName + "(codigo, descripcion, cantidad, costo)"+ " values (?, ?, ?, ?)");
                 stm.setString(1, item1.getCodigo());
                 stm.setString(2, item1.getDescripcion());
-                stm.setInt(3, Integer.parseInt(item1.getCantidad()));
+                stm.setFloat(3, Float.parseFloat(item1.getCantidad()));
                 stm.setFloat(4, Float.parseFloat(item1.getCosto()));
                 stm.executeUpdate();
 //                stm.execute();
