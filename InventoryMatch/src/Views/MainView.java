@@ -8,21 +8,15 @@ package Views;
 import Classes.Conexion;
 import Classes.ManagmentCSV;
 import java.io.File;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author fcastillo
+ * @author Franklin
  */
 public class MainView extends javax.swing.JFrame{
 
@@ -363,7 +357,7 @@ public class MainView extends javax.swing.JFrame{
         jfcIventory.setCurrentDirectory(file);
         jfcIventory.showOpenDialog(this);
         */
-        File file = new File("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
+        File file = new File("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
         jfcIventory.setCurrentDirectory(file);
 
         int result = jfcIventory.showOpenDialog(this);
@@ -400,7 +394,7 @@ public class MainView extends javax.swing.JFrame{
         jfcIventory.setCurrentDirectory(file);
         jfcIventory.showOpenDialog(this);
         */
-        File file = new File("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
+        File file = new File("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
         jfcIventory.setCurrentDirectory(file);
         int result = jfcIventory.showOpenDialog(this);
 
@@ -434,7 +428,7 @@ public class MainView extends javax.swing.JFrame{
         jfcIventory.setCurrentDirectory(file);
         jfcIventory.showOpenDialog(this);
         */
-        File file = new File("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
+        File file = new File("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
         jfcIventory.setCurrentDirectory(file);
         int result = jfcIventory.showOpenDialog(this);
 

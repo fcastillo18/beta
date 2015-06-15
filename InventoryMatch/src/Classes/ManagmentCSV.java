@@ -185,7 +185,8 @@ public class ManagmentCSV {
         try {
             CallableStatement ctm = Conexion.getConnection().prepareCall("{call sp_viewFinalInventory}");
             result = ctm.executeQuery();
-            System.out.println("Datos INV Cargados");
+            JOptionPane.showMessageDialog(null, "Operacion exitosa");
+//            System.out.println("Datos INV Cargados");
         } catch (SQLException ex) {
             System.out.println("Error al leer Inventario final de la base de datos");
         }

@@ -5,6 +5,11 @@
  */
 package Views;
 
+import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
+import de.javasoft.plaf.synthetica.SyntheticaSkyMetallicLookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.plaf.synth.SynthLookAndFeel;
+
 /**
  *
  * @author fcastillo
@@ -27,30 +32,50 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        deskPanel = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        Inventory = new javax.swing.JMenu();
+        jmnConsultInv = new javax.swing.JMenuItem();
+        jmnMatchInv = new javax.swing.JMenuItem();
+        jmnHelp = new javax.swing.JMenu();
+        jmnAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1024, 700));
+        setTitle("Inventory Solution");
+        setPreferredSize(new java.awt.Dimension(1024, 720));
 
-        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
-        jDesktopPane1.setLayout(jDesktopPane1Layout);
-        jDesktopPane1Layout.setHorizontalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout deskPanelLayout = new javax.swing.GroupLayout(deskPanel);
+        deskPanel.setLayout(deskPanelLayout);
+        deskPanelLayout.setHorizontalGroup(
+            deskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 802, Short.MAX_VALUE)
         );
-        jDesktopPane1Layout.setVerticalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        deskPanelLayout.setVerticalGroup(
+            deskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 508, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        Inventory.setText("   Inventario");
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        jmnConsultInv.setText("Consultar inventarios anteriores");
+        Inventory.add(jmnConsultInv);
+
+        jmnMatchInv.setText("Cuadrar inventario");
+        jmnMatchInv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmnMatchInvActionPerformed(evt);
+            }
+        });
+        Inventory.add(jmnMatchInv);
+
+        jMenuBar1.add(Inventory);
+
+        jmnHelp.setText("Ayuda");
+
+        jmnAbout.setText("Acerca de");
+        jmnHelp.add(jmnAbout);
+
+        jMenuBar1.add(jmnHelp);
 
         setJMenuBar(jMenuBar1);
 
@@ -58,15 +83,21 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
+            .addComponent(deskPanel)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
+            .addComponent(deskPanel, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jmnMatchInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnMatchInvActionPerformed
+        JMainView mainView = new JMainView();
+        deskPanel.add(mainView);
+        mainView.show();
+    }//GEN-LAST:event_jmnMatchInvActionPerformed
 
     /**
      * @param args the command line arguments
@@ -77,24 +108,29 @@ public class MainFrame extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
         //</editor-fold>
 
+//        Synth look and feel
+        try {
+            UIManager.setLookAndFeel(new SyntheticaSkyMetallicLookAndFeel());
+        } catch (Exception e) {
+        }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -104,9 +140,12 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu Inventory;
+    private javax.swing.JDesktopPane deskPanel;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jmnAbout;
+    private javax.swing.JMenuItem jmnConsultInv;
+    private javax.swing.JMenu jmnHelp;
+    private javax.swing.JMenuItem jmnMatchInv;
     // End of variables declaration//GEN-END:variables
 }
