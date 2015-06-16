@@ -6,7 +6,6 @@
 package Views;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
-import de.javasoft.plaf.synthetica.SyntheticaSkyMetallicLookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 
