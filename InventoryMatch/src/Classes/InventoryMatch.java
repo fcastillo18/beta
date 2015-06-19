@@ -5,8 +5,12 @@
  */
 package Classes;
 
+import formReception.MainControl;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -25,6 +29,8 @@ public class InventoryMatch {
     public static void main(String[] args) {
         System.out.println("Hola Mundo");
         ManagmentCSV manCsv = new ManagmentCSV();
+//        Timestamp tm = new java.util.Date().getTime();
+        System.out.println(MainControl.getCurrentTimeStamp().toString());
 //        manCsv.readCSV("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program\\Existencia CSV.csv");
 //    Conexion con = new Conexion();
 //    con.getConnection();

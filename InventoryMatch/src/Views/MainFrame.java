@@ -6,6 +6,7 @@
 package Views;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
+import formReception.JReceptionForm;
 import javax.swing.UIManager;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 
@@ -38,6 +39,8 @@ public class MainFrame extends javax.swing.JFrame {
         jmnMatchInv = new javax.swing.JMenuItem();
         jmnHelp = new javax.swing.JMenu();
         jmnAbout = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inventory Solution");
@@ -81,6 +84,18 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jmnHelp);
 
+        jMenu1.setText("Recepcion");
+
+        jMenuItem1.setText("Formulario entrada");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -108,6 +123,12 @@ public class MainFrame extends javax.swing.JFrame {
         deskPanel.add(jConsultInv);
         jConsultInv.show();
     }//GEN-LAST:event_jmnConsultInvActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        JReceptionForm jrf = new JReceptionForm();
+        deskPanel.add(jrf);
+        jrf.show();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,7 +173,9 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Inventory;
     private javax.swing.JDesktopPane deskPanel;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jmnAbout;
     private javax.swing.JMenuItem jmnConsultInv;
     private javax.swing.JMenu jmnHelp;
