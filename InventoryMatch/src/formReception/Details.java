@@ -6,7 +6,6 @@
 package formReception;
 
 import java.sql.Timestamp;
-import java.sql.Timestamp;
 
 /**
  *
@@ -48,19 +47,19 @@ public class Details {
         this.itId = itId;
     }
 
-    public Timestamp getTimestampIn() {
+    public Timestamp getDateIn() {
         return dateIn;
     }
 
-    public void setTimestampIn(Timestamp dateIn) {
+    public void setDateIn(Timestamp dateIn) {
         this.dateIn = dateIn;
     }
 
-    public Timestamp getTimestampOn() {
+    public Timestamp getDateOut() {
         return dateOut;
     }
 
-    public void setTimestampOn(Timestamp dateOn) {
+    public void setDateOut(Timestamp dateOn) {
         this.dateOut = dateOn;
     }
 

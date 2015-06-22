@@ -15,6 +15,9 @@ public class Item {
     private String supplierName;
     private String description;
 
+//    public Item() {
+//    } 
+//    
     public Item(int id, String supplierName, String description) {
         this.id = id;
         this.supplierName = supplierName;

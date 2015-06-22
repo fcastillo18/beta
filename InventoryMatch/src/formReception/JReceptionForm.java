@@ -16,6 +16,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
      */
     public JReceptionForm() {
         initComponents();
+        tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
     }
     MainControl mc= new MainControl();
     /**
@@ -149,6 +150,11 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                 "ID", "Fecha entrada", "Suplidor", "Descripcion", "Recibido por", "Fecha entragado"
             }
         ));
+        tblLogReception.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblLogReceptionMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblLogReception);
 
         javax.swing.GroupLayout jpLogReceptionLayout = new javax.swing.GroupLayout(jpLogReception);
@@ -266,6 +272,12 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         mc.createDetail(detail);
         
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void tblLogReceptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLogReceptionMouseClicked
+        int rowSel = tblLogReception.getSelectedRow();
+        int dtID = (int) tblLogReception.getValueAt(rowSel, 0);
+        
+    }//GEN-LAST:event_tblLogReceptionMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNew;
