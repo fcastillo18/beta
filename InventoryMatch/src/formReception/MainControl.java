@@ -5,16 +5,20 @@
  */
 package formReception;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.Component;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -98,7 +102,7 @@ public class MainControl {
     
     public void modifiedItem(Item item, Details detail){
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_sp_modifieRow (?,?,?,?,?,?,?)}");
+            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifieRow (?,?,?,?,?,?,?)}");
             callStm.setInt(1, detail.getDtId());
             callStm.setInt(2, item.getId());
             callStm.setString(3, item.getSupplierName());
@@ -152,6 +156,7 @@ public class MainControl {
         return rs;
     }
     
+    SimpleDateFormat sdformat = new SimpleDateFormat("dd/mm/yyyy - hh:mm:ss");
     public DefaultTableModel getModelDetails(ResultSet rs){
     
         String [][] data = {};
@@ -161,16 +166,16 @@ public class MainControl {
         try {
             //        while(model.getRowCount()>0)model.removeRow(0);
             while (rs.next()) {
-                Object [] row = {rs.getInt("dtID"), rs.getTimestamp("dtDateIN"), rs.getString("itSupplierName"), rs.getString("itDescription"), rs.getString("dtReceivedBy"), rs.getString("dtDateOUT")};
+                Object [] row = {rs.getInt("dtID"), sdformat.format(rs.getTimestamp("dtDateIN")), rs.getString("itSupplierName"), rs.getString("itDescription"), rs.getString("dtReceivedBy"), rs.getString("dtDateOUT")};                
                 model.addRow(row);
             }
         } catch (SQLException ex) {
             System.out.println("Error en el metodo getModelDetails al leer datos " + ex.getMessage());
             ex.printStackTrace();
-        }
+        }  
         return model;
     }
-    
+
     public ResultSet executeQueryToDB(String queryToDB){
         ResultSet result = null;
         try {
@@ -182,13 +187,29 @@ public class MainControl {
         return result;
     }
     
-//    public void enableComponents (Component [] comp, boolean var) {
-//        for (int i = 0; i < comp.length; i++) {
-//            if (comp[i] instanceof JTextField) {
-//                (JTextField)(comp[i]))
-//                (JTextField)(  comp[i])).setEnabled(false);
-//            }
-//        }
+    public void enableComponents (Component [] comp, boolean enable, boolean limpiar) {
+        for (int i = 0; i < comp.length; i++) {
+            if (comp[i] instanceof JTextField) {
+                ((JTextField)comp[i]).setEnabled(enable);
+            }
+            if (comp[i] instanceof JComboBox) {
+                ((JComboBox)comp[i]).setEnabled(enable);
+            }
+            if (comp[i] instanceof JDateChooser) {
+                ((JDateChooser)comp[i]).setEnabled(enable);
+            }
+            if (limpiar) {
+                
+                if (comp[i] instanceof JTextField) {
+                ((JTextField)comp[i]).setText("");
+                }
+                if (comp[i] instanceof JComboBox) {
+                ((JComboBox)comp[i]).setSelectedIndex(0);
+                }             
+                
+            }
+        }
     
-//    }
-}
+    }
+}//
+// usar setToolTipText para mostrar datos segun se valla typeando

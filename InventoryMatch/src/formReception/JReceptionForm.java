@@ -6,7 +6,12 @@
 package formReception;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.text.DateFormat;
+import java.util.Date;
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+
 
 /**
  *
@@ -19,9 +24,27 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
      */
     public JReceptionForm() {
         initComponents();
-        tblLogReception.setModel(mcl.getModelDetails(mcl.readDataFromTableDetail()));
+        tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
+        mc.enableComponents(jpData.getComponents(), false, false);
+        changeColumnSize(tblLogReception);
+        //poner en un hilo la hora
+        jbDate.setText(df.format(new Date()));        
     }
-    MainControl mcl= new MainControl();
+    
+    TableColumnModel column;
+    DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
+    MainControl mc= new MainControl();
+    boolean modified = false;
+    
+    private void changeColumnSize(JTable table){
+        this.column = table.getColumnModel();
+        column.getColumn(0).setPreferredWidth(10);
+        column.getColumn(1).setPreferredWidth(80);
+        column.getColumn(2).setPreferredWidth(100);
+        column.getColumn(3).setPreferredWidth(150);
+        column.getColumn(4).setPreferredWidth(80);
+        column.getColumn(5).setPreferredWidth(80);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,19 +67,21 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         jdcDateOut = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
         jcCategory = new javax.swing.JComboBox();
-        jComboBox1 = new javax.swing.JComboBox();
+        jLabel8 = new javax.swing.JLabel();
+        jcbStatus = new javax.swing.JComboBox();
         jpLogReception = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblLogReception = new javax.swing.JTable();
         jpDateHour = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jbDate = new javax.swing.JLabel();
         jpButtons = new javax.swing.JPanel();
         btnNew = new javax.swing.JButton();
         btnReceivedModifier = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
 
         setClosable(true);
+        setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("Control de Recepción");
@@ -75,9 +100,11 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Categoria:");
 
-        jcCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Finanzas", "Compras", "Ventas", "Materia Prima", "Almacen", "TI" }));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel8.setText("Estado:");
+
+        jcbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "Entregado" }));
 
         javax.swing.GroupLayout jpDataLayout = new javax.swing.GroupLayout(jpData);
         jpData.setLayout(jpDataLayout);
@@ -92,27 +119,29 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jpDataLayout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtReceivedBy))
+                        .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jpDataLayout.createSequentialGroup()
+                                .addComponent(jdcDateIn, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel8))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jcCategory, 0, 178, Short.MAX_VALUE)
+                            .addComponent(jcbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jpDataLayout.createSequentialGroup()
-                        .addComponent(jdcDateIn, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtReceivedBy, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpDataLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(12, 12, 12)
-                        .addComponent(jcCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpDataLayout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jdcDateOut, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         jpDataLayout.setVerticalGroup(
             jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,13 +159,14 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8)
+                        .addComponent(jcbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtReceivedBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5)
+                    .addComponent(txtReceivedBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jdcDateOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -162,6 +192,14 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(tblLogReception);
+        if (tblLogReception.getColumnModel().getColumnCount() > 0) {
+            tblLogReception.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tblLogReception.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tblLogReception.getColumnModel().getColumn(2).setPreferredWidth(150);
+            tblLogReception.getColumnModel().getColumn(3).setPreferredWidth(200);
+            tblLogReception.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tblLogReception.getColumnModel().getColumn(5).setPreferredWidth(100);
+        }
 
         javax.swing.GroupLayout jpLogReceptionLayout = new javax.swing.GroupLayout(jpLogReception);
         jpLogReception.setLayout(jpLogReceptionLayout);
@@ -181,7 +219,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Fecha:");
 
-        jLabel8.setText("Hora:");
+        jbDate.setText("jLabel9");
 
         javax.swing.GroupLayout jpDateHourLayout = new javax.swing.GroupLayout(jpDateHour);
         jpDateHour.setLayout(jpDateHourLayout);
@@ -189,23 +227,34 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
             jpDateHourLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpDateHourLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpDateHourLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbDate)
+                .addContainerGap(88, Short.MAX_VALUE))
         );
         jpDateHourLayout.setVerticalGroup(
             jpDateHourLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpDateHourLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8))
+                .addGroup(jpDateHourLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jbDate))
+                .addGap(20, 20, 20))
         );
 
         btnNew.setText("Nuevo");
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
 
         btnReceivedModifier.setText("Marcar recibido");
+        btnReceivedModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReceivedModifierActionPerformed(evt);
+            }
+        });
 
         btnSave.setText("Guardar");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -244,16 +293,16 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jpButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jpDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jpLogReception, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jpDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 163, Short.MAX_VALUE))))
+                        .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 143, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,41 +314,84 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                 .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpLogReception, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        Item item = new Item(0, txtSupplier.getText(), txtDescription.getText());
-        mcl.createItem(item);
-        //Al guardar la fecha de recepcion, guardarla con .format y agregar 000 en los espacios faltantes
-        Details detail = new Details(0,mcl.getLastItemID(), MainControl.getCurrentTimeStamp(), Timestamp.from(jdcDateOut.getDate().toInstant()), txtReceivedBy.getText(), jcCategory.getSelectedItem().toString());
-        mcl.createDetail(detail);
-        tblLogReception.setModel(mcl.getModelDetails(mcl.readDataFromTableDetail()));
-        
+        if (modified) {
+                    tblLogReception.setEnabled(true);
+            //cambiando valores del objeto que seran matcheados en la DB
+            mc.item.setSupplierName(txtSupplier.getText());
+            mc.item.setDescription(txtDescription.getText());
+
+            //Al guardar la fecha de recepcion, guardarla con .format y agregar 000 en los espacios faltantes
+//            mc.getLastItemID(), MainControl.getCurrentTimeStamp(), Timestamp.from(jdcDateOut.getDate().toInstant()), txtReceivedBy.getText(), jcCategory.getSelectedItem().toString());
+            //cambiando valores del objeto que seran matcheados en la DB
+            mc.detail.setDtCategory(jcCategory.getSelectedItem().toString());
+            mc.detail.setDtReceivedBy(txtReceivedBy.getText());
+            mc.detail.setDateOut(MainControl.getCurrentTimeStamp());
+            //Llamar a procedimiento con los objetos y sus cambios respectivos
+            mc.modifiedItem(mc.item, mc.detail);
+            tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
+            mc.enableComponents(jpData.getComponents(), false, true);
+            modified = false;
+        }else{
+            Item item = new Item(0, txtSupplier.getText(), txtDescription.getText());
+            mc.createItem(item);
+            //Al guardar la fecha de recepcion, guardarla con .format y agregar 000 en los espacios faltantes //Timestamp.valueOf("0000-00-00 00:00:00:000000000")   Timestamp.from(jdcDateOut.getDate().toInstant())
+            Details detail = new Details(0,mc.getLastItemID(), MainControl.getCurrentTimeStamp(),null, txtReceivedBy.getText(), jcCategory.getSelectedItem().toString());
+            mc.createDetail(detail);
+            tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
+            mc.enableComponents(jpData.getComponents(), false, true);
+            modified = false;
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void tblLogReceptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLogReceptionMouseClicked
-        MainControl mc = new MainControl();
-        int rowSel = tblLogReception.getSelectedRow();
-        int dtID = (int) tblLogReception.getValueAt(rowSel, 0);
-        mc.llenarObjetos(mc.findRow(dtID));
-        txtDescription.setText(mc.item.getDescription());
-        txtSupplier.setText(mc.item.getSupplierName());
-        txtReceivedBy.setText(mc.detail.getDtReceivedBy());
-        jdcDateIn.setDate(mc.detail.getDateIn());
-        jdcDateOut.setDate(mc.detail.getDateOut());
-        jcCategory.setSelectedItem(mc.detail.getDtCategory());
+//        MainControl mc = new MainControl();
+        if (modified) {
+            try {
+                tblLogReception.setEnabled(true);
+                int rowSel = tblLogReception.getSelectedRow();
+                int dtID = (int) tblLogReception.getValueAt(rowSel, 0);
+                mc.llenarObjetos(mc.findRow(dtID));
+                txtDescription.setText(mc.item.getDescription());
+                txtSupplier.setText(mc.item.getSupplierName());
+                txtReceivedBy.setText(mc.detail.getDtReceivedBy());
+                jdcDateIn.setDate(mc.detail.getDateIn());
+                jdcDateOut.setDate(mc.detail.getDateOut());
+                jcCategory.setSelectedItem(mc.detail.getDtCategory());
+            } catch (Exception e) {
+                System.out.println("Error -1 al click en tabla");
+            }
+        }
         
     }//GEN-LAST:event_tblLogReceptionMouseClicked
+
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        tblLogReception.setEnabled(false);
+        jpLogReception.setEnabled(false);
+        mc.enableComponents(jpData.getComponents(), true, true);
+        jdcDateIn.setDate(MainControl.getCurrentTimeStamp());
+    }//GEN-LAST:event_btnNewActionPerformed
+
+    private void btnReceivedModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReceivedModifierActionPerformed
+        tblLogReception.setEnabled(true);
+        mc.enableComponents(jpData.getComponents(), true, false);
+        jdcDateIn.setEnabled(false);
+        //setear la fecha de entregado en automatico con el dia en el que se da el click y hora
+        jdcDateOut.setDate(MainControl.getCurrentTimeStamp());
+        jcbStatus.setSelectedIndex(1);
+        modified = true;
+    }//GEN-LAST:event_btnReceivedModifierActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnReceivedModifier;
     private javax.swing.JButton btnSave;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -309,7 +401,9 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jbDate;
     private javax.swing.JComboBox jcCategory;
+    private javax.swing.JComboBox jcbStatus;
     private com.toedter.calendar.JDateChooser jdcDateIn;
     private com.toedter.calendar.JDateChooser jdcDateOut;
     private javax.swing.JPanel jpButtons;
