@@ -5,6 +5,7 @@
  */
 package formReception;
 
+import java.awt.Component;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -179,4 +181,14 @@ public class MainControl {
         }
         return result;
     }
+    
+//    public void enableComponents (Component [] comp, boolean var) {
+//        for (int i = 0; i < comp.length; i++) {
+//            if (comp[i] instanceof JTextField) {
+//                (JTextField)(comp[i]))
+//                (JTextField)(  comp[i])).setEnabled(false);
+//            }
+//        }
+    
+//    }
 }

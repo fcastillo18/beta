@@ -5,6 +5,9 @@
  */
 package formReception;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 /**
  *
  * @author fcastillo
@@ -16,9 +19,9 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
      */
     public JReceptionForm() {
         initComponents();
-        tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
+        tblLogReception.setModel(mcl.getModelDetails(mcl.readDataFromTableDetail()));
     }
-    MainControl mc= new MainControl();
+    MainControl mcl= new MainControl();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,6 +56,9 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         btnReceivedModifier = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
 
+        setClosable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Control de Recepción");
 
         jpData.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de material recibido"));
@@ -267,15 +273,25 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         Item item = new Item(0, txtSupplier.getText(), txtDescription.getText());
-        mc.createItem(item);
-        Details detail = new Details(0,mc.getLastItemID(), MainControl.getCurrentTimeStamp(), null, txtReceivedBy.getText(), jcCategory.getSelectedItem().toString());
-        mc.createDetail(detail);
+        mcl.createItem(item);
+        //Al guardar la fecha de recepcion, guardarla con .format y agregar 000 en los espacios faltantes
+        Details detail = new Details(0,mcl.getLastItemID(), MainControl.getCurrentTimeStamp(), Timestamp.from(jdcDateOut.getDate().toInstant()), txtReceivedBy.getText(), jcCategory.getSelectedItem().toString());
+        mcl.createDetail(detail);
+        tblLogReception.setModel(mcl.getModelDetails(mcl.readDataFromTableDetail()));
         
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void tblLogReceptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLogReceptionMouseClicked
+        MainControl mc = new MainControl();
         int rowSel = tblLogReception.getSelectedRow();
         int dtID = (int) tblLogReception.getValueAt(rowSel, 0);
+        mc.llenarObjetos(mc.findRow(dtID));
+        txtDescription.setText(mc.item.getDescription());
+        txtSupplier.setText(mc.item.getSupplierName());
+        txtReceivedBy.setText(mc.detail.getDtReceivedBy());
+        jdcDateIn.setDate(mc.detail.getDateIn());
+        jdcDateOut.setDate(mc.detail.getDateOut());
+        jcCategory.setSelectedItem(mc.detail.getDtCategory());
         
     }//GEN-LAST:event_tblLogReceptionMouseClicked
 
