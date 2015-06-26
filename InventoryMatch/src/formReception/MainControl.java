@@ -24,8 +24,8 @@ import javax.swing.table.TableColumnModel;
  *
  * @author fcastillo
  */
-public class MainControl {
-
+public class MainControl extends Thread{
+    
     public MainControl() {
         Conexion con = new Conexion();
         con.createConnection();
@@ -33,6 +33,11 @@ public class MainControl {
     Date endDate;
     Item item;
     Details detail;
+    @Override
+    public void run(){
+    
+            
+    }
     
     public int getLastItemID(){
         ResultSet result = null;
@@ -67,13 +72,14 @@ public class MainControl {
     
     public void createDetail(Details detail){
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("insert into tbl_Details (itID, dtDateIN, dtDateOUT,dtReceivedBy, dtCategory) values (? , ? , ? ,? , ?) ");
+            CallableStatement callStm = Conexion.getConnection().prepareCall("insert into tbl_Details (itID, dtDateIN, dtDateOUT,dtReceivedBy, dtCategory, dtStatus) values (? , ? , ? ,? , ?, ?) ");
 //            callStm.setInt(1, detail.getDtId());
             callStm.setInt(1, detail.getItId());
             callStm.setTimestamp(2, getCurrentTimeStamp());
             callStm.setTimestamp(3, null);
             callStm.setString(4, detail.getDtReceivedBy());
             callStm.setString(5, detail.getDtCategory());
+            callStm.setString(6, detail.getDtStatus());
             callStm.executeUpdate();
             System.out.println("Registro Detail insertado correctamente");
         } catch (SQLException ex) {
@@ -102,7 +108,7 @@ public class MainControl {
     
     public void modifiedItem(Item item, Details detail){
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifieRow (?,?,?,?,?,?,?)}");
+            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifieRow (?,?,?,?,?,?,?, ?)}");
             callStm.setInt(1, detail.getDtId());
             callStm.setInt(2, item.getId());
             callStm.setString(3, item.getSupplierName());
@@ -110,6 +116,7 @@ public class MainControl {
             callStm.setString(5, detail.getDtReceivedBy());
             callStm.setTimestamp(6, detail.getDateOut());
             callStm.setString(7, detail.getDtCategory());
+            callStm.setString(8, detail.getDtStatus());
             //Agregar dos objetos y setearlos
             callStm.executeUpdate();
 //            llenarObjetos(null);
@@ -135,7 +142,7 @@ public class MainControl {
 
         try {
             while (result.next()) {
-                detail = new Details(result.getInt("dtID"), result.getInt("itID"), result.getTimestamp("dtDateIN"), result.getTimestamp("dtDateOUT"), result.getString("dtReceivedBy"), result.getString("dtCategory"));
+                detail = new Details(result.getInt("dtID"), result.getInt("itID"), result.getTimestamp("dtDateIN"), result.getTimestamp("dtDateOUT"), result.getString("dtReceivedBy"), result.getString("dtCategory"), result.getString("dtStatus"));
                 item = new Item(result.getInt("itID"), result.getString("itSupplierName"), result.getString("itDescription"));
             }
         } catch (SQLException ex) {
@@ -156,18 +163,24 @@ public class MainControl {
         return rs;
     }
     
-    SimpleDateFormat sdformat = new SimpleDateFormat("dd/mm/yyyy - hh:mm:ss");
+    SimpleDateFormat sdformat = new SimpleDateFormat("dd/M/yyyy - hh:mm:ss");
     public DefaultTableModel getModelDetails(ResultSet rs){
     
         String [][] data = {};
-        String [] titles = {"ID", "Fecha entrada", "Suplidor", "Descripcion", "Recibido por", "Fecha entregado"};
+        String [] titles = {"ID", "Fecha entrada", "Suplidor", "Descripcion", "Recibido por", "Fecha entregado", "Estado"};
         DefaultTableModel model = new DefaultTableModel(data, titles);
         model.setRowCount(0);
         try {
             //        while(model.getRowCount()>0)model.removeRow(0);
             while (rs.next()) {
-                Object [] row = {rs.getInt("dtID"), sdformat.format(rs.getTimestamp("dtDateIN")), rs.getString("itSupplierName"), rs.getString("itDescription"), rs.getString("dtReceivedBy"), rs.getString("dtDateOUT")};                
-                model.addRow(row);
+                if (rs.getString("dtDateOUT") == null) {
+                    Object [] row = {rs.getInt("dtID"), sdformat.format(rs.getTimestamp("dtDateIN")), rs.getString("itSupplierName"), rs.getString("itDescription"), rs.getString("dtReceivedBy"), rs.getString("dtDateOUT"), rs.getString("dtStatus")};                
+                    model.addRow(row);
+                }else{
+                    Object [] row = {rs.getInt("dtID"), sdformat.format(rs.getTimestamp("dtDateIN")), rs.getString("itSupplierName"), rs.getString("itDescription"), rs.getString("dtReceivedBy"), sdformat.format(rs.getTimestamp("dtDateOUT")), rs.getString("dtStatus")};                
+                    model.addRow(row);
+                }
+                
             }
         } catch (SQLException ex) {
             System.out.println("Error en el metodo getModelDetails al leer datos " + ex.getMessage());
@@ -206,7 +219,9 @@ public class MainControl {
                 if (comp[i] instanceof JComboBox) {
                 ((JComboBox)comp[i]).setSelectedIndex(0);
                 }             
-                
+                if (comp[i] instanceof JDateChooser) {
+                ((JDateChooser)comp[i]).setDate(null);
+            }
             }
         }
     

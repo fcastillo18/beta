@@ -7,6 +7,7 @@ package Views;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
 import formReception.JReceptionForm;
+import formReception.JReceptionLog;
 import javax.swing.UIManager;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 
@@ -37,10 +38,12 @@ public class MainFrame extends javax.swing.JFrame {
         Inventory = new javax.swing.JMenu();
         jmnConsultInv = new javax.swing.JMenuItem();
         jmnMatchInv = new javax.swing.JMenuItem();
-        jmnHelp = new javax.swing.JMenu();
-        jmnAbout = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jmnHelp = new javax.swing.JMenu();
+        jmnAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inventory Solution");
@@ -77,13 +80,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(Inventory);
 
-        jmnHelp.setText("Ayuda");
-
-        jmnAbout.setText("Acerca de");
-        jmnHelp.add(jmnAbout);
-
-        jMenuBar1.add(jmnHelp);
-
         jMenu1.setText("Recepcion");
 
         jMenuItem1.setText("Formulario entrada");
@@ -94,7 +90,25 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
+        jMenuItem2.setText("Historial de recepción");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("Historial de cambios");
+        jMenu1.add(jMenuItem3);
+
         jMenuBar1.add(jMenu1);
+
+        jmnHelp.setText("Ayuda");
+
+        jmnAbout.setText("Acerca de");
+        jmnHelp.add(jmnAbout);
+
+        jMenuBar1.add(jmnHelp);
 
         setJMenuBar(jMenuBar1);
 
@@ -129,6 +143,12 @@ public class MainFrame extends javax.swing.JFrame {
         deskPanel.add(jrf);
         jrf.show();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        JReceptionLog jrl = new JReceptionLog();
+        deskPanel.add(jrl);
+        jrl.show();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,6 +196,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jmnAbout;
     private javax.swing.JMenuItem jmnConsultInv;
     private javax.swing.JMenu jmnHelp;

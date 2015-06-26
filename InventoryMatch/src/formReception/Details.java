@@ -19,16 +19,19 @@ public class Details {
     private Timestamp dateOut;
     private String dtReceivedBy;
     private String dtCategory;
+    private String dtStatus;
+    
     public Details() {
     }
     
-    public Details(int dtId, int itId, Timestamp dateIn, Timestamp dateOn, String dtReceivedBy, String dtCategory) {
+    public Details(int dtId, int itId, Timestamp dateIn, Timestamp dateOn, String dtReceivedBy, String dtCategory, String dtStatus) {
         this.dtId = dtId;
         this.itId = itId;
         this.dateIn = dateIn;
         this.dateOut = dateOn;
         this.dtReceivedBy = dtReceivedBy;
         this.dtCategory = dtCategory;
+        this.dtStatus = dtStatus;
     }
 
     public int getDtId() {
@@ -77,6 +80,14 @@ public class Details {
 
     public void setDtCategory(String dtCategory) {
         this.dtCategory = dtCategory;
+    }
+    
+    public String getDtStatus() {
+        return dtStatus;
+    }
+
+    public void setDtStatus(String dtStatus) {
+        this.dtStatus = dtStatus;
     }
     
         @Override
