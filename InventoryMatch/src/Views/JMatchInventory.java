@@ -370,7 +370,7 @@ public class JMatchInventory extends javax.swing.JInternalFrame {
         if (match = true) {
             try {
                 tblData.setModel(adminCSV.getTableModelDB(adminCSV.readDataFromDB()));
-                DecimalFormat df = new DecimalFormat("0.00000"); 
+                DecimalFormat df = new DecimalFormat("#,###,###,##0.0000");
                 txtTotalCost.setText(df.format(Double.parseDouble(adminCSV.totalCost(adminCSV.queryToDB("select sum(Costo) from FinalInventory")))));
 //                txtTotalCost.setText(adminCSV.totalCost(adminCSV.queryToDB("select sum(Costo) from FinalInventory")));
 //            JOptionPane.showMessageDialog(null, "Mostrando Inventario final del mes de " + jcbMes.getSelectedItem().toString() +" del " + jcbAno.getSelectedItem().toString());
@@ -389,7 +389,7 @@ public class JMatchInventory extends javax.swing.JInternalFrame {
             match = false;
             JOptionPane.showMessageDialog(null, "Favor cargar todos los archivos que se piden para poder continuar", "Falta cargar documento", JOptionPane.ERROR_MESSAGE);
         }else{
-            adminCSV.executeProcedure("Inventory", jcbMes.getSelectedItem().toString() + "-" + jcbAno.getSelectedItem().toString());
+            adminCSV.executeProcedure(jcbMes.getSelectedItem().toString() + "-" + jcbAno.getSelectedItem().toString());
             JOptionPane.showMessageDialog(null, "Operacion exitosa");
             match = true;
         }

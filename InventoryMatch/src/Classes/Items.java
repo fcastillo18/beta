@@ -10,13 +10,22 @@ package Classes;
  * @author Franklin
  */
 public class Items {
-    
-    public String codigo;
-    public String descripcion;
-    public String cantidad;
-    public String costo;
-    public String fecha;
+    //Esta clase es para trabajar con el reporte de inventario inicial, compras y ventas
+    private String codigo;
+    private String descripcion;
+    private String cantidad;
+    private String costo;
+    private String fecha;
+    private int idRow;
 
+    public int getIdRow() {
+        return idRow;
+    }
+
+    public void setIdRow(int idRow) {
+        this.idRow = idRow;
+    }
+    
     public String getFecha() {
         return fecha;
     }

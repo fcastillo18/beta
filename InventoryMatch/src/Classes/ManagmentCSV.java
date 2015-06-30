@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.AbstractList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,21 +34,25 @@ public class ManagmentCSV {
     List<Items> listShopping = new ArrayList<>();
     List<Object> listFinalIventory;
     public float finalCost;
+    private static int idRow = 0;
     
     Items item = null;
     
+    //en este metodo se leera un CSV, ser archivaran los valores en una lista para cada caso (compras, ventas, existencia)
+    //y Luego 
     public void readCSV(String fileCsv, String fileName){
         listItems = new ArrayList<>();
         try {
             CsvReader itemsImport = new CsvReader(fileCsv);
             itemsImport.readHeaders();//con este metodo se elimina el primer registro de la tabla (la barra de titulo)
-            
+            consultLastItemID();
             while(itemsImport.readRecord()){
                 item = new Items();
                 item.setCodigo(itemsImport.get(0));
                 item.setDescripcion(itemsImport.get(1));
                 item.setCantidad(itemsImport.get(2));
                 item.setCosto(itemsImport.get("Costo"));
+                item.setIdRow(getLastItemID()+1);
                 listItems.add(item);
                 System.out.println(item.getCosto());
             }
@@ -147,10 +152,11 @@ public class ManagmentCSV {
         DefaultTableModel model = new DefaultTableModel(data, columns);
         model.setRowCount(0);
         String fecha = "";
+        DecimalFormat df = new DecimalFormat("#,###,###,##0.0000");
         if (result.next() != false) {
             try {
                 while(result.next()){
-                    Object [] row = {result.getString(1), result.getString(2), result.getString(3), result.getString(4)};
+                    Object [] row = {result.getString(1), result.getString(2), result.getString(3), df.format(result.getString(4))};
                     model.addRow(row);
                     finalCost = finalCost + Float.parseFloat(result.getString(4));
                 }
@@ -216,17 +222,18 @@ public class ManagmentCSV {
         return result;
      }
      
-     public void executeProcedure(String tableName, String date){
-        boolean resultVal;
+     public void executeProcedure(String date){
+        boolean resultVal = false;
         
                 try {
                     for (Items itemInv : listInventory) {
-                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertInventory(?, ?, ?, ?, ?)}");
+                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertInventory(?, ?, ?, ?, ?, ?)}");
                         callStm.setString(1, itemInv.getCodigo());
                         callStm.setString(2, itemInv.getDescripcion());
                         callStm.setFloat(3, Float.parseFloat(itemInv.getCantidad()));
                         callStm.setFloat(4, Float.parseFloat(itemInv.getCosto()));
                         callStm.setString(5, date);
+                        callStm.setInt(6, itemInv.getIdRow());
 //                        ResultSet resultSet = callStm.executeQuery();
                         resultVal = callStm.executeUpdate() > 0;
                     }
@@ -234,16 +241,18 @@ public class ManagmentCSV {
                 } catch (SQLException ex) {
                     System.out.println("Error al exportar datos de inventario "+ex.getMessage());
                     ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "ERROR", "Error al intentar guardar los datos. \n Verifique que no este insertando adtos duplicados o verifique y ajuste la forma en que se presentan los datos", JOptionPane.ERROR_MESSAGE);
                 }
                 
                 try {
                     for (Items itemInv : listConsumption) {
-                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertConsumptions(?, ?, ?, ?, ?)}");
+                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertConsumptions(?, ?, ?, ?, ?, ?)}");
                         callStm.setString(1, itemInv.getCodigo());
                         callStm.setString(2, itemInv.getDescripcion());
                         callStm.setFloat(3, Float.parseFloat(itemInv.getCantidad()));
                         callStm.setFloat(4, Float.parseFloat(itemInv.getCosto()));
                         callStm.setString(5, date);
+                        callStm.setInt(6, itemInv.getIdRow());
 //                        ResultSet resultSet = callStm.executeQuery();
                         resultVal = callStm.executeUpdate() > 0;
                     }
@@ -255,12 +264,13 @@ public class ManagmentCSV {
                 
                 try {
                     for (Items itemInv : listShopping) {
-                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertShopping(?, ?, ?, ?, ?)}");
+                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertShopping(?, ?, ?, ?, ?, ?)}");
                         callStm.setString(1, itemInv.getCodigo());
                         callStm.setString(2, itemInv.getDescripcion());
                         callStm.setFloat(3, Float.parseFloat(itemInv.getCantidad()));
                         callStm.setFloat(4, Float.parseFloat(itemInv.getCosto()));
                         callStm.setString(5, date);
+                        callStm.setInt(6, itemInv.getIdRow());
 //                        ResultSet resultSet = callStm.executeQuery();
                         resultVal = callStm.executeUpdate() > 0;
                     }
@@ -291,5 +301,27 @@ public class ManagmentCSV {
                  Logger.getLogger(ManagmentCSV.class.getName()).log(Level.SEVERE, null, ex);
              }
          }
+     }
+     
+     public int consultLastItemID(){
+        ResultSet result = null;
+//        int id = 0;
+        try {
+            CallableStatement callStm = Conexion.getConnection().prepareCall("select TOP 1 (ID) from FinalInventory ORDER BY ID DESC");
+            result = callStm.executeQuery();
+            while (result.next()) {
+                idRow = Integer.parseInt(result.getString(1));
+                System.out.println("el id es= "+idRow);
+            }
+//            int var = result.get
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener el ultimo ID "+ex.getMessage() );
+        }
+        return idRow;
+    }
+     
+     public static int getLastItemID(){
+     
+         return idRow;
      }
 }

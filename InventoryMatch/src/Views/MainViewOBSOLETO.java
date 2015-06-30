@@ -474,7 +474,7 @@ public class MainViewOBSOLETO extends javax.swing.JFrame{
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
 //        adminCSV.insertToDB("Inventory");
-        adminCSV.executeProcedure("Inventory", jcbMes.getSelectedItem().toString() + "-" + jcbAno.getSelectedItem().toString());
+        adminCSV.executeProcedure( jcbMes.getSelectedItem().toString() + "-" + jcbAno.getSelectedItem().toString());
     }//GEN-LAST:event_btnExportActionPerformed
 
     private void btnResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResultsActionPerformed
