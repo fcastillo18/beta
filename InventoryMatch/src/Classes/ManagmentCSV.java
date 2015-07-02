@@ -152,11 +152,11 @@ public class ManagmentCSV {
         DefaultTableModel model = new DefaultTableModel(data, columns);
         model.setRowCount(0);
         String fecha = "";
-        DecimalFormat df = new DecimalFormat("#,###,###,##0.0000");
+//        DecimalFormat df = new DecimalFormat("###,###,##0.000");
         if (result.next() != false) {
             try {
                 while(result.next()){
-                    Object [] row = {result.getString(1), result.getString(2), result.getString(3), df.format(result.getString(4))};
+                    Object [] row = {result.getString(1), result.getString(2), result.getString(3), result.getString(4)};
                     model.addRow(row);
                     finalCost = finalCost + Float.parseFloat(result.getString(4));
                 }
@@ -207,10 +207,11 @@ public class ManagmentCSV {
 //        }
 
     }
-     public ResultSet readDataFromDB(){
+     public ResultSet readDataFromDB(int idRow){
         ResultSet result = null;
         try {
-            CallableStatement ctm = Conexion.getConnection().prepareCall("{call sp_viewFinalInventory}");
+            CallableStatement ctm = Conexion.getConnection().prepareCall("{call sp_viewFinalInventory (?)}");
+            ctm.setInt(1, idRow);
             result = ctm.executeQuery();
             if (result.next() == false) {
                 JOptionPane.showMessageDialog(null, "No hay datos para mostrar, favor intente de nuevo");
@@ -279,7 +280,7 @@ public class ManagmentCSV {
                     System.out.println("Error al exportar datos de Compras "+ex.getMessage());
                     ex.printStackTrace();
                 }
-         
+         consultLastItemID();
      }
      
      public void insertToDB(String tableName){

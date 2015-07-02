@@ -431,7 +431,7 @@ public class MainViewOBSOLETO extends javax.swing.JFrame{
         jfcIventory.setCurrentDirectory(file);
         jfcIventory.showOpenDialog(this);
         */
-        File file = new File("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
+        File file = new File("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program");
         jfcIventory.setCurrentDirectory(file);
         int result = jfcIventory.showOpenDialog(this);
 
@@ -479,7 +479,7 @@ public class MainViewOBSOLETO extends javax.swing.JFrame{
 
     private void btnResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResultsActionPerformed
         try {
-            tblData.setModel(adminCSV.getTableModelDB(adminCSV.readDataFromDB()));
+            tblData.setModel(adminCSV.getTableModelDB(adminCSV.readDataFromDB(ManagmentCSV.getLastItemID())));
         } catch (SQLException ex) {
             Logger.getLogger(MainViewOBSOLETO.class.getName()).log(Level.SEVERE, null, ex);
         }

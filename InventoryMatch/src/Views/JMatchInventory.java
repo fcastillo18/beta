@@ -369,9 +369,9 @@ public class JMatchInventory extends javax.swing.JInternalFrame {
     private void btnShowResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowResultsActionPerformed
         if (match = true) {
             try {
-                tblData.setModel(adminCSV.getTableModelDB(adminCSV.readDataFromDB()));
+                tblData.setModel(adminCSV.getTableModelDB(adminCSV.readDataFromDB(ManagmentCSV.getLastItemID())));
                 DecimalFormat df = new DecimalFormat("#,###,###,##0.0000");
-                txtTotalCost.setText(df.format(Double.parseDouble(adminCSV.totalCost(adminCSV.queryToDB("select sum(Costo) from FinalInventory")))));
+                txtTotalCost.setText(df.format(Double.parseDouble(adminCSV.totalCost(adminCSV.queryToDB("select sum(Costo) from FinalInventory where ID ="+ManagmentCSV.getLastItemID())))));
 //                txtTotalCost.setText(adminCSV.totalCost(adminCSV.queryToDB("select sum(Costo) from FinalInventory")));
 //            JOptionPane.showMessageDialog(null, "Mostrando Inventario final del mes de " + jcbMes.getSelectedItem().toString() +" del " + jcbAno.getSelectedItem().toString());
             } catch (SQLException ex) {
