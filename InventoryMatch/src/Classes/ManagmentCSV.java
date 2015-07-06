@@ -9,6 +9,8 @@ import Views.MainViewOBSOLETO;
 import java.util.ArrayList;
 import java.util.List;
 import com.csvreader.CsvReader;
+import com.toedter.calendar.JDateChooser;
+import java.awt.Component;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +21,11 @@ import java.text.DecimalFormat;
 import java.util.AbstractList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 /**
@@ -171,7 +177,7 @@ public class ManagmentCSV {
     return model;
     }
     
-    public String totalCost(ResultSet rs){
+    public String stringValueFromDB(ResultSet rs){
         String totalCost = "";
         try {
             if (rs.next()) {
@@ -324,5 +330,90 @@ public class ManagmentCSV {
      public static int getLastItemID(){
      
          return idRow;
+     }
+     
+     public void enableComponents (Component [] comp, boolean enable, boolean limpiar) {
+        for (int i = 0; i < comp.length; i++) {
+            if (comp[i] instanceof JTextField) {
+                ((JTextField)comp[i]).setEnabled(enable);
+            }
+            if (comp[i] instanceof JComboBox) {
+                ((JComboBox)comp[i]).setEnabled(enable);
+            }
+            if (comp[i] instanceof JDateChooser) {
+                ((JDateChooser)comp[i]).setEnabled(enable);
+            }
+            if (comp[i] instanceof JButton) {
+                ((JButton)comp[i]).setEnabled(enable);
+            }
+            if (comp[i] instanceof JRadioButton) {
+                ((JRadioButton)comp[i]).setEnabled(enable);
+            }
+            if (limpiar) {
+                
+                if (comp[i] instanceof JTextField) {
+                ((JTextField)comp[i]).setText("");
+                }
+                if (comp[i] instanceof JComboBox) {
+                ((JComboBox)comp[i]).setSelectedIndex(0);
+                }             
+                if (comp[i] instanceof JDateChooser) {
+                ((JDateChooser)comp[i]).setDate(null);
+                }
+                if (comp[i] instanceof JButton) {
+                ((JButton)comp[i]).setEnabled(enable);
+                }
+                if (comp[i] instanceof JRadioButton) {
+                ((JRadioButton)comp[i]).setEnabled(enable);
+                }
+            }
+        }
+    
+    }
+     public void consultInventories(String table, String date){
+         
+         switch (table){
+             
+             case "Inventario Inicial":
+            {
+                try {
+                    queryToDB("select * from Inventory where Fecha ="+ date);
+                } catch (SQLException ex) {
+                    System.out.println("Error al leer datos del"+ table);
+                }
+            }
+                 break;
+                 
+             case "Consumo":
+            {
+                try {
+                    queryToDB("select * from Consumptions where Fecha ="+ date);
+                } catch (SQLException ex) {
+                    System.out.println("Error al leer datos del"+ table);
+                }
+            }
+                 break;
+                 
+             case "Compras":
+            {
+                try {
+                    queryToDB("select * from Shopping where Fecha ="+ date);
+                } catch (SQLException ex) {
+                    System.out.println("Error al leer datos del"+ table);
+                }
+            }
+                 break;
+                 
+             case "Inventario Final":
+            {
+                try {
+                    queryToDB("select Codigo, Descripcion, ((Cantidad+CantidadCompras) - CantidadConsumo)  as 'Cantidad', ((Costo+CostoCompras) - CostoConsumo)  as 'Costo' from FinalInventory where Fecha ="+ date);
+                } catch (SQLException ex) {
+                    System.out.println("Error al leer datos del"+ table);
+                }
+            }
+                 break;
+         }
+                     
      }
 }

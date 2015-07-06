@@ -13,6 +13,10 @@ Codigo,Descripcion,Cantidad,Costo
 50-096-012, UOK3-0080-712U Litkett Bw4 Magenta  Proceso ( Flint ),5,10877.38
 50-096-013,UOK5-0080-712U Litkett Bw4 Cyan  Proceso ( Flint ),5,10696.09
 50-096-014,UOK8-0080-712U Litkett Bw4 Black  Proceso ( Flint ),5,8834.38
+50-300-013,10-3505 Amarillo Proceso Uni Brillant Epple,0,0
+50-300-014,10-3506 Magenta Uni Brillant Epple,0,0
+50-300-015,10-3507 Cyan Uni Brillant Epple,0,0
+50-300-016,10-3508 Negro Proceso Uni Brillant Epple,0,0
 50-300-037,LMQ Reflex Blue B 63450 (LMB65),5,3459.92
 50-300-055,G28110 Amarillo Irocart,120,81174.18
 50-300-057,INT 09 PROCESS YELLOW,16.5,6870.74
@@ -35,6 +39,7 @@ Codigo,Descripcion,Cantidad,Costo
 50-300-216, Pantone Rojo 032  Epple  62111-1,0,0
 50-300-217,"Plata rapido secado, Silver Low VOC, Formula 132-1225",27.24,50756.1
 50-300-218,Pantone Rojo Rubine  62102-1 Epple.,7,4264.05
+50-300-219,Secante UPAX 2527,0,0
 50-300-258,P28730 Purpura Irocart,30,35906.91
 50-300-259,P28755 Violeta Irocart,17.5,67920.41
 50-300-260,P28760 Violeta Irocart,95,80032.57
@@ -253,6 +258,7 @@ Codigo,Descripcion,Cantidad,Costo
 51-332-054,1338329-3020 INXFLEXT TM ITX FREE UV PANTONE 032 RED,0,0
 51-332-058,1338394-2000 InxFlex UV ITX Pantone Purple C,9.9,10743.61
 51-332-066, UVH01072 COLD FOIL ADHESIVE VISCOSITY  FLINT,40,88013.06
+51-332-111,MUF BW8 872 Dorado  UV Flexo,0,0
 51-332-112,Limon Ice UFR10280 ( Gatorade ),8.16,17461.12
 51-332-113,Blanco UV UFK9-0124-465U Flint  ( Gatorade),334.33,315266.28
 51-332-114,UFRP-0185-465U Rojo-185 UV -- Gatorade--,110.16,135576.27
