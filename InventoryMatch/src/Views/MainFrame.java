@@ -5,6 +5,7 @@
  */
 package Views;
 
+import Classes.Conexion;
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
 import formReception.JReceptionForm;
 import formReception.JReceptionLog;
@@ -22,6 +23,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        new Conexion().createConnection();
     }
 
     /**

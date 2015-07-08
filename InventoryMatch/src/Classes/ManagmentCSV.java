@@ -158,6 +158,7 @@ public class ManagmentCSV {
         DefaultTableModel model = new DefaultTableModel(data, columns);
         model.setRowCount(0);
         String fecha = "";
+        finalCost = 0;
 //        DecimalFormat df = new DecimalFormat("###,###,##0.000");
         if (result.next() != false) {
             try {
@@ -213,6 +214,7 @@ public class ManagmentCSV {
 //        }
 
     }
+     
      public ResultSet readDataFromDB(int idRow){
         ResultSet result = null;
         try {
@@ -370,16 +372,16 @@ public class ManagmentCSV {
         }
     
     }
-     public void consultInventories(String table, String date){
-         
+     public ResultSet consultInventories(String table, String date){
+         ResultSet resultSet = null;
          switch (table){
              
              case "Inventario Inicial":
             {
                 try {
-                    queryToDB("select * from Inventory where Fecha ="+ date);
+                    resultSet = queryToDB("select * from Inventory where Fecha ='"+ date+"'");
                 } catch (SQLException ex) {
-                    System.out.println("Error al leer datos del"+ table);
+                    System.out.println("Error al leer datos del "+ table);
                 }
             }
                  break;
@@ -387,9 +389,9 @@ public class ManagmentCSV {
              case "Consumo":
             {
                 try {
-                    queryToDB("select * from Consumptions where Fecha ="+ date);
+                    resultSet = queryToDB("select * from Consumptions where Fecha ='"+ date+"'");
                 } catch (SQLException ex) {
-                    System.out.println("Error al leer datos del"+ table);
+                    System.out.println("Error al leer datos del "+ table);
                 }
             }
                  break;
@@ -397,9 +399,9 @@ public class ManagmentCSV {
              case "Compras":
             {
                 try {
-                    queryToDB("select * from Shopping where Fecha ="+ date);
+                    resultSet = queryToDB("select * from Shopping where Fecha ='"+ date+"'");
                 } catch (SQLException ex) {
-                    System.out.println("Error al leer datos del"+ table);
+                    System.out.println("Error al leer datos del "+ table);
                 }
             }
                  break;
@@ -407,13 +409,13 @@ public class ManagmentCSV {
              case "Inventario Final":
             {
                 try {
-                    queryToDB("select Codigo, Descripcion, ((Cantidad+CantidadCompras) - CantidadConsumo)  as 'Cantidad', ((Costo+CostoCompras) - CostoConsumo)  as 'Costo' from FinalInventory where Fecha ="+ date);
+                    resultSet = queryToDB("select Codigo, Descripcion, ((Cantidad+CantidadCompras) - CantidadConsumo)  as 'Cantidad', ((Costo+CostoCompras) - CostoConsumo)  as 'Costo' from FinalInventory where Fecha ='"+ date+"'");
                 } catch (SQLException ex) {
                     System.out.println("Error al leer datos del"+ table);
                 }
             }
                  break;
          }
-                     
+          return resultSet;
      }
 }
