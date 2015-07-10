@@ -142,7 +142,7 @@ public class JConsultInventory2 extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Codigo", "Descripcion", "Cantidad", "Costo"
             }
         ));
         jScrollPane1.setViewportView(tblDataInv);
@@ -206,10 +206,13 @@ public class JConsultInventory2 extends javax.swing.JInternalFrame {
         try {
             String date = jcbMes.getSelectedItem().toString() + "-"+ jcbAno.getSelectedItem().toString();
             tblDataInv.setModel(admCsv.getTableModelDB(admCsv.consultInventories(jcbShowData.getSelectedItem().toString(), date)));
-            DecimalFormat df = new DecimalFormat("#,###,###,##0.0000");
-            txtTotalCost.setText(String.valueOf(df.format(admCsv.finalCost)));
+            DecimalFormat df = new DecimalFormat("#,###,###,###.0000");
+            txtTotalCost.setText(df.format(admCsv.costInv));
+            JOptionPane.showMessageDialog(null, "Mostrando "+ jcbShowData.getSelectedItem().toString()+" del mes de "+jcbMes.getSelectedItem().toString()+" del " +jcbAno.getSelectedItem().toString());
         } catch (SQLException ex) {
             System.out.println("Error en el boton Buscar");
+            ex.getMessage();
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 

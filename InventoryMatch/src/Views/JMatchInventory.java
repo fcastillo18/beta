@@ -458,6 +458,7 @@ public class JMatchInventory extends javax.swing.JInternalFrame {
 //                txtTotalCost.setText(adminCSV.stringValueFromDB(adminCSV.queryToDB("select sum(Costo) from FinalInventory")));
 //            JOptionPane.showMessageDialog(null, "Mostrando Inventario final del mes de " + jcbMes.getSelectedItem().toString() +" del " + jcbAno.getSelectedItem().toString());
             match = false;
+            JOptionPane.showMessageDialog(null, "Mostrando Inventario final del ultimo cuadre realizado");
             } catch (SQLException ex) {
                 Logger.getLogger(JMatchInventory.class.getName()).log(Level.SEVERE, null, ex);
             }

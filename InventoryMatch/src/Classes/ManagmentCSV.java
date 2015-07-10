@@ -40,6 +40,10 @@ public class ManagmentCSV {
     List<Items> listShopping = new ArrayList<>();
     List<Object> listFinalIventory;
     public float finalCost;
+    public Double costInv;
+    public Double costSho;
+    public Double costCom;
+    
     private static int idRow = 0;
     
     Items item = null;
@@ -159,11 +163,13 @@ public class ManagmentCSV {
         model.setRowCount(0);
         String fecha = "";
         finalCost = 0;
-//        DecimalFormat df = new DecimalFormat("###,###,##0.000");
-        if (result.next() != false) {
+        DecimalFormat df = new DecimalFormat("###,###,##0.000");
+        //OJO, COMENTE LA LINEA DE ABAJO PERO ESTA ESTABA TRABAJANDO, HICE ESTO POR QUE NO ME ESTABA TOMANDO EN CUENTA EL PRIMER REGISTRO PARA LA SUMA
+//        if (result.next() != false) {
+        if (result != null ) {
             try {
                 while(result.next()){
-                    Object [] row = {result.getString(1), result.getString(2), result.getString(3), result.getString(4)};
+                    Object [] row = {result.getString(1), result.getString(2), result.getString(3), df.format(Float.parseFloat(result.getString(4)))};
                     model.addRow(row);
                     finalCost = finalCost + Float.parseFloat(result.getString(4));
                 }
@@ -171,7 +177,7 @@ public class ManagmentCSV {
                 System.out.println("error al leer datos en metodo: getTableModelDB "+ ex.getMessage());
                 ex.printStackTrace();
             }
-            JOptionPane.showMessageDialog(null, "Mostrando Inventario final del ultimo cuadre realizado");
+            
         }else{
             //
         }
@@ -372,14 +378,18 @@ public class ManagmentCSV {
         }
     
     }
+     ResultSet rstForTotalCost = null;
      public ResultSet consultInventories(String table, String date){
          ResultSet resultSet = null;
+         
          switch (table){
              
              case "Inventario Inicial":
             {
                 try {
-                    resultSet = queryToDB("select * from Inventory where Fecha ='"+ date+"'");
+                    resultSet = queryToDB("select * from Inventory where Fecha ='"+ date+"' order by Codigo");
+                    rstForTotalCost = queryToDB("select sum(Costo) from Inventory where Fecha ='"+ date+"'");
+                    costInv = Double.parseDouble(stringValueFromDB(rstForTotalCost));
                 } catch (SQLException ex) {
                     System.out.println("Error al leer datos del "+ table);
                 }
@@ -389,7 +399,9 @@ public class ManagmentCSV {
              case "Consumo":
             {
                 try {
-                    resultSet = queryToDB("select * from Consumptions where Fecha ='"+ date+"'");
+                    resultSet = queryToDB("select * from Consumptions where Fecha ='"+ date+"' order by Codigo");
+                    rstForTotalCost = queryToDB("select sum(Costo) from Consumptions where Fecha ='"+ date+"'");
+                    costInv = Double.parseDouble(stringValueFromDB(rstForTotalCost));
                 } catch (SQLException ex) {
                     System.out.println("Error al leer datos del "+ table);
                 }
@@ -399,7 +411,9 @@ public class ManagmentCSV {
              case "Compras":
             {
                 try {
-                    resultSet = queryToDB("select * from Shopping where Fecha ='"+ date+"'");
+                    resultSet = queryToDB("select * from Shopping where Fecha ='"+ date+"' order by Codigo");
+                    rstForTotalCost = queryToDB("select sum(Costo) from Shopping where Fecha ='"+ date+"'");
+                    costInv = Double.parseDouble(stringValueFromDB(rstForTotalCost));
                 } catch (SQLException ex) {
                     System.out.println("Error al leer datos del "+ table);
                 }
@@ -409,7 +423,10 @@ public class ManagmentCSV {
              case "Inventario Final":
             {
                 try {
-                    resultSet = queryToDB("select Codigo, Descripcion, ((Cantidad+CantidadCompras) - CantidadConsumo)  as 'Cantidad', ((Costo+CostoCompras) - CostoConsumo)  as 'Costo' from FinalInventory where Fecha ='"+ date+"'");
+                    resultSet = queryToDB("select Codigo, Descripcion, ((Cantidad+CantidadCompras) - CantidadConsumo)  as 'Cantidad', ((Costo+CostoCompras) - CostoConsumo)  as 'Costo' from FinalInventory where Fecha ='"+ date+"' order by Codigo");
+                    String selectBefore = "(select Codigo, Descripcion, ((Cantidad+CantidadCompras) - CantidadConsumo)  as 'Cantidad', ((Costo+CostoCompras) - CostoConsumo)  as 'Costo' from FinalInventory where Fecha ='"+ date+"' order by Codigo)";
+                    rstForTotalCost = queryToDB("select sum(temp.Costo) from (select Codigo, Descripcion, ((Cantidad+CantidadCompras) - CantidadConsumo)  as 'Cantidad', ((Costo+CostoCompras) - CostoConsumo)  as 'Costo' from FinalInventory where Fecha ='"+ date+"') temp");
+                    costInv = Double.parseDouble(stringValueFromDB(rstForTotalCost));
                 } catch (SQLException ex) {
                     System.out.println("Error al leer datos del"+ table);
                 }
