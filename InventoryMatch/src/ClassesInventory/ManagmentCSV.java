@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes;
+package ClassesInventory;
 
-import Views.MainViewOBSOLETO;
+import ViewsInventory.MainViewOBSOLETO;
 import java.util.ArrayList;
 import java.util.List;
 import com.csvreader.CsvReader;

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes;
+package ClassesInventory;
 
-import formReception.MainControl;
+import ClassesReception.MainControl;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Views;
+package ViewsInventory;
 
-import Classes.ManagmentCSV;
+import ClassesInventory.ManagmentCSV;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.logging.Level;

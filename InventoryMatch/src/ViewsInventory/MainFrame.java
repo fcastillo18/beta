@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Views;
+package ViewsInventory;
 
-import Classes.Conexion;
+import ClassesInventory.Conexion;
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
-import formReception.JReceptionForm;
-import formReception.JReceptionLog;
+import ViewsReception.JReceptionForm;
+import ViewsReception.JReceptionLog;
 import javax.swing.UIManager;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 
@@ -46,16 +46,19 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jmnHelp = new javax.swing.JMenu();
         jmnAbout = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inventory Solution");
-        setPreferredSize(new java.awt.Dimension(1024, 720));
+        setPreferredSize(new java.awt.Dimension(1024, 620));
 
         javax.swing.GroupLayout deskPanelLayout = new javax.swing.GroupLayout(deskPanel);
         deskPanel.setLayout(deskPanelLayout);
         deskPanelLayout.setHorizontalGroup(
             deskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 802, Short.MAX_VALUE)
+            .addGap(0, 958, Short.MAX_VALUE)
         );
         deskPanelLayout.setVerticalGroup(
             deskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,6 +115,31 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jmnHelp);
 
+        jMenu2.setText("Usuarios");
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu2ActionPerformed(evt);
+            }
+        });
+
+        jMenuItem4.setText("Agregar usuario");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
+        jMenuItem5.setText("Modificar/Eliminar usuarios");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -151,6 +179,22 @@ public class MainFrame extends javax.swing.JFrame {
         deskPanel.add(jrl);
         jrl.show();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+        
+    }//GEN-LAST:event_jMenu2ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        JUsers jUser = new JUsers();
+        deskPanel.add(jUser);
+        jUser.show();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        JUsers jUser = new JUsers();
+        deskPanel.add(jUser);
+        jUser.show();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,10 +240,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu Inventory;
     private javax.swing.JDesktopPane deskPanel;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jmnAbout;
     private javax.swing.JMenuItem jmnConsultInv;
     private javax.swing.JMenu jmnHelp;

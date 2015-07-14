@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package formReception;
+package ViewsReception;
 
+import ClassesReception.MainControl;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.Date;

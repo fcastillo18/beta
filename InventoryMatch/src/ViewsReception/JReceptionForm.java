@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package formReception;
+package ViewsReception;
 
+import ClassesReception.MainControl;
+import ClassesReception.Details;
+import ClassesReception.Item;
 import com.toedter.calendar.JCalendar;
 import java.sql.Timestamp;
 import java.text.DateFormat;

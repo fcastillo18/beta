@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Views;
+package ViewsInventory;
 
-import Classes.Conexion;
-import Classes.ManagmentCSV;
+import ClassesInventory.Conexion;
+import ClassesInventory.ManagmentCSV;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.DecimalFormat;

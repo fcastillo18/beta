@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package formReception;
+package ClassesReception;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.Component;
@@ -30,9 +30,9 @@ public class MainControl extends Thread{
         Conexion con = new Conexion();
         con.createConnection();
     }
-    Date endDate;
-    Item item;
-    Details detail;
+    public Date endDate;
+    public Item item;
+    public Details detail;
     @Override
     public void run(){
     
