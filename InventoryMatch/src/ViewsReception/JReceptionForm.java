@@ -34,7 +34,8 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         mc.enableComponents(jpData.getComponents(), false, false);
         changeColumnSize(tblLogReception);
         //poner en un hilo la hora
-        jbDate.setText(df.format(new Date()));        
+        jbDate.setText(df.format(new Date()));
+        btnSave.setEnabled(false);
     }
     //esta variable sera paa evitar que cuando esten en el boton nuevo puedan cargar datos del evento mouse clicked
     private boolean nuevo;
@@ -370,6 +371,8 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     mc.enableComponents(jpData.getComponents(), false, true);
                     modified = false;
                     JOptionPane.showMessageDialog(null, "Guardado exitosamente", "Guardado", JOptionPane.INFORMATION_MESSAGE);
+                    btnReceivedModifier.setEnabled(true);
+                    btnSave.setEnabled(false);
                 }else{
                     Item item = new Item(0, txtSupplier.getText(), txtDescription.getText());
                     mc.createItem(item);
@@ -381,6 +384,8 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     mc.enableComponents(jpData.getComponents(), false, true);
                     modified = false;
                     JOptionPane.showMessageDialog(null, "Guardado exitosamente", "Guardado", JOptionPane.INFORMATION_MESSAGE);
+                    btnReceivedModifier.setEnabled(true);
+                    btnSave.setEnabled(false);
                 }
                 
             }
@@ -415,17 +420,28 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         jpLogReception.setEnabled(false);
         mc.enableComponents(jpData.getComponents(), true, true);
         jdcDateIn.setDate(MainControl.getCurrentTimeStamp());
+        //habilitar boton guardar
+        btnReceivedModifier.setEnabled(false);
+        btnSave.setEnabled(true);
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnReceivedModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReceivedModifierActionPerformed
-        nuevo = false;
-        tblLogReception.setEnabled(true);
-        mc.enableComponents(jpData.getComponents(), true, false);
-        jdcDateIn.setEnabled(false);
-        //setear la fecha de entregado en automatico con el dia en el que se da el click y hora
-        jdcDateOut.setDate(MainControl.getCurrentTimeStamp());
-//        jcbStatus.setSelectedIndex(2);
-        modified = true;
+        int rowSel = tblLogReception.getSelectedRow();
+        if (rowSel > 0) {
+            nuevo = false;
+            btnSave.setEnabled(true);
+            tblLogReception.setEnabled(true);
+            mc.enableComponents(jpData.getComponents(), true, false);
+            jdcDateIn.setEnabled(false);
+            //setear la fecha de entregado en automatico con el dia en el que se da el click y hora
+            jdcDateOut.setDate(MainControl.getCurrentTimeStamp());
+    //        jcbStatus.setSelectedIndex(2);
+            modified = true;
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Favor selecione un archivo para poder proceder");
+        }
+        
     }//GEN-LAST:event_btnReceivedModifierActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

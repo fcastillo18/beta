@@ -469,20 +469,29 @@ public class JMatchInventory extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnShowResultsActionPerformed
 
     private void btnMatchExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatchExportActionPerformed
-        //        adminCSV.insertToDB("Inventory");
-        
-        if (txtInventory.getText().isEmpty() | txtConsumptions.getText().isEmpty() | txtShopping.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null,  "Falta cargar documentos","Favor cargar todos los archivos que se piden para poder continuar", JOptionPane.ERROR_MESSAGE);
-        }
-        else if(jcbMes.getSelectedIndex()==0 | jcbAno.getSelectedIndex()==0){
-            JOptionPane.showMessageDialog(null, "Falta especificar la fecha de estos documentos",  "Favor cargar todos los archivos que se piden para poder continuar", JOptionPane.ERROR_MESSAGE);
-        }
-        else{
-            adminCSV.executeProcedure(jcbMes.getSelectedItem().toString() + "-" + jcbAno.getSelectedItem().toString());
-            JOptionPane.showMessageDialog(null, "Operacion exitosa");
-            match = true;
-            btnShowResults.setEnabled(true);
-        }
+//        try {
+            //        adminCSV.insertToDB("Inventory");
+            String fecha = jcbMes.getSelectedItem().toString() + "-" + jcbAno.getSelectedItem().toString();
+            
+            if (txtInventory.getText().isEmpty() | txtConsumptions.getText().isEmpty() | txtShopping.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null,  "Falta cargar documentos","Favor cargar todos los archivos que se piden para poder continuar", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(jcbMes.getSelectedIndex()==0 | jcbAno.getSelectedIndex()==0){
+                JOptionPane.showMessageDialog(null, "Falta especificar la fecha de estos documentos",  "Favor cargar todos los archivos que se piden para poder continuar", JOptionPane.ERROR_MESSAGE);
+            }
+//            else if (adminCSV.stringValueFromDB(adminCSV.queryToDB("select top 1 (fecha) from Inventory where fecha = "+fecha))!= "") {
+//                JOptionPane.showMessageDialog(null, "Error al insertar datos",  "Ya existen datos con esta fecha, favor verifique e intente de nuevo", JOptionPane.ERROR_MESSAGE);
+//            }
+//            else if (adminCSV.queryToDB("select top 1 (fecha) from Inventory where fecha = "+fecha) != null) {
+//                JOptionPane.showMessageDialog(null, "Error al insertar datos",  "Ya existen datos con esta fecha, favor verifique e intente de nuevo", JOptionPane.ERROR_MESSAGE);
+//            }
+            else{
+                adminCSV.executeProcedure(fecha);
+                JOptionPane.showMessageDialog(null, "Operacion exitosa");
+                match = true;
+                btnShowResults.setEnabled(true);
+            }
+   
         
     }//GEN-LAST:event_btnMatchExportActionPerformed
 
