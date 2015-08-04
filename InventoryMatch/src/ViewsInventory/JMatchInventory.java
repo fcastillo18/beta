@@ -8,6 +8,7 @@ package ViewsInventory;
 import ClassesInventory.Conexion;
 import ClassesInventory.ManagmentCSV;
 import java.io.File;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
@@ -469,7 +470,7 @@ public class JMatchInventory extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnShowResultsActionPerformed
 
     private void btnMatchExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatchExportActionPerformed
-//        try {
+        try {
             //        adminCSV.insertToDB("Inventory");
             String fecha = jcbMes.getSelectedItem().toString() + "-" + jcbAno.getSelectedItem().toString();
             
@@ -486,11 +487,21 @@ public class JMatchInventory extends javax.swing.JInternalFrame {
 //                JOptionPane.showMessageDialog(null, "Error al insertar datos",  "Ya existen datos con esta fecha, favor verifique e intente de nuevo", JOptionPane.ERROR_MESSAGE);
 //            }
             else{
-                adminCSV.executeProcedure(fecha);
-                JOptionPane.showMessageDialog(null, "Operacion exitosa");
-                match = true;
-                btnShowResults.setEnabled(true);
+//                ResultSet resultSet = adminCSV.queryToDB("select count (*) from Inventory where fecha = "+fecha);
+                if (adminCSV.stringValueFromDB(adminCSV.queryToDB("select count (*) from Inventory where fecha = "+"'"+fecha+"'")).equals("0")) {
+                    adminCSV.executeProcedure(fecha);
+                    JOptionPane.showMessageDialog(null, "Operacion exitosa");
+                    match = true;
+                    btnShowResults.setEnabled(true);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Actualmente existen registros con esta fecha, favor verificar e introducir nuevos datos", "Datos ya existen", JOptionPane.ERROR_MESSAGE);
+                }
             }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JMatchInventory.class.getName()).log(Level.SEVERE, null, ex);
+        }
    
         
     }//GEN-LAST:event_btnMatchExportActionPerformed

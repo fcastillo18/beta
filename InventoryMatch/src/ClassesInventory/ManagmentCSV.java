@@ -239,10 +239,10 @@ public class ManagmentCSV {
      
      public void executeProcedure(String date){
         boolean resultVal = false;
-        
+        CallableStatement callStm = null;
                 try {
                     for (Items itemInv : listInventory) {
-                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertInventory(?, ?, ?, ?, ?, ?)}");
+                        callStm = Conexion.getConnection().prepareCall("{call sp_insertInventory(?, ?, ?, ?, ?, ?)}");
                         callStm.setString(1, itemInv.getCodigo());
                         callStm.setString(2, itemInv.getDescripcion());
                         callStm.setFloat(3, Float.parseFloat(itemInv.getCantidad()));
@@ -261,7 +261,7 @@ public class ManagmentCSV {
                 
                 try {
                     for (Items itemInv : listConsumption) {
-                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertConsumptions(?, ?, ?, ?, ?, ?)}");
+                        callStm = Conexion.getConnection().prepareCall("{call sp_insertConsumptions(?, ?, ?, ?, ?, ?)}");
                         callStm.setString(1, itemInv.getCodigo());
                         callStm.setString(2, itemInv.getDescripcion());
                         callStm.setFloat(3, Float.parseFloat(itemInv.getCantidad()));
@@ -279,7 +279,7 @@ public class ManagmentCSV {
                 
                 try {
                     for (Items itemInv : listShopping) {
-                        CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertShopping(?, ?, ?, ?, ?, ?)}");
+                        callStm = Conexion.getConnection().prepareCall("{call sp_insertShopping(?, ?, ?, ?, ?, ?)}");
                         callStm.setString(1, itemInv.getCodigo());
                         callStm.setString(2, itemInv.getDescripcion());
                         callStm.setFloat(3, Float.parseFloat(itemInv.getCantidad()));
@@ -379,7 +379,10 @@ public class ManagmentCSV {
     
     }
      ResultSet rstForTotalCost = null;
-     public ResultSet consultInventories(String table, String date){
+     
+//     public boolean table
+             
+     public ResultSet consultInventories(String table, String date) throws SQLException{
          ResultSet resultSet = null;
          
          switch (table){
@@ -388,6 +391,7 @@ public class ManagmentCSV {
             {
                 try {
                     resultSet = queryToDB("select * from Inventory where Fecha ='"+ date+"' order by Codigo");
+                    
                     rstForTotalCost = queryToDB("select sum(Costo) from Inventory where Fecha ='"+ date+"'");
                     costInv = Double.parseDouble(stringValueFromDB(rstForTotalCost));
                 } catch (SQLException ex) {

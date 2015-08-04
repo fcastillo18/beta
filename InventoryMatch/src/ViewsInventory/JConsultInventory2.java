@@ -170,8 +170,8 @@ public class JConsultInventory2 extends javax.swing.JInternalFrame {
             jpDataViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpDataViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jpDataViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtTotalCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -205,10 +205,64 @@ public class JConsultInventory2 extends javax.swing.JInternalFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         try {
             String date = jcbMes.getSelectedItem().toString() + "-"+ jcbAno.getSelectedItem().toString();
-            tblDataInv.setModel(admCsv.getTableModelDB(admCsv.consultInventories(jcbShowData.getSelectedItem().toString(), date)));
-            DecimalFormat df = new DecimalFormat("#,###,###,###.0000");
-            txtTotalCost.setText(df.format(admCsv.costInv));
-            JOptionPane.showMessageDialog(null, "Mostrando "+ jcbShowData.getSelectedItem().toString()+" del mes de "+jcbMes.getSelectedItem().toString()+" del " +jcbAno.getSelectedItem().toString());
+            String table = jcbShowData.getSelectedItem().toString();
+            
+            switch(table){
+                
+                case "Inventario Inicial":
+                    if ("0".equals(admCsv.stringValueFromDB(admCsv.queryToDB("select count (*) from Inventory")))) {
+                        JOptionPane.showMessageDialog(null, "No hay registros para mostrar de esta fecha \n Favor intente nuevamente");
+                    } else {
+                        tblDataInv.setModel(admCsv.getTableModelDB(admCsv.consultInventories(jcbShowData.getSelectedItem().toString(), date)));
+                        DecimalFormat df = new DecimalFormat("#,###,###,###.0000");
+                        txtTotalCost.setText(df.format(admCsv.costInv));
+                        JOptionPane.showMessageDialog(null, "Mostrando "+ jcbShowData.getSelectedItem().toString()+" del mes de "+jcbMes.getSelectedItem().toString()+" del " +jcbAno.getSelectedItem().toString());
+                    }
+                    break;
+                    
+                case "Consumo":
+                    if ("0".equals(admCsv.stringValueFromDB(admCsv.queryToDB("select count (*) from Comsumptions")))) {
+                        JOptionPane.showMessageDialog(null, "No hay registros para mostrar de esta fecha \n Favor intente nuevamente");
+                    } else {
+                        tblDataInv.setModel(admCsv.getTableModelDB(admCsv.consultInventories(jcbShowData.getSelectedItem().toString(), date)));
+                        DecimalFormat df = new DecimalFormat("#,###,###,###.0000");
+                        txtTotalCost.setText(df.format(admCsv.costInv));
+                        JOptionPane.showMessageDialog(null, "Mostrando "+ jcbShowData.getSelectedItem().toString()+" del mes de "+jcbMes.getSelectedItem().toString()+" del " +jcbAno.getSelectedItem().toString());
+                    }
+                    break;
+                    
+                case "Compras":
+                    if ("0".equals(admCsv.stringValueFromDB(admCsv.queryToDB("select count (*) from Shopping")))) {
+                        JOptionPane.showMessageDialog(null, "No hay registros para mostrar de esta fecha \n Favor intente nuevamente");
+                    } else {
+                        tblDataInv.setModel(admCsv.getTableModelDB(admCsv.consultInventories(jcbShowData.getSelectedItem().toString(), date)));
+                        DecimalFormat df = new DecimalFormat("#,###,###,###.0000");
+                        txtTotalCost.setText(df.format(admCsv.costInv));
+                        JOptionPane.showMessageDialog(null, "Mostrando "+ jcbShowData.getSelectedItem().toString()+" del mes de "+jcbMes.getSelectedItem().toString()+" del " +jcbAno.getSelectedItem().toString());
+                    }
+                    break;
+                    
+                case "Inventario Final":
+                    if ("0".equals(admCsv.stringValueFromDB(admCsv.queryToDB("select count (*) from FinalInventory")))) {
+                        JOptionPane.showMessageDialog(null, "No hay registros para mostrar de esta fecha \n Favor intente nuevamente");
+                    } else {
+                        tblDataInv.setModel(admCsv.getTableModelDB(admCsv.consultInventories(jcbShowData.getSelectedItem().toString(), date)));
+                        DecimalFormat df = new DecimalFormat("#,###,###,###.0000");
+                        txtTotalCost.setText(df.format(admCsv.costInv));
+                        JOptionPane.showMessageDialog(null, "Mostrando "+ jcbShowData.getSelectedItem().toString()+" del mes de "+jcbMes.getSelectedItem().toString()+" del " +jcbAno.getSelectedItem().toString());
+                    }
+                    break;
+            
+            }
+                    
+//            if ("0".equals(admCsv.stringValueFromDB(admCsv.queryToDB("select count (*) from "+table)))) {
+//                JOptionPane.showMessageDialog(null, "No hay registros para mostrar de esta fecha \n Favor intente nuevamente");
+//            } else {
+//                tblDataInv.setModel(admCsv.getTableModelDB(admCsv.consultInventories(jcbShowData.getSelectedItem().toString(), date)));
+//                DecimalFormat df = new DecimalFormat("#,###,###,###.0000");
+//                txtTotalCost.setText(df.format(admCsv.costInv));
+//                JOptionPane.showMessageDialog(null, "Mostrando "+ jcbShowData.getSelectedItem().toString()+" del mes de "+jcbMes.getSelectedItem().toString()+" del " +jcbAno.getSelectedItem().toString());
+//            }
         } catch (SQLException ex) {
             System.out.println("Error en el boton Buscar");
             ex.getMessage();
