@@ -12,17 +12,23 @@ package ClassesReception;
 public class User {
     
     private int id;
-    private String fullName;
+    private String firstName;
+    private String lastName;
     private String userName;
-    private String pass;
+    private String password;
+    private String category;
+    private boolean toChangePass;
 
-    public User(int id, String fullName, String userName, String pass) {
+    public User(int id, String firstName, String lastName, String userName, String password, String category, boolean toChangePass) {
         this.id = id;
-        this.fullName = fullName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.userName = userName;
-        this.pass = pass;
+        this.password = password;
+        this.category = category;
+        this.toChangePass = toChangePass;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -31,12 +37,20 @@ public class User {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUserName() {
@@ -47,13 +61,36 @@ public class User {
         this.userName = userName;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public boolean isToChangePass() {
+        return toChangePass;
+    }
+
+    public void setToChangePass(boolean toChangePass) {
+        this.toChangePass = toChangePass;
+    }
+    
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName + ", password=" + password + ", category=" + category + ", toChangePass=" + toChangePass + '}';
+    }
+    
     
     
 }

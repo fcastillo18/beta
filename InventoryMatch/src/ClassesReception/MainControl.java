@@ -12,10 +12,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -225,6 +229,81 @@ public class MainControl extends Thread{
             }
         }
     
+    }
+    
+    /*Login Area */
+    public void createUser(User user){
+        try {
+            CallableStatement callStm = Conexion.getConnection().prepareCall("insert into tbl_User (usFirstName, usLastName, usUserName, usPassword, usToChangePassword, usCategory)  values (?, ?, ?, ?, ?, ?)");
+            callStm.setString(1, user.getFirstName());
+            callStm.setString(2, user.getLastName());
+            callStm.setString(3, user.getUserName());
+            callStm.setString(4, user.getPassword());
+            callStm.setBoolean(5, user.isToChangePass());
+            callStm.setString(6, user.getCategory());
+            callStm.executeUpdate();
+            callStm.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al insertar Usuario " + user.toString()+ ex.getMessage());
+        }
+    }
+    public void insertMenuesAccess(int usId, String menu){
+        try {
+            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertMenueValues(?,?)}");
+            callStm.setInt(1, usId);
+            callStm.setString(2, menu);
+            callStm.executeUpdate();
+            callStm.close();
+            } catch (SQLException ex) {
+            System.out.println("Error al insertar Menues" + ex.getMessage());
+        }
+    }
+    public int getLastUserID(){
+        int userID = 0 ;
+        ResultSet result = null;
+//        int id = 0;
+        try {
+            CallableStatement callStm = Conexion.getConnection().prepareCall("select TOP 1 (usID) from tbl_User ORDER BY ID DESC");
+            result = callStm.executeQuery();
+            while (result.next()) {
+                userID = Integer.parseInt(result.getString(1));
+                System.out.println("el id es= "+userID);
+            }
+            callStm.close();
+//            int var = result.get
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener el ultimo ID "+ex.getMessage() );
+        }
+        return userID;
+    } 
+    
+    public ResultSet queryToDB(String query) throws SQLException{
+    
+        ResultSet result;
+//        statement = con.preparedStatement();
+        try {
+            PreparedStatement statement = ClassesInventory.Conexion.getConnection().prepareStatement(query);
+            result = statement.executeQuery();
+            return result;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error "+ex.getMessage(), "Error de Conexion", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+    
+    public DefaultListModel listModelMenues (){
+        DefaultListModel listModel = new DefaultListModel();
+        ResultSet resultSet ;
+        try {
+            resultSet = queryToDB("select (mnMenu) from tbl_Menues ");
+            while (resultSet.next()) {                
+                listModel.addElement(resultSet.getString("mnMenu"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+        return listModel;
     }
 }//
 // usar setToolTipText para mostrar datos segun se valla typeando
