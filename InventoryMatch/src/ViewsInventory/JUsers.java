@@ -21,10 +21,11 @@ public class JUsers extends javax.swing.JInternalFrame {
     public JUsers() {
         initComponents();
         mn = new MainControl();
-        jList1.setModel(mn.listModelMenues());
+        jListDisponibles.setModel(mn.listModelMenues());
     }
     MainControl mn;
-    Vector<String> listData = new Vector<String>();
+    Vector<String> listData1 = new Vector<String>();
+    Vector<String> listData2 = new Vector<String>();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,11 +55,11 @@ public class JUsers extends javax.swing.JInternalFrame {
         btnDelete = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        jListDisponibles = new javax.swing.JList();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList();
+        jListUsuario = new javax.swing.JList();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
@@ -199,12 +200,12 @@ public class JUsers extends javax.swing.JInternalFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Acceso a menu"));
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        jListDisponibles.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Historial cambios rec", " " };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(jList1);
+        jScrollPane2.setViewportView(jListDisponibles);
 
         jButton1.setText("Añadir >");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -214,8 +215,13 @@ public class JUsers extends javax.swing.JInternalFrame {
         });
 
         jButton2.setText("< Eliminar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jScrollPane4.setViewportView(jList3);
+        jScrollPane4.setViewportView(jListUsuario);
 
         jButton3.setText("Añadir todos >>");
 
@@ -318,16 +324,38 @@ public class JUsers extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //capturo valor seleccionado para pasarlo a la otra lista
-        listData.add(jList1.getSelectedValue().toString());
+        listData2.add(jListDisponibles.getSelectedValue().toString());
         //borro este valor de la primera lista
         DefaultListModel model = new DefaultListModel();
-        model = (DefaultListModel) jList1.getModel();
-        model.remove(jList1.getSelectedIndex());
+        model = (DefaultListModel) jListDisponibles.getModel();
+        model.remove(jListDisponibles.getSelectedIndex());
         //seteo la lista 1 sin el valor eleminado
-        jList1.setModel(model);
+        jListDisponibles.setModel(model);
         //agrego el valor de la Lista 1 a las Lista 2
-        jList3.setListData(listData);
+        jListUsuario.setListData(listData2);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int cont = 0;
+        DefaultListModel model = new DefaultListModel();
+
+        //lleno uin vector con los datos del JList1 para luego agregarle el Item que retorna
+        while (cont < jListUsuario.getModel().getSize()) {            
+            listData1.add(jListDisponibles.getModel().getElementAt(cont).toString());
+            //al mismo tiempo, llenar modelo de la lista de menues
+            model.add(cont,jListUsuario.getModel().getElementAt(cont).toString());
+            cont++;
+        }
+        //capturo valor seleccionado para pasarlo a la otra lista
+        listData1.add(jListUsuario.getSelectedValue().toString());
+        //borro este valor de la primera lista
+//        model =  (DefaultListModel) jListUsuardio.getModel();
+        model.remove(jListUsuario.getSelectedIndex());
+        //seteo la lista 1 sin el valor eleminado
+        jListUsuario.setModel(model);
+        //agrego el valor de la Lista 2 a las Lista 1
+        jListDisponibles.setListData(listData1);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -347,8 +375,8 @@ public class JUsers extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JList jList1;
-    private javax.swing.JList jList3;
+    private javax.swing.JList jListDisponibles;
+    private javax.swing.JList jListUsuario;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
