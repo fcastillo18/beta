@@ -13,8 +13,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -22,7 +24,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
+
 
 /**
  *
@@ -293,21 +295,31 @@ public class MainControl extends Thread{
         }
     }
     
-    public DefaultListModel listModelMenues (){
-        DefaultListModel listModel = new DefaultListModel();
+    public Vector<String> listModelMenues (){
+        Vector<String> listModel = new Vector<String>();
         ResultSet resultSet ;
-        listaDeMenues = new ArrayList<>();
+//        listaDeMenues = new ArrayList<>();
         try {
             resultSet = queryToDB("select (mnMenu) from tbl_Menues ");
             while (resultSet.next()) {                
                 listModel.addElement(resultSet.getString("mnMenu"));
-                listaDeMenues.add(resultSet.getString("mnMenu"));
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
+        Collections.sort(listModel);
         return listModel;
     }
+    
+    public DefaultTableModel getDataFromTableUser(){
+        String [][] data = {};
+        String [] columns = {"Usuario", "Nombre", "Categoria", };
+        DefaultTableModel model = new DefaultTableModel(data, columns);
+        
+        
+        return model;
+    }
+    
 }//
 // usar setToolTipText para mostrar datos segun se valla typeando

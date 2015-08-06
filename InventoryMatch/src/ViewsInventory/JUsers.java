@@ -6,8 +6,12 @@
 package ViewsInventory;
 
 import ClassesReception.MainControl;
+import ClassesReception.User;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Vector;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,7 +25,15 @@ public class JUsers extends javax.swing.JInternalFrame {
     public JUsers() {
         initComponents();
         mn = new MainControl();
-        jListDisponibles.setModel(mn.listModelMenues());
+        jListDisponibles.setListData(mn.listModelMenues());
+        /*una vez se carguen los  menues a la lista en la sentencia de arriba
+            procedo a llenar el vector1 con esos datos
+        */
+        int cont = 0;
+        while (cont < jListDisponibles.getModel().getSize()) {
+            vectorMenuesDisponibles.add(jListDisponibles.getModel().getElementAt(cont).toString());
+            cont++;
+        }
     }
     MainControl mn;
     Vector<String> vectorMenuesDisponibles = new Vector<String>();
@@ -43,9 +55,9 @@ public class JUsers extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         txtUser = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtPass = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        txtPass = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUser = new javax.swing.JTable();
@@ -53,6 +65,7 @@ public class JUsers extends javax.swing.JInternalFrame {
         btnNew = new javax.swing.JButton();
         btnModified = new javax.swing.JButton();
         btnDelete00 = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListDisponibles = new javax.swing.JList();
@@ -85,6 +98,8 @@ public class JUsers extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Cambiar Password al iniciar sesion");
 
+        txtPass.setText("jPasswordField1");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -103,11 +118,11 @@ public class JUsers extends javax.swing.JInternalFrame {
                             .addComponent(txtUser, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtLastName, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtName, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtPass, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addComponent(txtPass)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jCheckBox1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -126,14 +141,14 @@ public class JUsers extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jCheckBox1)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tblUser.setModel(new javax.swing.table.DefaultTableModel(
@@ -174,6 +189,13 @@ public class JUsers extends javax.swing.JInternalFrame {
 
         btnDelete00.setText("Eliminar");
 
+        btnSave.setText("Guardar");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -185,6 +207,8 @@ public class JUsers extends javax.swing.JInternalFrame {
                 .addComponent(btnModified)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnDelete00)
+                .addGap(18, 18, 18)
+                .addComponent(btnSave)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -194,7 +218,8 @@ public class JUsers extends javax.swing.JInternalFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNew)
                     .addComponent(btnModified)
-                    .addComponent(btnDelete00))
+                    .addComponent(btnDelete00)
+                    .addComponent(btnSave))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -204,6 +229,11 @@ public class JUsers extends javax.swing.JInternalFrame {
             String[] strings = { "Historial cambios rec", " " };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        jListDisponibles.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jListDisponiblesKeyPressed(evt);
+            }
         });
         jScrollPane2.setViewportView(jListDisponibles);
 
@@ -227,11 +257,11 @@ public class JUsers extends javax.swing.JInternalFrame {
 
         btnDeleteAll.setText("<< Eliminar todos");
 
-        jLabel6.setText("Menus disponibles:");
+        jLabel6.setText("Menues disponibles:");
 
-        jLabel8.setText("Menus de usuario:");
+        jLabel8.setText("Menus a agregar:");
 
-        jcbCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Finanzas", "Compras", "Produccion", "Almacen" }));
 
         jLabel5.setText("Categoria:");
 
@@ -311,79 +341,62 @@ public class JUsers extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        //capturo valor seleccionado para pasarlo a la otra lista
+        //capturo valor seleccionado de la primera lista para pasarlo a la otra lista
         vectorMenuesUsuario.add(jListDisponibles.getSelectedValue().toString());
-        //borro este valor de la primera lista
-        DefaultListModel model = new DefaultListModel();
-        model = (DefaultListModel) jListDisponibles.getModel();
-        model.remove(jListDisponibles.getSelectedIndex());
-        //seteo la lista 1 sin el valor eleminado
-        jListDisponibles.setModel(model);
+        //elimino el seleccionado del primera
+        vectorMenuesDisponibles.remove(jListDisponibles.getSelectedValue().toString());
+        //ordeno los datos en ambos vectores
+        sortVector(vectorMenuesUsuario);
+        sortVector(vectorMenuesDisponibles);
+        //seteo ambas listas con sus correspondientes vectores ya ordenados
+        jListDisponibles.setListData(vectorMenuesDisponibles);
         //agrego el valor de la Lista 1 a las Lista 2
         jListUsuario.setListData(vectorMenuesUsuario);
-//        vectorMenuesUsuario.clear();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int cont = 0;
-        while (cont < jListDisponibles.getModel().getSize()) {
-            vectorMenuesDisponibles.add(jListDisponibles.getModel().getElementAt(cont).toString());
-            cont++;
-        }
-        //con esta ultima linea la lista uno quedaria con sus datos + el que se elimine de la otra lista
+        //capturo valor seleccionado de la primera lista para pasarlo a la otra lista
         vectorMenuesDisponibles.add(jListUsuario.getSelectedValue().toString());
-        
-        while (cont < jListUsuario.getModel().getSize()) {            
-            vectorMenuesUsuario.add(jListUsuario.getModel().getElementAt(cont).toString());
-            cont++;
-        }
-        //elimino el que se va de la va lista
-        vectorMenuesUsuario.remove(jListUsuario.getSelectedValue());
-        
+        //elimino el seleccionado del primera
+        vectorMenuesUsuario.remove(jListUsuario.getSelectedValue().toString());
+        //ordeno los datos en ambos vectores
+        sortVector(vectorMenuesUsuario);
+        sortVector(vectorMenuesDisponibles);
         //setear cada Jlist con sus datos
         jListDisponibles.setListData(vectorMenuesDisponibles);
         jListUsuario.setListData(vectorMenuesUsuario);
         
-        
-//        
-//        DefaultListModel model = new DefaultListModel();
-//        model = (DefaultListModel) jListUsuario.getModel();
-//        model.remove(jListUsuario.getSelectedIndex());
-//        //seteo la lista 1 sin el valor eleminado
-//        jListDisponibles.setModel(model);
-//        //agrego el valor de la Lista 1 a las Lista 2
-//        jListUsuario.setListData(vectorMenuesUsuario);
-//        ////////////////////////////////////////////////////////
-//        //lleno uin vector con los datos del JList1 para luego agregarle el Item que retorna
-//        while (cont < jListUsuario.getModel().getSize()) {            
-//            vectorMenuesDisponibles.add(jListDisponibles.getModel().getElementAt(cont).toString());
-//            //al mismo tiempo, llenar modelo de la lista de menues
-//            model.add(cont,jListUsuario.getModel().getElementAt(cont).toString());
-//            cont++;
-//        }
-//        //capturo valor seleccionado para pasarlo a la otra lista
-//        vectorMenuesDisponibles.add(jListUsuario.getSelectedValue().toString());
-//        //borro este valor de la primera lista
-////        model =  (DefaultListModel) jListUsuardio.getModel();
-//        model.remove(jListUsuario.getSelectedIndex());
-//        //seteo la lista 1 sin el valor eleminado
-//        jListUsuario.setModel(model);
-//        //agrego el valor de la Lista 2 a las Lista 1
-//        jListDisponibles.setListData(vectorMenuesDisponibles);
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void jListDisponiblesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jListDisponiblesKeyPressed
+        
+    }//GEN-LAST:event_jListDisponiblesKeyPressed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        User user = new User(txtName.getText(), txtLastName.getText(), txtUser.getText(), txtPass.getText(), jcbCategory.getSelectedItem().toString(), jCheckBox1.isSelected());
+        mn.createUser(user);
+        int cont = 0;
+        while (cont < vectorMenuesUsuario.size()) {            
+            mn.insertMenuesAccess(mn.getLastUserID(), vectorMenuesUsuario.get(cont));
+            cont++;
+        }
+        JOptionPane.showMessageDialog(null, "Datos insertados con exito", "Datos guardados", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnSaveActionPerformed
+    private void sortVector(Vector<String> vector){
+        Collections.sort(vector);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -393,6 +406,7 @@ public class JUsers extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDeleteAll;
     private javax.swing.JButton btnModified;
     private javax.swing.JButton btnNew;
+    private javax.swing.JButton btnSave;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -415,7 +429,7 @@ public class JUsers extends javax.swing.JInternalFrame {
     private javax.swing.JTable tblUser;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtPass;
+    private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }
