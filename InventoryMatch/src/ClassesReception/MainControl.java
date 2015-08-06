@@ -37,6 +37,8 @@ public class MainControl extends Thread{
     public Date endDate;
     public Item item;
     public Details detail;
+    public List<String> listaDeMenues;
+    
     @Override
     public void run(){
     
@@ -294,10 +296,12 @@ public class MainControl extends Thread{
     public DefaultListModel listModelMenues (){
         DefaultListModel listModel = new DefaultListModel();
         ResultSet resultSet ;
+        listaDeMenues = new ArrayList<>();
         try {
             resultSet = queryToDB("select (mnMenu) from tbl_Menues ");
             while (resultSet.next()) {                
                 listModel.addElement(resultSet.getString("mnMenu"));
+                listaDeMenues.add(resultSet.getString("mnMenu"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
