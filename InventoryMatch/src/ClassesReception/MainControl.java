@@ -22,6 +22,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -287,8 +289,8 @@ public class MainControl extends Thread{
         ResultSet result;
 //        statement = con.preparedStatement();
         try {
-            PreparedStatement statement = ClassesInventory.Conexion.getConnection().prepareStatement(query);
-            result = statement.executeQuery();
+            CallableStatement callStm = Conexion.getConnection().prepareCall(query);
+            result = callStm.executeQuery();
             return result;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error "+ex.getMessage(), "Error de Conexion", JOptionPane.ERROR_MESSAGE);
@@ -344,15 +346,12 @@ public class MainControl extends Thread{
             if (result != null) {
                 while (result.next()) {
                     user = new User();
-                    /*
-                    sd
-                    a
-                    a pensar en llenar un objeto User con los datos del usuario
-                    a
-                    a
-                    */
-                    
-                    ///nombreUsuario = result.getString("usFirstName") + " " + result.getString("usLastName");
+                    user.setId(result.getInt(1));
+                    user.setFirstName(result.getString(2));
+                    user.setLastName(result.getString(3));
+                    user.setUserName(result.getString(4));
+                    user.setPassword(result.getString(5));
+                    user.setCategory(result.getString(6));
                     status = true;
                 }
             }else{
@@ -369,6 +368,21 @@ public class MainControl extends Thread{
         return status;
         
     }
-    
+    public void readMenuBar(Component[] components){
+        for(int i = 0; i < components.length; i++){
+            if (components[i] instanceof JMenu) {
+                System.out.println(((JMenu)components[i]).getText());
+                int cont = 0;
+                System.out.println(((JMenu)components[i]).getItemCount());
+                while (cont < ((JMenu)components[i]).getItemCount()) {                    
+                    System.out.println(((JMenu)components[i]).getItem(cont).getText());
+                    cont++;
+                }
+            }
+//            if (components[i] instanceof JMenuItem) {
+//                System.out.println(((JMenuItem)components[i]).getText());
+//            }
+        }
+    }
 }//
 // usar setToolTipText para mostrar datos segun se valla typeando

@@ -6,6 +6,7 @@
 package ViewsInventory;
 
 import ClassesInventory.Conexion;
+import ClassesReception.MainControl;
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
 import ViewsReception.JReceptionForm;
 import ViewsReception.JReceptionLog;
@@ -24,8 +25,12 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
 //        new Conexion().createConnection();
+        new MainControl().readMenuBar(jMenuBar1.getComponents());
+//        System.out.println(jMenuItem1.getSize().toString());
+//        jMenu1.getSubElements().length
+        this.setTitle("Solution Program                User: " + MainControl.user.getUserName() +" | " + MainControl.user.getFirstName() + " "+ MainControl.user.getLastName());
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -51,7 +56,6 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Inventory Solution");
         setPreferredSize(new java.awt.Dimension(1024, 620));
 
         javax.swing.GroupLayout deskPanelLayout = new javax.swing.GroupLayout(deskPanel);
@@ -195,7 +199,7 @@ public class MainFrame extends javax.swing.JFrame {
         deskPanel.add(jUser);
         jUser.show();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */

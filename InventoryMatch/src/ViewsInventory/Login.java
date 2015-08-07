@@ -114,11 +114,12 @@ public class Login extends javax.swing.JFrame {
         if(seguir) {
             MainFrame mainFrame = new MainFrame();
             mainFrame.setVisible(true);
-            System.out.println("ENTRE");
+            JOptionPane.showMessageDialog(null, "Logueado exitosamente", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(null, "La clave o nombre de usario esta incorrecto \n Favor verifique e intente nuevamente", "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
             txtUserName.setFocusable(true);
+            txtPassword.setText("");
         }
     }//GEN-LAST:event_btnEntrarActionPerformed
 
