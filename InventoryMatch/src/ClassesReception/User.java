@@ -19,6 +19,9 @@ public class User {
     private String category;
     private boolean toChangePass;
 
+    public User() {
+    }
+    
     public User(String firstName, String lastName, String userName, String password, String category, boolean toChangePass) {
         this.firstName = firstName;
         this.lastName = lastName;

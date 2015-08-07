@@ -25,6 +25,7 @@ public class JUsers extends javax.swing.JInternalFrame {
     public JUsers() {
         initComponents();
         mn = new MainControl();
+        tblUser.setModel(mn.getDataFromTableUser());
         jListDisponibles.setListData(mn.listModelMenues());
         /*una vez se carguen los  menues a la lista en la sentencia de arriba
             procedo a llenar el vector1 con esos datos
@@ -97,8 +98,6 @@ public class JUsers extends javax.swing.JInternalFrame {
         jLabel4.setText("Password:");
 
         jLabel7.setText("Cambiar Password al iniciar sesion");
-
-        txtPass.setText("jPasswordField1");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -392,6 +391,7 @@ public class JUsers extends javax.swing.JInternalFrame {
             mn.insertMenuesAccess(mn.getLastUserID(), vectorMenuesUsuario.get(cont));
             cont++;
         }
+        tblUser.setModel(mn.getDataFromTableUser());
         JOptionPane.showMessageDialog(null, "Datos insertados con exito", "Datos guardados", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnSaveActionPerformed
     private void sortVector(Vector<String> vector){

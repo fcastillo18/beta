@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +41,7 @@ public class MainControl extends Thread{
     public Item item;
     public Details detail;
     public List<String> listaDeMenues;
+    public static User user;
     
     @Override
     public void run(){
@@ -267,11 +269,10 @@ public class MainControl extends Thread{
         ResultSet result = null;
 //        int id = 0;
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("select TOP 1 (usID) from tbl_User ORDER BY ID DESC");
+            CallableStatement callStm = Conexion.getConnection().prepareCall("select TOP 1 (usID) from tbl_User ORDER BY usID DESC");
             result = callStm.executeQuery();
             while (result.next()) {
                 userID = Integer.parseInt(result.getString(1));
-                System.out.println("el id es= "+userID);
             }
             callStm.close();
 //            int var = result.get
@@ -316,9 +317,57 @@ public class MainControl extends Thread{
         String [][] data = {};
         String [] columns = {"Usuario", "Nombre", "Categoria", };
         DefaultTableModel model = new DefaultTableModel(data, columns);
-        
+        model.setRowCount(0);
+        try {
+            ResultSet resultSet = queryToDB("select usUserName, usFirstName, usLastName, usCategory from tbl_User");
+            while (resultSet.next()) {                
+                Object[] row = {resultSet.getString("usUserName"),resultSet.getString("usFirstName")+" "+ resultSet.getString("usLastName"), resultSet.getString("usCategory")};
+//                Arrays.sort(row);
+                model.addRow(row);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al leer datos de la tabla User");
+        }
         
         return model;
+    }
+    
+    public boolean userLogin(String userName, String pass){
+        ResultSet result = null;
+        boolean status = false;
+        try {
+//            CallableStatement callStm = Conexion.getConnection().prepareCall("select usUserName, usFirstName, usLastName, usPassword from tbl_User where usUserName = " + user + " and usPassword = "+ pass);
+            CallableStatement callStm = Conexion.getConnection().prepareCall("select * from tbl_User where usUserName = ? and usPassword = ?");
+            callStm.setString(1, userName);
+            callStm.setString(2, pass);
+            result = callStm.executeQuery();
+            if (result != null) {
+                while (result.next()) {
+                    user = new User();
+                    /*
+                    sd
+                    a
+                    a pensar en llenar un objeto User con los datos del usuario
+                    a
+                    a
+                    */
+                    
+                    ///nombreUsuario = result.getString("usFirstName") + " " + result.getString("usLastName");
+                    status = true;
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "La clave o nombre de usario esta incorrecto \n Favor verifique e intente nuevamente", "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
+                status = false;
+            }
+            
+            callStm.close();
+//            int var = result.get
+        } catch (SQLException ex) {
+            System.out.println("Error al loguearse "+ex.getMessage());
+            ex.printStackTrace();
+        }
+        return status;
+        
     }
     
 }//

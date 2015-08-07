@@ -23,7 +23,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        new Conexion().createConnection();
+//        new Conexion().createConnection();
     }
 
     /**
@@ -62,7 +62,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         deskPanelLayout.setVerticalGroup(
             deskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 508, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
 
         Inventory.setText("   Inventario");
