@@ -28,7 +28,8 @@ public class MainFrame extends javax.swing.JFrame {
         new MainControl().readMenuBar(jMenuBar1.getComponents());
 //        System.out.println(jMenuItem1.getSize().toString());
 //        jMenu1.getSubElements().length
-        this.setTitle("Solution Program                User: " + MainControl.user.getUserName() +" | " + MainControl.user.getFirstName() + " "+ MainControl.user.getLastName());
+//        this.setTitle("Solution Program                User: " + MainControl.user.getUserName() +" | " + MainControl.user.getFirstName() + " "+ MainControl.user.getLastName());
+        this.setLocationRelativeTo(null);
     }
     
     /**
@@ -69,7 +70,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGap(0, 510, Short.MAX_VALUE)
         );
 
-        Inventory.setText("   Inventario");
+        Inventory.setText("Inventario");
 
         jmnConsultInv.setText("Consultar inventarios anteriores");
         jmnConsultInv.addActionListener(new java.awt.event.ActionListener() {

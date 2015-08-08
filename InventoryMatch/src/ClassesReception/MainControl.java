@@ -369,20 +369,37 @@ public class MainControl extends Thread{
         
     }
     public void readMenuBar(Component[] components){
+        String mnName;
         for(int i = 0; i < components.length; i++){
             if (components[i] instanceof JMenu) {
-                System.out.println(((JMenu)components[i]).getText());
-                int cont = 0;
-                System.out.println(((JMenu)components[i]).getItemCount());
-                while (cont < ((JMenu)components[i]).getItemCount()) {                    
-                    System.out.println(((JMenu)components[i]).getItem(cont).getText());
-                    cont++;
+                try {
+                    //                System.out.println(((JMenu)components[i]).getText());     
+                    CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertMenues(?)}");
+                    callStm.setString(1, ((JMenu)components[i]).getText());
+                    callStm.executeUpdate();
+                    
+                    int cont = 0;
+//                    System.out.println(((JMenu)components[i]).getItemCount());
+                    while (cont < ((JMenu)components[i]).getItemCount()) {
+//                    System.out.println(((JMenu)components[i]).getItem(cont).getText());
+                        
+                        callStm = Conexion.getConnection().prepareCall("{call sp_insertMenues(?)}");
+                        callStm.setString(1, ((JMenu)components[i]).getItem(cont).getText());
+                        callStm.executeUpdate();
+                        
+                        cont++;
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error al insertar menues" + ex.getMessage());
+                    ex.printStackTrace();
                 }
+                System.out.println("Menues verificados e insertados con exito");
             }
 //            if (components[i] instanceof JMenuItem) {
 //                System.out.println(((JMenuItem)components[i]).getText());
 //            }
         }
     }
+   
 }//
 // usar setToolTipText para mostrar datos segun se valla typeando
