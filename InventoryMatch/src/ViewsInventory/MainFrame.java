@@ -26,6 +26,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
 //        new Conexion().createConnection();
         mainControl.readMenuBar(jMenuBar1.getComponents());
+        mainControl.loadMenuBar(jMenuBar1, false, null);
         mainControl.loadMenuBar(jMenuBar1, true, MainControl.user);
 //        System.out.println(jMenuItem1.getSize().toString());
 //        jMenu1.getSubElements().length
@@ -52,11 +53,11 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jmnHelp = new javax.swing.JMenu();
-        jmnAbout = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jmnHelp = new javax.swing.JMenu();
+        jmnAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 620));
@@ -115,18 +116,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jmnHelp.setText("Ayuda");
-
-        jmnAbout.setText("Acerca de");
-        jmnAbout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmnAboutActionPerformed(evt);
-            }
-        });
-        jmnHelp.add(jmnAbout);
-
-        jMenuBar1.add(jmnHelp);
-
         jMenu2.setText("Usuarios");
         jMenu2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,6 +140,18 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
+
+        jmnHelp.setText("Ayuda");
+
+        jmnAbout.setText("Acerca de");
+        jmnAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmnAboutActionPerformed(evt);
+            }
+        });
+        jmnHelp.add(jmnAbout);
+
+        jMenuBar1.add(jmnHelp);
 
         setJMenuBar(jMenuBar1);
 

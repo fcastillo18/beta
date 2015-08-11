@@ -411,37 +411,87 @@ public class MainControl extends Thread{
     public void loadMenuBar(JMenuBar menubar, boolean visible, User user){
         try {
             String mnName;
-            ResultSet result;
-            CallableStatement callStm = Conexion.getConnection().prepareCall("select * from tbl_MenuesAccess where usID = " + user.getId());
-            result = callStm.executeQuery();
-            
+            ResultSet result = null;
+            List<String> listMenues = new ArrayList<String>();
             if (user != null) {
-                System.out.println("Bar: " + menubar.getComponents().length);
-                for(int i = 0; result.next(); i++){
-                    if (menubar.getComponents()[i] instanceof JMenu) {
 
-                        if (((JMenu)menubar.getComponents()[i]).getText().equals(result.getString("mnaAccessTo"))) {
-                            ((JMenu)menubar.getComponents()[i]).setVisible(visible);
+                for(int i = 0; i < menubar.getComponents().length; i++){
+                    //asigno los datos del componente en cuestion a esta variable para mejor manejo
+                    Component component = menubar.getComponents()[i];
+                    if (component instanceof JMenu) {
+                        //probare tanteando a la base de datos si el component evaluado esta en la lista de mnAccessTo del usuario
+                        //debe retornarlo, de lo contrario el resultset sera null, por tanto de ser null no agregue 
+                        CallableStatement callStm = Conexion.getConnection().prepareCall("select mnaAccessTo from tbl_MenuesAccess where usID = ? ");
+                        callStm.setInt(1,user.getId());
+//                        callStm.setString(2, menuName );
+                        result = callStm.executeQuery();
+                        
+                        if (result != null) {
+//                            ((JMenu)component).setVisible(visible);// verificar que solo se agregue el menu en cuestion, con este se agregan todos
+                            while (result.next()) {                            
+                                listMenues.add(result.getString("mnaAccessTo"));
+                            }
                         }
                             int cont = 0;
-    //                    System.out.println(((JMenu)components[i]).getItemCount());
-                            while (cont < ((JMenu)menubar.getComponents()[i]).getItemCount()) {
-    //                    System.out.println(((JMenu)components[i]).getItem(cont).getText());
-                                if (((JMenuItem)menubar.getComponents()[i]).getText().equals(result.getString("mnaAccessTo"))) {
-                                    ((JMenuItem)menubar.getComponents()[i]).setVisible(visible);
+                        
+                            while (cont < ((JMenu)component).getItemCount()) {
+
+                                for (String menue : listMenues) {
+                                    //Menu
+                                    if (((JMenu)component).getText().equals(menue)) {
+                                        ((JMenu)component).setVisible(visible);
+                                    }
+                                    //MenuItem
+                                    if (((JMenu)component).getItem(cont).getText().equals(menue)) {
+                                        ((JMenu)component).getItem(cont).setVisible(visible);
+                                    }else{
+                                       //nada
+                                    }
                                 }
                                 cont++;
                             }
+                            callStm.close();
                     }
-
+                   
                 }
             }else{
-                System.out.println("NAda");            
-            }
-        } catch (SQLException ex) {            
-            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                System.out.println("NAda");
+                for (int i = 0; i < menubar.getComponents().length; i++) {
+                    if (menubar.getComponent(i) instanceof JMenu) {
+                        menubar.getComponent(i).setVisible(visible);
+                    }
+                    int cont =0;
+                    while (cont < ((JMenu)menubar.getComponent(i)).getItemCount()) {                        
+                        ((JMenu)menubar.getComponent(i)).getItem(cont).setVisible(visible);
+                        cont++;
+                    }
+                }
     
+            }
+        } catch (SQLException ex) {
+//            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error: "+ ex.getMessage());
+            ex.printStackTrace();
+        }
+        
     }
-}//
+    
+    public DefaultTableModel getUsersModel(ResultSet rs){
+        String [][] data = {};
+        String [] titles = {"Usuario", "Nombres", "Categoria"};
+        DefaultTableModel model = new DefaultTableModel(data, titles);
+        model.setRowCount(0);
+        try {
+            //        while(model.getRowCount()>0)model.removeRow(0);
+            while (rs.next()) {
+                    Object [] row = {rs.getString("usUserName"), rs.getString("usFirstName")+" "+ rs.getString("usLastName"), rs.getString("usCategory")};                
+                    model.addRow(row);                
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error en el metodo getModelDetails al leer datos " + ex.getMessage());
+            ex.printStackTrace();
+        }  
+        return model;
+    }
+}
 // usar setToolTipText para mostrar datos segun se valla typeando
