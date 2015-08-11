@@ -25,13 +25,15 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
 //        new Conexion().createConnection();
-        new MainControl().readMenuBar(jMenuBar1.getComponents());
+        mainControl.readMenuBar(jMenuBar1.getComponents());
+        mainControl.loadMenuBar(jMenuBar1, true, MainControl.user);
 //        System.out.println(jMenuItem1.getSize().toString());
 //        jMenu1.getSubElements().length
 //        this.setTitle("Solution Program                User: " + MainControl.user.getUserName() +" | " + MainControl.user.getFirstName() + " "+ MainControl.user.getLastName());
         this.setLocationRelativeTo(null);
+       
     }
-    
+    MainControl mainControl =  new MainControl();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -116,6 +118,11 @@ public class MainFrame extends javax.swing.JFrame {
         jmnHelp.setText("Ayuda");
 
         jmnAbout.setText("Acerca de");
+        jmnAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmnAboutActionPerformed(evt);
+            }
+        });
         jmnHelp.add(jmnAbout);
 
         jMenuBar1.add(jmnHelp);
@@ -200,6 +207,10 @@ public class MainFrame extends javax.swing.JFrame {
         deskPanel.add(jUser);
         jUser.show();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jmnAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnAboutActionPerformed
+        
+    }//GEN-LAST:event_jmnAboutActionPerformed
     
     /**
      * @param args the command line arguments

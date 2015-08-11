@@ -38,7 +38,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         btnSave.setEnabled(false);
     }
     //esta variable sera paa evitar que cuando esten en el boton nuevo puedan cargar datos del evento mouse clicked
-    private boolean nuevo;
+    private boolean nuevo; 
     TableColumnModel column;
     DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
     MainControl mc= new MainControl();
@@ -52,6 +52,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         column.getColumn(3).setPreferredWidth(150);
         column.getColumn(4).setPreferredWidth(80);
         column.getColumn(5).setPreferredWidth(80);
+        column.getColumn(6).setPreferredWidth(50);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -364,6 +365,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     mc.detail.setDtCategory(jcCategory.getSelectedItem().toString());
                     mc.detail.setDtReceivedBy(txtReceivedBy.getText());
                     mc.detail.setDateOut(MainControl.getCurrentTimeStamp());
+                    mc.detail.setDtRegisterBy(MainControl.user.getUserName());
                     //Llamar a procedimiento con los objetos y sus cambios respectivos
                     mc.modifiedItem(mc.item, mc.detail);
                     tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
@@ -377,7 +379,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     Item item = new Item(0, txtSupplier.getText(), txtDescription.getText());
                     mc.createItem(item);
                     //Al guardar la fecha de recepcion, guardarla con .format y agregar 000 en los espacios faltantes //Timestamp.valueOf("0000-00-00 00:00:00:000000000")   Timestamp.from(jdcDateOut.getDate().toInstant())
-                    Details detail = new Details(0,mc.getLastItemID(), MainControl.getCurrentTimeStamp(),null, txtReceivedBy.getText(), jcCategory.getSelectedItem().toString(), jcbStatus.getSelectedItem().toString());
+                    Details detail = new Details(0,mc.getLastItemID(), MainControl.getCurrentTimeStamp(),null, txtReceivedBy.getText(), jcCategory.getSelectedItem().toString(), jcbStatus.getSelectedItem().toString(), MainControl.user.getUserName());
                     mc.createDetail(detail);
                     tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
                     changeColumnSize(tblLogReception);

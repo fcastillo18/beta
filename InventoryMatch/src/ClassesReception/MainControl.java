@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -84,7 +85,7 @@ public class MainControl extends Thread{
     
     public void createDetail(Details detail){
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("insert into tbl_Details (itID, dtDateIN, dtDateOUT,dtReceivedBy, dtCategory, dtStatus) values (? , ? , ? ,? , ?, ?) ");
+            CallableStatement callStm = Conexion.getConnection().prepareCall("insert into tbl_Details (itID, dtDateIN, dtDateOUT,dtReceivedBy, dtCategory, dtStatus, dtRegisterBy) values (? , ? , ? ,? , ?, ?, ?) ");
 //            callStm.setInt(1, detail.getDtId());
             callStm.setInt(1, detail.getItId());
             callStm.setTimestamp(2, getCurrentTimeStamp());
@@ -92,6 +93,7 @@ public class MainControl extends Thread{
             callStm.setString(4, detail.getDtReceivedBy());
             callStm.setString(5, detail.getDtCategory());
             callStm.setString(6, detail.getDtStatus());
+            callStm.setString(7, detail.getDtRegisterBy());
             callStm.executeUpdate();
             System.out.println("Registro Detail insertado correctamente");
         } catch (SQLException ex) {
@@ -120,7 +122,7 @@ public class MainControl extends Thread{
     
     public void modifiedItem(Item item, Details detail){
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifieRow (?,?,?,?,?,?,?, ?)}");
+            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifieRow (?,?,?,?,?,?,?, ?, ?)}");
             callStm.setInt(1, detail.getDtId());
             callStm.setInt(2, item.getId());
             callStm.setString(3, item.getSupplierName());
@@ -129,6 +131,7 @@ public class MainControl extends Thread{
             callStm.setTimestamp(6, detail.getDateOut());
             callStm.setString(7, detail.getDtCategory());
             callStm.setString(8, detail.getDtStatus());
+            callStm.setString(9, detail.getDtRegisterBy());
             //Agregar dos objetos y setearlos
             callStm.executeUpdate();
 //            llenarObjetos(null);
@@ -154,7 +157,7 @@ public class MainControl extends Thread{
 
         try {
             while (result.next()) {
-                detail = new Details(result.getInt("dtID"), result.getInt("itID"), result.getTimestamp("dtDateIN"), result.getTimestamp("dtDateOUT"), result.getString("dtReceivedBy"), result.getString("dtCategory"), result.getString("dtStatus"));
+                detail = new Details(result.getInt("dtID"), result.getInt("itID"), result.getTimestamp("dtDateIN"), result.getTimestamp("dtDateOUT"), result.getString("dtReceivedBy"), result.getString("dtCategory"), result.getString("dtStatus"), result.getString("dtRegisterBy"));
                 item = new Item(result.getInt("itID"), result.getString("itSupplierName"), result.getString("itDescription"));
             }
         } catch (SQLException ex) {
@@ -179,17 +182,17 @@ public class MainControl extends Thread{
     public DefaultTableModel getModelDetails(ResultSet rs){
     
         String [][] data = {};
-        String [] titles = {"ID", "Fecha entrada", "Suplidor", "Descripcion", "Recibido por", "Fecha entregado", "Estado"};
+        String [] titles = {"ID", "Fecha entrada", "Suplidor", "Descripcion", "Recibido por", "Fecha entregado", "Estado", "Registrado por"};
         DefaultTableModel model = new DefaultTableModel(data, titles);
         model.setRowCount(0);
         try {
             //        while(model.getRowCount()>0)model.removeRow(0);
             while (rs.next()) {
                 if (rs.getString("dtDateOUT") == null) {
-                    Object [] row = {rs.getInt("dtID"), sdformat.format(rs.getTimestamp("dtDateIN")), rs.getString("itSupplierName"), rs.getString("itDescription"), rs.getString("dtReceivedBy"), rs.getString("dtDateOUT"), rs.getString("dtStatus")};                
+                    Object [] row = {rs.getInt("dtID"), sdformat.format(rs.getTimestamp("dtDateIN")), rs.getString("itSupplierName"), rs.getString("itDescription"), rs.getString("dtReceivedBy"), rs.getString("dtDateOUT"), rs.getString("dtStatus"), rs.getString("dtRegisterBy")};                
                     model.addRow(row);
                 }else{
-                    Object [] row = {rs.getInt("dtID"), sdformat.format(rs.getTimestamp("dtDateIN")), rs.getString("itSupplierName"), rs.getString("itDescription"), rs.getString("dtReceivedBy"), sdformat.format(rs.getTimestamp("dtDateOUT")), rs.getString("dtStatus")};                
+                    Object [] row = {rs.getInt("dtID"), sdformat.format(rs.getTimestamp("dtDateIN")), rs.getString("itSupplierName"), rs.getString("itDescription"), rs.getString("dtReceivedBy"), sdformat.format(rs.getTimestamp("dtDateOUT")), rs.getString("dtStatus"), rs.getString("dtRegisterBy")};                
                     model.addRow(row);
                 }
                 
@@ -401,5 +404,44 @@ public class MainControl extends Thread{
         }
     }
    
+    public void beta(JMenuBar menubar){
+        menubar.getComponent(1).setVisible(false);
+    }
+    
+    public void loadMenuBar(JMenuBar menubar, boolean visible, User user){
+        try {
+            String mnName;
+            ResultSet result;
+            CallableStatement callStm = Conexion.getConnection().prepareCall("select * from tbl_MenuesAccess where usID = " + user.getId());
+            result = callStm.executeQuery();
+            
+            if (user != null) {
+                System.out.println("Bar: " + menubar.getComponents().length);
+                for(int i = 0; result.next(); i++){
+                    if (menubar.getComponents()[i] instanceof JMenu) {
+
+                        if (((JMenu)menubar.getComponents()[i]).getText().equals(result.getString("mnaAccessTo"))) {
+                            ((JMenu)menubar.getComponents()[i]).setVisible(visible);
+                        }
+                            int cont = 0;
+    //                    System.out.println(((JMenu)components[i]).getItemCount());
+                            while (cont < ((JMenu)menubar.getComponents()[i]).getItemCount()) {
+    //                    System.out.println(((JMenu)components[i]).getItem(cont).getText());
+                                if (((JMenuItem)menubar.getComponents()[i]).getText().equals(result.getString("mnaAccessTo"))) {
+                                    ((JMenuItem)menubar.getComponents()[i]).setVisible(visible);
+                                }
+                                cont++;
+                            }
+                    }
+
+                }
+            }else{
+                System.out.println("NAda");            
+            }
+        } catch (SQLException ex) {            
+            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
 }//
 // usar setToolTipText para mostrar datos segun se valla typeando

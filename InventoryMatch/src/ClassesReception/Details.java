@@ -20,11 +20,12 @@ public class Details {
     private String dtReceivedBy;
     private String dtCategory;
     private String dtStatus;
+    private String dtRegisterBy;
     
     public Details() {
     }
     
-    public Details(int dtId, int itId, Timestamp dateIn, Timestamp dateOn, String dtReceivedBy, String dtCategory, String dtStatus) {
+    public Details(int dtId, int itId, Timestamp dateIn, Timestamp dateOn, String dtReceivedBy, String dtCategory, String dtStatus, String dtRegisterBy) {
         this.dtId = dtId;
         this.itId = itId;
         this.dateIn = dateIn;
@@ -32,8 +33,17 @@ public class Details {
         this.dtReceivedBy = dtReceivedBy;
         this.dtCategory = dtCategory;
         this.dtStatus = dtStatus;
+        this.dtRegisterBy = dtRegisterBy;
     }
 
+     public String getDtRegisterBy() {
+        return dtRegisterBy;
+    }
+
+    public void setDtRegisterBy(String dtRegisterBy) {
+        this.dtRegisterBy = dtRegisterBy;
+    }
+    
     public int getDtId() {
         return dtId;
     }
