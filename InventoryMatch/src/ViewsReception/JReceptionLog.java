@@ -79,6 +79,7 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
         tblLogReception = new javax.swing.JTable();
         jbDate = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -105,7 +106,7 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Estado:");
 
-        jcbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "Entregado" }));
+        jcbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "Pendiente", "Entregado", " " }));
 
         jButton1.setText("Filtrar");
 
@@ -193,7 +194,7 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Fecha entrada", "Suplidor", "Descripcion", "Recibido por", "Fecha entragado"
+                "ID", "Fecha entrada", "Suplidor", "Descripcion", "Registrado por", "Fecha entragado"
             }
         ));
         tblLogReception.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -217,19 +218,24 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
             jpLogReceptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpLogReceptionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 914, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 901, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jpLogReceptionLayout.setVerticalGroup(
             jpLogReceptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpLogReceptionLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         jbDate.setText("jLabel9");
 
         jLabel7.setText("Fecha:");
+
+        jButton2.setText("Marcar recibido");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -238,8 +244,12 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpLogReception, javax.swing.GroupLayout.DEFAULT_SIZE, 946, Short.MAX_VALUE)
-                    .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jpLogReception, javax.swing.GroupLayout.DEFAULT_SIZE, 933, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addGap(0, 13, Short.MAX_VALUE)))
                 .addGap(10, 10, 10))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -255,10 +265,15 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
                     .addComponent(jLabel7)
                     .addComponent(jbDate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jpLogReception, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)))
+                .addComponent(jpLogReception, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -285,8 +300,27 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_tblLogReceptionMouseClicked
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int resp = JOptionPane.showConfirmDialog(null, "¿Desea marcar el item seleccionado como recibido?");
+        if (resp == JOptionPane.YES_OPTION) {
+            //solo se modifican los campos para quien lo recibe que son fecha y
+            mc.detail.setDtReceivedBy(MainControl.user.getUserName());
+            mc.detail.setDtStatus(jcbStatus.getItemAt(2).toString());
+            mc.detail.setDateOut(MainControl.getCurrentTimeStamp());
+            mc.detail.setDtStatus("Entregado");
+            mc.modifiedItem(mc.item, mc.detail);
+            tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
+            changeColumnSize(tblLogReception);
+            JOptionPane.showMessageDialog(null, "Realizado Exitosamente");
+        }else{
+        //nada
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

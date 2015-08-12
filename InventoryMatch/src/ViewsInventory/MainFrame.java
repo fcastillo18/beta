@@ -30,7 +30,7 @@ public class MainFrame extends javax.swing.JFrame {
         mainControl.loadMenuBar(jMenuBar1, true, MainControl.user);
 //        System.out.println(jMenuItem1.getSize().toString());
 //        jMenu1.getSubElements().length
-//        this.setTitle("Solution Program                User: " + MainControl.user.getUserName() +" | " + MainControl.user.getFirstName() + " "+ MainControl.user.getLastName());
+        this.setTitle("Solution Program                User: " + MainControl.user.getUserName() +" | " + MainControl.user.getFirstName() + " "+ MainControl.user.getLastName());
         this.setLocationRelativeTo(null);
        
     }

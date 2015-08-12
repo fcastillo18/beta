@@ -9,6 +9,8 @@ import ClassesInventory.Conexion;
 import ClassesReception.MainControl;
 import de.javasoft.plaf.synthetica.SyntheticaBlackMoonLookAndFeel;
 import de.javasoft.plaf.synthetica.SyntheticaWhiteVisionLookAndFeel;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,12 +67,26 @@ public class Login extends javax.swing.JFrame {
 
         jLabel1.setText("Usuario:");
 
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyTyped(evt);
+            }
+        });
+
         jLabel2.setText("Password:");
 
         btnEntrar.setText("Entrar");
         btnEntrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEntrarActionPerformed(evt);
+            }
+        });
+        btnEntrar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEntrarKeyPressed(evt);
             }
         });
 
@@ -128,6 +144,22 @@ public class Login extends javax.swing.JFrame {
             txtPassword.setText("");
         }
     }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void txtPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyTyped
+
+    }//GEN-LAST:event_txtPasswordKeyTyped
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnEntrarActionPerformed(null);
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
+
+    private void btnEntrarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEntrarKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnEntrarActionPerformed(null);
+        }
+    }//GEN-LAST:event_btnEntrarKeyPressed
 
     /**
      * @param args the command line arguments
