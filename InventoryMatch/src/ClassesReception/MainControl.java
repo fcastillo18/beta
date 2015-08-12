@@ -26,6 +26,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -85,7 +87,7 @@ public class MainControl extends Thread{
     
     public void createDetail(Details detail){
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("insert into tbl_Details (itID, dtDateIN, dtDateOUT,dtReceivedBy, dtCategory, dtStatus, dtRegisterBy) values (? , ? , ? ,? , ?, ?, ?) ");
+            CallableStatement callStm = Conexion.getConnection().prepareCall("insert into tbl_Details (itID, dtDateIN, dtDateOUT,dtReceivedBy, dtCategory, dtStatus, dtRegisterBy, dtObservation) values (? , ? , ? ,? , ?, ?, ?, ?) ");
 //            callStm.setInt(1, detail.getDtId());
             callStm.setInt(1, detail.getItId());
             callStm.setTimestamp(2, getCurrentTimeStamp());
@@ -94,6 +96,7 @@ public class MainControl extends Thread{
             callStm.setString(5, detail.getDtCategory());
             callStm.setString(6, detail.getDtStatus());
             callStm.setString(7, detail.getDtRegisterBy());
+            callStm.setString(8, detail.getDtObservation());
             callStm.executeUpdate();
             System.out.println("Registro Detail insertado correctamente");
         } catch (SQLException ex) {
@@ -122,7 +125,7 @@ public class MainControl extends Thread{
     
     public void modifiedItem(Item item, Details detail){
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifieRow (?,?,?,?,?,?,?, ?, ?)}");
+            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifieRow (?,?,?,?,?,?,?, ?, ?, ?)}");
             callStm.setInt(1, detail.getDtId());
             callStm.setInt(2, item.getId());
             callStm.setString(3, item.getSupplierName());
@@ -132,6 +135,8 @@ public class MainControl extends Thread{
             callStm.setString(7, detail.getDtCategory());
             callStm.setString(8, detail.getDtStatus());
             callStm.setString(9, detail.getDtRegisterBy());
+            callStm.setString(10, detail.getDtObservation());
+            
             //Agregar dos objetos y setearlos
             callStm.executeUpdate();
 //            llenarObjetos(null);
@@ -157,7 +162,7 @@ public class MainControl extends Thread{
 
         try {
             while (result.next()) {
-                detail = new Details(result.getInt("dtID"), result.getInt("itID"), result.getTimestamp("dtDateIN"), result.getTimestamp("dtDateOUT"), result.getString("dtReceivedBy"), result.getString("dtCategory"), result.getString("dtStatus"), result.getString("dtRegisterBy"));
+                detail = new Details(result.getInt("dtID"), result.getInt("itID"), result.getTimestamp("dtDateIN"), result.getTimestamp("dtDateOUT"), result.getString("dtReceivedBy"), result.getString("dtCategory"), result.getString("dtStatus"), result.getString("dtRegisterBy"), result.getString("dtObservation"));
                 item = new Item(result.getInt("itID"), result.getString("itSupplierName"), result.getString("itDescription"));
             }
         } catch (SQLException ex) {
@@ -226,6 +231,7 @@ public class MainControl extends Thread{
             if (comp[i] instanceof JDateChooser) {
                 ((JDateChooser)comp[i]).setEnabled(enable);
             }
+            
             if (limpiar) {
                 
                 if (comp[i] instanceof JTextField) {
@@ -236,7 +242,8 @@ public class MainControl extends Thread{
                 }             
                 if (comp[i] instanceof JDateChooser) {
                 ((JDateChooser)comp[i]).setDate(null);
-            }
+                }
+
             }
         }
     

@@ -21,11 +21,20 @@ public class Details {
     private String dtCategory;
     private String dtStatus;
     private String dtRegisterBy;
+    private String dtObservation;
+
+    public String getDtObservation() {
+        return dtObservation;
+    }
+
+    public void setDtObservation(String dtObservation) {
+        this.dtObservation = dtObservation;
+    }
     
     public Details() {
     }
     
-    public Details(int dtId, int itId, Timestamp dateIn, Timestamp dateOn, String dtReceivedBy, String dtCategory, String dtStatus, String dtRegisterBy) {
+    public Details(int dtId, int itId, Timestamp dateIn, Timestamp dateOn, String dtReceivedBy, String dtCategory, String dtStatus, String dtRegisterBy, String dtObservation) {
         this.dtId = dtId;
         this.itId = itId;
         this.dateIn = dateIn;
@@ -34,6 +43,7 @@ public class Details {
         this.dtCategory = dtCategory;
         this.dtStatus = dtStatus;
         this.dtRegisterBy = dtRegisterBy;
+        this.dtObservation = dtObservation;
     }
 
      public String getDtRegisterBy() {

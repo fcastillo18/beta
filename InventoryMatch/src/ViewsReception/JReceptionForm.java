@@ -35,6 +35,8 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         initComponents();
         tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
         mc.enableComponents(jpData.getComponents(), false, false);
+        jtaObservation.setText("");
+        jtaObservation.setEnabled(false);
         changeColumnSize(tblLogReception);
         //poner en un hilo la hora
         jbDate.setText(df.format(new Date()));
@@ -83,7 +85,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         jcbStatus = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jtaObservation = new javax.swing.JTextArea();
         jLabel10 = new javax.swing.JLabel();
         jpLogReception = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -131,9 +133,9 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        jtaObservation.setColumns(20);
+        jtaObservation.setRows(5);
+        jScrollPane2.setViewportView(jtaObservation);
 
         jLabel10.setText("Observacion:");
 
@@ -259,7 +261,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         jpLogReceptionLayout.setVerticalGroup(
             jpLogReceptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpLogReceptionLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -402,11 +404,15 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     mc.detail.setDtReceivedBy(txtReceivedBy.getText());
                     mc.detail.setDateOut(MainControl.getCurrentTimeStamp());
                     mc.detail.setDtRegisterBy(MainControl.user.getUserName());
+                    mc.detail.setDtStatus(jcbStatus.getSelectedItem().toString());
+                    mc.detail.setDtObservation(jtaObservation.getText());
                     //Llamar a procedimiento con los objetos y sus cambios respectivos
                     mc.modifiedItem(mc.item, mc.detail);
                     tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
                     changeColumnSize(tblLogReception);
                     mc.enableComponents(jpData.getComponents(), false, true);
+                    jtaObservation.setText("");
+                    jtaObservation.setEnabled(false);
                     modified = false;
                     JOptionPane.showMessageDialog(null, "Guardado exitosamente", "Guardado", JOptionPane.INFORMATION_MESSAGE);
                     btnReceivedModifier.setEnabled(true);
@@ -415,17 +421,19 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     Item item = new Item(0, txtSupplier.getText(), txtDescription.getText());
                     mc.createItem(item);
                     //Al guardar la fecha de recepcion, guardarla con .format y agregar 000 en los espacios faltantes //Timestamp.valueOf("0000-00-00 00:00:00:000000000")   Timestamp.from(jdcDateOut.getDate().toInstant())
-                    Details detail = new Details(0,mc.getLastItemID(), MainControl.getCurrentTimeStamp(),null, txtReceivedBy.getText(), jcCategory.getSelectedItem().toString(), jcbStatus.getSelectedItem().toString(), MainControl.user.getUserName());
+                    Details detail = new Details(0,mc.getLastItemID(), MainControl.getCurrentTimeStamp(),null, txtReceivedBy.getText(), jcCategory.getSelectedItem().toString(), jcbStatus.getSelectedItem().toString(), MainControl.user.getUserName(), jtaObservation.getText());
                     mc.createDetail(detail);
                     tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
                     changeColumnSize(tblLogReception);
                     mc.enableComponents(jpData.getComponents(), false, true);
+                    jtaObservation.setText("");
+                    jtaObservation.setEnabled(false);
                     modified = false;
                     JOptionPane.showMessageDialog(null, "Guardado exitosamente", "Guardado", JOptionPane.INFORMATION_MESSAGE);
                     btnReceivedModifier.setEnabled(true);
                     btnSave.setEnabled(false);
                 }
-                
+               
             }
         
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -445,6 +453,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                 jdcDateOut.setDate(mc.detail.getDateOut());
                 jcCategory.setSelectedItem(mc.detail.getDtCategory());
                 jcbStatus.setSelectedItem(mc.detail.getDtStatus());
+                jtaObservation.setText(mc.detail.getDtObservation());
                 System.out.println("Row #->" + rowSel);
                 mc.enableComponents(jpData.getComponents(), false, false);
             } catch (Exception e) {
@@ -459,6 +468,8 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         tblLogReception.setEnabled(false);
         jpLogReception.setEnabled(false);
         mc.enableComponents(jpData.getComponents(), true, true);
+        jtaObservation.setText("");
+        jtaObservation.setEnabled(true);
         jdcDateIn.setDate(MainControl.getCurrentTimeStamp());
         //habilitar boton guardar
         btnReceivedModifier.setEnabled(false);
@@ -467,16 +478,22 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
 
     private void btnReceivedModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReceivedModifierActionPerformed
         int rowSel = tblLogReception.getSelectedRow();
-        if (rowSel >= 0) {
-            nuevo = false;
-            btnSave.setEnabled(true);
-            tblLogReception.setEnabled(true);
-            mc.enableComponents(jpData.getComponents(), true, false);
-            jdcDateIn.setEnabled(false);
-            //setear la fecha de entregado en automatico con el dia en el que se da el click y hora
-            jdcDateOut.setDate(MainControl.getCurrentTimeStamp());
-    //        jcbStatus.setSelectedIndex(2);
-            modified = true;
+        if (rowSel >= 0){
+            if (mc.detail.getDtStatus().equals("Entregado")) {
+                JOptionPane.showMessageDialog(null, "Este item ya esta marcado como entregado y no puede ser modificado "
+                        + "\nContacte al administrado para mayor informacion");
+            }else{            
+                jcbStatus.setSelectedIndex(1);
+                nuevo = false;
+                btnSave.setEnabled(true);
+                tblLogReception.setEnabled(true);
+                mc.enableComponents(jpData.getComponents(), true, false);
+                jdcDateIn.setEnabled(false);
+                //setear la fecha de entregado en automatico con el dia en el que se da el click y hora
+                jdcDateOut.setDate(MainControl.getCurrentTimeStamp());
+        //        jcbStatus.setSelectedIndex(2);
+                modified = true;
+            }
         }
         else{
             JOptionPane.showMessageDialog(null, "Favor selecione un archivo para poder proceder");
@@ -487,6 +504,10 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         nuevo = false;
         mc.enableComponents(jpData.getComponents(), false, true);
+        jtaObservation.setText("");
+        jtaObservation.setEnabled(false);
+        btnReceivedModifier.setEnabled(true);
+        btnSave.setEnabled(false);
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -511,7 +532,6 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel jbDate;
     private javax.swing.JComboBox jcCategory;
     private javax.swing.JComboBox jcbStatus;
@@ -521,6 +541,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jpData;
     private javax.swing.JPanel jpDateHour;
     private javax.swing.JPanel jpLogReception;
+    private javax.swing.JTextArea jtaObservation;
     private javax.swing.JTable tblLogReception;
     private javax.swing.JTextField txtDescription;
     private static javax.swing.JTextField txtReceivedBy;
