@@ -11,6 +11,7 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,6 +72,23 @@ public class MainControl extends Thread{
         return id;
     }
     
+    public int getLastDetailID(){
+        ResultSet result = null;
+        int id = 0;
+        try {
+            CallableStatement callStm = Conexion.getConnection().prepareCall("select max(dtID) dtID from tbl_Details "); //"select TOP 1 (dtID) from tbl_Detail ORDER BY itID DESC"
+            result = callStm.executeQuery();
+            while (result.next()) {
+                id = Integer.parseInt(result.getString(1));
+                System.out.println("el id es= "+id);
+            }
+//            int var = result.get
+        } catch (SQLException ex) {
+            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
+    
     public void createItem(Item item){
         try {
             CallableStatement callStm = Conexion.getConnection().prepareCall("insert into tbl_Item (itSupplierName, itDescription) values ( ? , ?)");
@@ -104,6 +122,30 @@ public class MainControl extends Thread{
         }
     
     }
+    
+    public void createLogDetail(Details detail, Timestamp dtModifiedDate, String dtModifiedBy){
+        try {
+            CallableStatement callStm = Conexion.getConnection().prepareCall("insert into tbl_LogDetails ( itID, dtDateIN, dtDateOUT,dtReceivedBy, dtCategory, dtStatus, dtRegisterBy, dtObservation, dtModifiedDate, dtModifiedBy, dtID) values (?, ? , ? , ? ,? , ?, ?, ?, ?, ?, ?) ");
+            callStm.setInt(11, getLastDetailID());
+            callStm.setInt(1, detail.getItId());
+            callStm.setTimestamp(2, getCurrentTimeStamp());
+            callStm.setTimestamp(3, null);
+            callStm.setString(4, detail.getDtReceivedBy());
+            callStm.setString(5, detail.getDtCategory());
+            callStm.setString(6, detail.getDtStatus());
+            callStm.setString(7, detail.getDtRegisterBy());
+            callStm.setString(8, detail.getDtObservation());
+            callStm.setTimestamp(9, dtModifiedDate);
+            callStm.setString(10, dtModifiedBy);
+            
+            callStm.executeUpdate();
+            System.out.println("Registro LogDetail insertado correctamente");
+        } catch (SQLException ex) {
+            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
+    
     public ResultSet readDataFromTableDetail(){
         ResultSet result = null;
         try {
@@ -501,4 +543,6 @@ public class MainControl extends Thread{
         return model;
     }
 }
+
+
 // usar setToolTipText para mostrar datos segun se valla typeando
