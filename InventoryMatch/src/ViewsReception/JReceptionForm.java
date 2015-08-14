@@ -391,7 +391,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         if (txtSupplier.getText().trim().equals("") | txtDescription.getText().trim().equals("") | jdcDateIn.getDate().toString().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Uno o mas campos obligatorios estan sin completar \n Favor completar paa poder continuar", "Error al intentar guardar entrada", JOptionPane.ERROR_MESSAGE);
         } else {
-            //sdfsdf
+                //cuando se este modificando algo esta variable sera true y se ejecutara este if
                 if (modified) {
                     if (txtReceivedBy.getText().trim().equals("")) {
                         JOptionPane.showMessageDialog(null, "Favor especifique la persona que recibio este item para poder continuar", "Falta completar campo", JOptionPane.WARNING_MESSAGE);
@@ -409,8 +409,11 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     mc.detail.setDtRegisterBy(MainControl.user.getUserName());
                     mc.detail.setDtStatus(jcbStatus.getSelectedItem().toString());
                     mc.detail.setDtObservation(jtaObservation.getText());
+                    
                     //Llamar a procedimiento con los objetos y sus cambios respectivos
                     mc.modifiedItem(mc.item, mc.detail);
+                    //Guardar Log de la trasaccion
+                    mc.createLogDetail(mc.detail, MainControl.getCurrentTimeStamp(), MainControl.user.getUserName());
                     tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
                     changeColumnSize(tblLogReception);
                     mc.enableComponents(jpData.getComponents(), false, true);
@@ -420,12 +423,14 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Guardado exitosamente", "Guardado", JOptionPane.INFORMATION_MESSAGE);
                     btnReceivedModifier.setEnabled(true);
                     btnSave.setEnabled(false);
+                //Este else se ejecutaran cuando el item en cuestion sea nuevo
                 }else{
                     Item item = new Item(0, txtSupplier.getText(), txtDescription.getText());
                     mc.createItem(item);
                     //Al guardar la fecha de recepcion, guardarla con .format y agregar 000 en los espacios faltantes //Timestamp.valueOf("0000-00-00 00:00:00:000000000")   Timestamp.from(jdcDateOut.getDate().toInstant())
                     Details detail = new Details(0,mc.getLastItemID(), MainControl.getCurrentTimeStamp(),null, txtReceivedBy.getText(), jcCategory.getSelectedItem().toString(), jcbStatus.getSelectedItem().toString(), MainControl.user.getUserName(), jtaObservation.getText());
                     mc.createDetail(detail);
+                    mc.createLogDetail(detail, null, null);
                     tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
                     changeColumnSize(tblLogReception);
                     mc.enableComponents(jpData.getComponents(), false, true);

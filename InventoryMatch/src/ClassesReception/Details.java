@@ -34,11 +34,11 @@ public class Details {
     public Details() {
     }
     
-    public Details(int dtId, int itId, Timestamp dateIn, Timestamp dateOn, String dtReceivedBy, String dtCategory, String dtStatus, String dtRegisterBy, String dtObservation) {
+    public Details(int dtId, int itId, Timestamp dateIn, Timestamp dateOut, String dtReceivedBy, String dtCategory, String dtStatus, String dtRegisterBy, String dtObservation) {
         this.dtId = dtId;
         this.itId = itId;
         this.dateIn = dateIn;
-        this.dateOut = dateOn;
+        this.dateOut = dateOut;
         this.dtReceivedBy = dtReceivedBy;
         this.dtCategory = dtCategory;
         this.dtStatus = dtStatus;
@@ -82,8 +82,8 @@ public class Details {
         return dateOut;
     }
 
-    public void setDateOut(Timestamp dateOn) {
-        this.dateOut = dateOn;
+    public void setDateOut(Timestamp dateOut) {
+        this.dateOut = dateOut;
     }
 
     public String getDtReceivedBy() {
@@ -112,7 +112,7 @@ public class Details {
     
         @Override
     public String toString() {
-        return "Details{" + "dtId=" + dtId + ", itId=" + itId + ", dateIn=" + dateIn + ", dateOn=" + dateOut + ", dtReceivedBy=" + dtReceivedBy + ", dtCategory=" + dtCategory + '}';
+        return "Details{" + "dtId=" + dtId + ", itId=" + itId + ", dateIn=" + dateIn + ", dateOut=" + dateOut + ", dtReceivedBy=" + dtReceivedBy + ", dtCategory=" + dtCategory + '}';
     }
     
     

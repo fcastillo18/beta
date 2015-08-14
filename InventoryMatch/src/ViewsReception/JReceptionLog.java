@@ -350,6 +350,8 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
                     mc.detail.setDateOut(MainControl.getCurrentTimeStamp());
                     mc.detail.setDtStatus("Entregado");
                     mc.modifiedItem(mc.item, mc.detail);
+                    //Guardar Log de la trasaccion
+                    mc.createLogDetail(mc.detail, MainControl.getCurrentTimeStamp(), MainControl.user.getUserName());
                     tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
                     changeColumnSize(tblLogReception);
                     JOptionPane.showMessageDialog(null, "Realizado Exitosamente");
