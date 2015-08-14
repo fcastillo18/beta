@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ViewsInventory;
+package ViewsReception;
 
 import ClassesInventory.Conexion;
 import ClassesReception.MainControl;
+import ViewsInventory.MainFrame;
 import de.javasoft.plaf.synthetica.SyntheticaBlackMoonLookAndFeel;
 import de.javasoft.plaf.synthetica.SyntheticaWhiteVisionLookAndFeel;
 import java.awt.event.ActionEvent;

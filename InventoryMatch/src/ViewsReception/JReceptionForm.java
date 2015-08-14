@@ -16,6 +16,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import java.awt.TrayIcon;
+import java.util.Timer;
+
 
 
 /**
@@ -23,10 +26,6 @@ import javax.swing.table.TableColumnModel;
  * @author fcastillo
  */
 public class JReceptionForm extends javax.swing.JInternalFrame {
-
-    public static void setTxtReceivedBy(String text) {
-        txtReceivedBy.setText(text);
-    }
 
     /**
      * Creates new form JReceptionForm
@@ -41,6 +40,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         //poner en un hilo la hora
         jbDate.setText(df.format(new Date()));
         btnSave.setEnabled(false);
+        new DisplayTrayIcon().runTimer(time);
     }
     //esta variable sera paa evitar que cuando esten en el boton nuevo puedan cargar datos del evento mouse clicked
     private boolean nuevo; 
@@ -48,6 +48,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
     DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
     MainControl mc= new MainControl();
     boolean modified = false;
+    long time = 10000;
     
     private void changeColumnSize(JTable table){
         this.column = table.getColumnModel();
@@ -58,6 +59,9 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         column.getColumn(4).setPreferredWidth(80);
         column.getColumn(5).setPreferredWidth(80);
         column.getColumn(6).setPreferredWidth(50);
+    }
+        public static void setTxtReceivedBy(String text) {
+        txtReceivedBy.setText(text);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -440,6 +444,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(null, "Guardado exitosamente", "Guardado", JOptionPane.INFORMATION_MESSAGE);
                     btnReceivedModifier.setEnabled(true);
                     btnSave.setEnabled(false);
+                    
                 }
                
             }

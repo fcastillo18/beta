@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -273,7 +274,12 @@ public class MainControl extends Thread{
             if (comp[i] instanceof JDateChooser) {
                 ((JDateChooser)comp[i]).setEnabled(enable);
             }
-            
+            if (comp[i] instanceof JList) {
+                ((JList)comp[i]).setEnabled(enable);
+            }
+            if (comp[i] instanceof JComboBox) {
+                ((JComboBox)comp[i]).setEnabled(enable);
+            }
             if (limpiar) {
                 
                 if (comp[i] instanceof JTextField) {
@@ -285,7 +291,9 @@ public class MainControl extends Thread{
                 if (comp[i] instanceof JDateChooser) {
                 ((JDateChooser)comp[i]).setDate(null);
                 }
-
+                if (comp[i] instanceof JComboBox) {
+                ((JComboBox)comp[i]).setSelectedIndex(0);
+            }
             }
         }
     

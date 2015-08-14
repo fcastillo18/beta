@@ -5,6 +5,7 @@
  */
 package ViewsInventory;
 
+import ViewsReception.JUsers;
 import ClassesInventory.Conexion;
 import ClassesReception.MainControl;
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;

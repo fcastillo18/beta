@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -31,6 +33,14 @@ public class InventoryMatch {
         ManagmentCSV manCsv = new ManagmentCSV();
 //        Timestamp tm = new java.util.Date().getTime();
         System.out.println(MainControl.getCurrentTimeStamp().toString());
+        
+       
+        
+        
+        
+    }
+}
+        
 //        manCsv.readCSV("C:\\Users\\Franklin\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\Materials to program\\Existencia CSV.csv");
 //    Conexion con = new Conexion();
 //    con.getConnection();
@@ -44,8 +54,7 @@ public class InventoryMatch {
 //            System.out.println("Error al leer datos" + ex.getMessage());
 //            ex.printStackTrace();
 //        }
-    }
-    
+      
  /*
  Lo unico que tienes que hacer es obtener la columna que quieras editar de tu tabla y cambiarle el tamaño:
 1. TableColumn columna = tabla.getColumn;
@@ -73,4 +82,3 @@ Y así sucesivamente.
     
     
  */   
-}
