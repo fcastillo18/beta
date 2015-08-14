@@ -400,7 +400,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     //cambiando valores del objeto que seran matcheados en la DB
                     mc.item.setSupplierName(txtSupplier.getText());
                     mc.item.setDescription(txtDescription.getText());
-                    //Al guardar la fecha de recepcion, guardarla con .format y agregar 000 en los espacios faltantes
+                    //Al guardar la fecha de recepcion, guardarla con .format y sagregar 000 en los espacios faltantes
         //            mc.getLastItemID(), MainControl.getCurrentTimeStamp(), Timestamp.from(jdcDateOut.getDate().toInstant()), txtReceivedBy.getText(), jcCategory.getSelectedItem().toString());
                     //cambiando valores del objeto que seran matcheados en la DB
                     mc.detail.setDtCategory(jcCategory.getSelectedItem().toString());
