@@ -393,6 +393,9 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         } else {
             
                 if (modified) {
+                    if (txtReceivedBy.getText().trim().equals("")) {
+                        JOptionPane.showMessageDialog(null, "Favor especifique la persona que recibio este item para poder continuar", "Falta completar campo", JOptionPane.WARNING_MESSAGE);
+                    }
                     tblLogReception.setEnabled(true);
                     //cambiando valores del objeto que seran matcheados en la DB
                     mc.item.setSupplierName(txtSupplier.getText());
@@ -488,6 +491,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                 btnSave.setEnabled(true);
                 tblLogReception.setEnabled(true);
                 mc.enableComponents(jpData.getComponents(), true, false);
+                jtaObservation.setEnabled(true);
                 jdcDateIn.setEnabled(false);
                 //setear la fecha de entregado en automatico con el dia en el que se da el click y hora
                 jdcDateOut.setDate(MainControl.getCurrentTimeStamp());

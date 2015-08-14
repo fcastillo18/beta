@@ -27,6 +27,7 @@ public class FindUser extends javax.swing.JFrame {
             Logger.getLogger(FindUser.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setLocationRelativeTo(null);
+        
     }
     MainControl mn = new MainControl();
     String useName;
@@ -156,9 +157,16 @@ public class FindUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
-         int rowSel = tblUser.getSelectedRow();
-         useName = tblUser.getValueAt(rowSel, 0).toString();
-         jTextField1.setText(useName);
+        if(evt.getClickCount()==2){  
+            JReceptionForm.setTxtReceivedBy(useName);
+            this.dispose();
+        }else{
+            int rowSel = tblUser.getSelectedRow();
+            useName = tblUser.getValueAt(rowSel, 0).toString();
+            jTextField1.setText(useName);
+        }  
+  
+        
          
     }//GEN-LAST:event_tblUserMouseClicked
 
