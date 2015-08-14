@@ -391,7 +391,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         if (txtSupplier.getText().trim().equals("") | txtDescription.getText().trim().equals("") | jdcDateIn.getDate().toString().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Uno o mas campos obligatorios estan sin completar \n Favor completar paa poder continuar", "Error al intentar guardar entrada", JOptionPane.ERROR_MESSAGE);
         } else {
-            
+            //sdfsdf
                 if (modified) {
                     if (txtReceivedBy.getText().trim().equals("")) {
                         JOptionPane.showMessageDialog(null, "Favor especifique la persona que recibio este item para poder continuar", "Falta completar campo", JOptionPane.WARNING_MESSAGE);
