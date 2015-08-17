@@ -102,21 +102,22 @@ public class DisplayTrayIcon {
         URL imageURL = DisplayTrayIcon.class.getResource(path);
         return ( new ImageIcon(imageURL, desc)).getImage();
     }
-    
-    public void runTimer(Long time){
-    
-        TimerTask timerTask = new TimerTask(){
-            int cont = 0;
-        @Override
-        public void run() {
-            System.out.println(cont);
-            cont++;
-        }
-        };
-        
-        Timer timer = new Timer();
-        timer.schedule(timerTask, 0, time);
-
-    }
+    //movido a la clase MainControl
+//    public void runTimer(Long time){
+//    
+//        TimerTask timerTask = new TimerTask(){
+//            int cont = 0;
+//        @Override
+//        public void run() {
+//            System.out.println(cont);
+//            cont++;
+//        }
+//        };
+//        
+//        Timer timer = new Timer();
+//                        //task, cantidad en milisegundos de tiempo de espera para ejecutar el timer, con que frecuencia se ejecutara esta accion
+//        timer.schedule(timerTask, 1800000, time);
+//                                   //30min
+//    }
     
 }

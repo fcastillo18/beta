@@ -32,8 +32,12 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
         jtaObservation.setEnabled(false);
         changeColumnSize(tblLogReception);
         //poner en un hilo la hora
-        jbDate.setText(df.format(new Date()));        
+        jbDate.setText(df.format(new Date()));  
+        //este metodo corre el timer y lo setea con un valor.
+        mc.runTimer(time);
     }
+    //time del cronometro en milisegundos
+    long time = 1800000;
     //esta variable sera paa evitar que cuando esten en el boton nuevo puedan cargar datos del evento mouse clicked
     private boolean nuevo;
     TableColumnModel column;

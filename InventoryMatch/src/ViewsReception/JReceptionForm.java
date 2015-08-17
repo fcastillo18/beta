@@ -40,7 +40,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
         //poner en un hilo la hora
         jbDate.setText(df.format(new Date()));
         btnSave.setEnabled(false);
-        new DisplayTrayIcon().runTimer(time);
+//        new DisplayTrayIcon().runTimer(time);
     }
     //esta variable sera paa evitar que cuando esten en el boton nuevo puedan cargar datos del evento mouse clicked
     private boolean nuevo; 

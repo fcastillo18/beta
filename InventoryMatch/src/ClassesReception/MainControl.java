@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,6 +51,7 @@ public class MainControl extends Thread{
     public Details detail;
     public List<String> listaDeMenues;
     public static User user;
+    private int detailSize = 0;
     
     @Override
     public void run(){
@@ -243,7 +246,7 @@ public class MainControl extends Thread{
                     Object [] row = {rs.getInt("dtID"), sdformat.format(rs.getTimestamp("dtDateIN")), rs.getString("itSupplierName"), rs.getString("itDescription"), rs.getString("dtReceivedBy"), sdformat.format(rs.getTimestamp("dtDateOUT")), rs.getString("dtStatus"), rs.getString("dtRegisterBy")};                
                     model.addRow(row);
                 }
-                
+            detailSize++;    
             }
         } catch (SQLException ex) {
             System.out.println("Error en el metodo getModelDetails al leer datos " + ex.getMessage());
@@ -549,6 +552,23 @@ public class MainControl extends Thread{
             ex.printStackTrace();
         }  
         return model;
+    }
+    
+    public void runTimer(Long time){
+    
+        TimerTask timerTask = new TimerTask(){
+            int cont = 0;
+        @Override
+        public void run() {
+            System.out.println(cont);
+            cont++;
+        }
+        };
+        
+        Timer timer = new Timer();
+                        //task, cantidad en milisegundos de tiempo de espera para ejecutar el timer, con que frecuencia se ejecutara esta accion
+        timer.schedule(timerTask, 1800000, time);
+                                   //30min
     }
 }
 

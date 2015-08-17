@@ -8,6 +8,7 @@ package ViewsInventory;
 import ViewsReception.JUsers;
 import ClassesInventory.Conexion;
 import ClassesReception.MainControl;
+import ViewsReception.DisplayTrayIcon;
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
 import ViewsReception.JReceptionForm;
 import ViewsReception.JReceptionLog;
@@ -33,9 +34,10 @@ public class MainFrame extends javax.swing.JFrame {
 //        jMenu1.getSubElements().length
         this.setTitle("Solution Program                User:  " + MainControl.user.getUserName() +" | " + MainControl.user.getFirstName() + " "+ MainControl.user.getLastName());
         this.setLocationRelativeTo(null);
-       
+//       new DisplayTrayIcon().runTimer(time);
     }
     MainControl mainControl =  new MainControl();
+//    long time = 10000;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
