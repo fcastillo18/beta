@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -23,17 +22,21 @@ import java.util.TimerTask;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 /**
@@ -52,6 +55,11 @@ public class MainControl extends Thread{
     public List<String> listaDeMenues;
     public static User user;
     private int detailSize = 0;
+    //variables del reporte
+    private JasperReport report = null;
+    private JasperPrint reportFilled = null;
+    private JasperViewer viewer = null;
+    
     
     @Override
     public void run(){
@@ -574,6 +582,30 @@ public class MainControl extends Thread{
                         //task, cantidad en milisegundos de tiempo de espera para ejecutar el timer, con que frecuencia se ejecutara esta accion
         timer.schedule(timerTask, 1800000, time);
                                    //30min
+    }
+    
+    public void reportHistorialCambios(){
+
+        try {
+            report = (JasperReport) JRLoader.loadObjectFromFile("C:\\Users\\fcastillo\\Documents\\NetBeansProjects\\beta\\InventoryMatch\\src\\reports\\ControlDeCambios.jasper");
+            reportFilled = JasperFillManager.fillReport(report, null, Conexion.getConnection());
+            viewer = new JasperViewer(reportFilled);
+            viewer.setTitle("Historial de cambios en recepción");
+            viewer.setVisible(true);
+            //to prevent close the whole program when the user click con close buttom
+            viewer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        
+        } catch (JRException ex) {
+            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+    }
+    
+    public void exportToPDF(){
+        try {
+            JasperExportManager.exportReportToPdfFile(reportFilled, "src/reports/reporte01.pdf");
+        } catch (JRException ex) {
+            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
 
