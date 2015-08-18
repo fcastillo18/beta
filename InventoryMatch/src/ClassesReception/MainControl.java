@@ -65,9 +65,14 @@ public class MainControl extends Thread{
         try {
             CallableStatement callStm = Conexion.getConnection().prepareCall("select TOP 1 (itID) from tbl_Item ORDER BY itID DESC");
             result = callStm.executeQuery();
-            while (result.next()) {
-                id = Integer.parseInt(result.getString(1));
-                System.out.println("el id es= "+id);
+            if (result == null) {
+                id = 0;
+            }
+            else{
+                while (result.next()) {
+                    id = Integer.parseInt(result.getString(1));
+                    System.out.println("el id es= "+id);
+                }
             }
 //            int var = result.get
         } catch (SQLException ex) {
