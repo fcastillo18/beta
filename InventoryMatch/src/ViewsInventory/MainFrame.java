@@ -6,8 +6,8 @@
 package ViewsInventory;
 
 import ViewsReception.JUsers;
-import ClassesInventory.Conexion;
 import ClassesReception.MainControl;
+import ViewsReception.ConfigProperties;
 import ViewsReception.DisplayTrayIcon;
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
 import ViewsReception.JReceptionForm;
@@ -26,13 +26,12 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-//        new Conexion().createConnection();
         mainControl.readMenuBar(jMenuBar1.getComponents());
         mainControl.loadMenuBar(jMenuBar1, false, null);
         mainControl.loadMenuBar(jMenuBar1, true, MainControl.user);
 //        System.out.println(jMenuItem1.getSize().toString());
 //        jMenu1.getSubElements().length
-//        this.setTitle("Solution Program                User:  " + MainControl.user.getUserName() +" | " + MainControl.user.getFirstName() + " "+ MainControl.user.getLastName());
+        this.setTitle("Solution Program                User:  " + MainControl.user.getUserName() +" | " + MainControl.user.getFirstName() + " "+ MainControl.user.getLastName());
         this.setLocationRelativeTo(null);
 //       new DisplayTrayIcon().runTimer(time);
     }
@@ -61,6 +60,8 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jmnHelp = new javax.swing.JMenu();
         jmnAbout = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 620));
@@ -161,6 +162,18 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jmnHelp);
 
+        jMenu3.setText("Administrator Tools");
+
+        jMenuItem6.setText("Configurar base de datos");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem6);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -219,11 +232,17 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jmnAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmnAboutActionPerformed
 //        mainControl.exportToPDF();
+        mainControl.restartApplication();
     }//GEN-LAST:event_jmnAboutActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         mainControl.reportHistorialCambios();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        ConfigProperties config = new ConfigProperties();
+        config.setVisible(true);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
     
     /**
      * @param args the command line arguments
@@ -270,12 +289,14 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JDesktopPane deskPanel;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jmnAbout;
     private javax.swing.JMenuItem jmnConsultInv;
     private javax.swing.JMenu jmnHelp;

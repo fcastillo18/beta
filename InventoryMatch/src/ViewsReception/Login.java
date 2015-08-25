@@ -5,7 +5,8 @@
  */
 package ViewsReception;
 
-import ClassesInventory.Conexion;
+
+import conexionDB.Conexion;
 import ClassesReception.MainControl;
 import ViewsInventory.MainFrame;
 import de.javasoft.plaf.synthetica.SyntheticaBlackMoonLookAndFeel;
@@ -31,7 +32,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
-        new Conexion().createConnection();
+        new Conexion().createConnection(MainControl.getDBProperties());
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -171,8 +172,8 @@ public class Login extends javax.swing.JFrame {
             //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
             /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
             * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-            */
-            UIManager.setLookAndFeel(new SyntheticaBlackMoonLookAndFeel());
+            */                          //SyntheticaBlackMoonLookAndFeel()
+            UIManager.setLookAndFeel(new SyntheticaWhiteVisionLookAndFeel());
             //</editor-fold>
             
             /* Create and display the form */

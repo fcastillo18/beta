@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ClassesInventory;
+package conexionDB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author Franklin
  */
-public class Conexion {
+public class ConexionOLD {
 
    static Connection conexion = null; 
     

@@ -458,6 +458,8 @@ public class JUsers extends javax.swing.JInternalFrame {
         jListDisponibles.setEnabled(true);
         btnSave.setEnabled(true);
         btnAdd.setEnabled(true);
+        jcbCategory.setEnabled(true);
+        vectorMenuesUsuario.clear();
     }//GEN-LAST:event_btnNewActionPerformed
     private void sortVector(Vector<String> vector){
         Collections.sort(vector);

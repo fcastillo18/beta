@@ -30,13 +30,10 @@ public class InventoryMatch {
     
     public static void main(String[] args) {
         System.out.println("Hola Mundo");
-        ManagmentCSV manCsv = new ManagmentCSV();
-//        Timestamp tm = new java.util.Date().getTime();
-        System.out.println(MainControl.getCurrentTimeStamp().toString());
-        
+//        ManagmentCSV manCsv = new ManagmentCSV();
+////        Timestamp tm = new java.util.Date().getTime();
+//        System.out.println(MainControl.getCurrentTimeStamp().toString());
        
-        
-        
         
     }
 }

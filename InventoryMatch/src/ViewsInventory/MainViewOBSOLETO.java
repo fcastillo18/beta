@@ -5,8 +5,9 @@
  */
 package ViewsInventory;
 
-import ClassesInventory.Conexion;
+
 import ClassesInventory.ManagmentCSV;
+import conexionDB.Conexion;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.logging.Level;

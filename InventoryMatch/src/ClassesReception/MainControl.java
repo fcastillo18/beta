@@ -5,8 +5,17 @@
  */
 package ClassesReception;
 
+import ViewsReception.Login;
+import conexionDB.Conexion;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Component;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -46,8 +56,9 @@ import net.sf.jasperreports.view.JasperViewer;
 public class MainControl extends Thread{
     
     public MainControl() {
-        Conexion con = new Conexion();
-        con.createConnection();
+        //para eliminar
+//        Conexion con = new Conexion();
+//        con.createConnection();
     }
     public Date endDate;
     public Item item;
@@ -66,7 +77,7 @@ public class MainControl extends Thread{
     
             
     }
-    
+        
     public int getLastItemID(){
         ResultSet result = null;
         int id = 0;
@@ -607,6 +618,84 @@ public class MainControl extends Thread{
             Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+      public static Properties getDBProperties(){
+        Properties properties = new Properties();
+        InputStream entrada = null;
+        try {
+            entrada = new FileInputStream("c:/conexion/configDB.properties");
+            properties.load(entrada);
+        } catch (IOException ex) {
+            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return properties;
+    }
+      public  void setProperties(String servidor, String user, String pass, String port, String dbName){
+            Properties propiedades = new Properties();
+            OutputStream salida = null;
+
+            try {
+              salida = new FileOutputStream("c:/conexion/configDB.properties");
+
+             //Completar URL con parametros recibidos
+              String urlDB = "jdbc:sqlserver://"+servidor+":"+port+ ";databaseName="+dbName;
+               // asignamos los valores a las propiedades
+              propiedades.setProperty("database", urlDB);
+              propiedades.setProperty("dbName", dbName);
+              propiedades.setProperty("user", user);
+              propiedades.setProperty("pass", pass);
+              propiedades.setProperty("servidor", servidor);
+              propiedades.setProperty("port", port);
+
+              // guardamos el archivo de propiedades en la carpeta de aplicación
+              propiedades.store(salida, null);
+
+             } catch (IOException io) {
+                io.printStackTrace();
+             } finally {
+              if (salida != null) {
+                  try {
+                      salida.close();
+                  } catch (IOException e) {
+                      e.printStackTrace();
+                  }
+              }
+
+             }
+      
+      }
+      
+      
+      public void restartApplication()
+    {
+        final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+        File currentJar = null;
+            try {
+                currentJar = new File(Login.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            } catch (URISyntaxException ex) {
+                Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            /* is it a jar file? */
+            if(!currentJar.getName().endsWith(".jar"))
+              return;
+
+            /* Build command: java -jar application.jar */
+            final ArrayList<String> command = new ArrayList<String>();
+            command.add(javaBin);
+            command.add("-jar");
+            command.add(currentJar.getPath());
+
+            final ProcessBuilder builder = new ProcessBuilder(command);
+                  try {
+                      builder.start();
+                  } catch (IOException ex) {
+                      Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+            System.exit(0);
+        }
+      
+      
 }
 
 
