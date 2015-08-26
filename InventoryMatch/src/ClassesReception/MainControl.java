@@ -626,7 +626,7 @@ public class MainControl extends Thread{
             entrada = new FileInputStream("c:/conexion/configDB.properties");
             properties.load(entrada);
         } catch (IOException ex) {
-            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return properties;
     }

@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ViewsInventory;
+package ViewsReception;
 
 import ViewsReception.JUsers;
 import ClassesReception.MainControl;
+import ViewsInventory.JConsultInventory2;
+import ViewsInventory.JMatchInventory;
 import ViewsReception.ConfigProperties;
 import ViewsReception.DisplayTrayIcon;
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
@@ -64,7 +66,6 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1024, 620));
 
         javax.swing.GroupLayout deskPanelLayout = new javax.swing.GroupLayout(deskPanel);
         deskPanel.setLayout(deskPanelLayout);

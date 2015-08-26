@@ -7,7 +7,9 @@ package ViewsReception;
 
 import ClassesReception.MainControl;
 import com.toedter.calendar.JDateChooser;
+import conexionDB.Conexion;
 import java.awt.Component;
+import java.awt.event.KeyEvent;
 import java.util.Properties;
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -30,10 +32,11 @@ public class ConfigProperties extends javax.swing.JFrame {
         txtDataBase.setText(propertie.getProperty("dbName"));
         txtPort.setText(propertie.getProperty("port"));
         txtUser.setText(propertie.getProperty("user"));
-        txtPass.setText("pass");
+        txtPass.setText(propertie.getProperty("pass"));
         this.setLocationRelativeTo(null);
     }
-    
+    Conexion con = new Conexion();
+    public static boolean inicio = true;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,13 +58,14 @@ public class ConfigProperties extends javax.swing.JFrame {
         btnSave = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtPort = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         btnChangeConfig = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Configuracion de base de datos");
         setResizable(false);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Configuracion de la conexion DB"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Especifique los datos del servidor de la base de datos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         jLabel1.setText("URL o Servidor:");
 
@@ -86,10 +90,18 @@ public class ConfigProperties extends javax.swing.JFrame {
                 btnSaveActionPerformed(evt);
             }
         });
+        btnSave.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSaveKeyPressed(evt);
+            }
+        });
 
         jLabel5.setText("Puerto/Port:");
 
         txtPort.setEnabled(false);
+
+        jButton1.setText("Test BD");
+        jButton1.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -98,9 +110,6 @@ public class ConfigProperties extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSave))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -114,7 +123,12 @@ public class ConfigProperties extends javax.swing.JFrame {
                             .addComponent(txtPass)
                             .addComponent(txtUser)
                             .addComponent(txtDataBase)
-                            .addComponent(txtServidor))))
+                            .addComponent(txtServidor)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 190, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSave)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -141,7 +155,9 @@ public class ConfigProperties extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnSave)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSave)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -162,7 +178,7 @@ public class ConfigProperties extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnChangeConfig)
-                        .addGap(0, 241, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -185,13 +201,66 @@ public class ConfigProperties extends javax.swing.JFrame {
     }//GEN-LAST:event_btnChangeConfigActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        btnSave.setEnabled(false);
-        enableComponents(jPanel1.getComponents(), false);
-        btnChangeConfig.setEnabled(true);
-        MainControl mc = new MainControl();
-        mc.setProperties(txtServidor.getText().trim(), txtUser.getText().trim(), txtPass.getText().trim(), txtPort.getText().trim(), txtDataBase.getText().trim());
-        JOptionPane.showMessageDialog(rootPane, "Debe reiniciar la aplicacion para que los cambios surtan efecto", "Datos cambiados con exito", JOptionPane.INFORMATION_MESSAGE);
+        if (txtServidor.getText().trim().equals("") | txtUser.getText().trim().equals("") | txtPort.getText().trim().equals("") | txtDataBase.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Completar la informacion para poder continuar", "Faltan algunos campos por completar", JOptionPane.ERROR_MESSAGE);
+            txtServidor.setFocusable(true);
+        }else{
+            //se llamo esta ventana durante el inicio
+            if (inicio == true) {
+                btnSave.setEnabled(false);
+                enableComponents(jPanel1.getComponents(), false);
+                btnChangeConfig.setEnabled(true);
+                MainControl mc = new MainControl();
+                mc.setProperties(txtServidor.getText().trim(), txtUser.getText().trim(), txtPass.getText().trim(), txtPort.getText().trim(), txtDataBase.getText().trim());
+    //            JOptionPane.showMessageDialog(rootPane, "Debe reiniciar la aplicacion para que los cambios surtan efecto", "Datos cambiados con exito", JOptionPane.INFORMATION_MESSAGE);
+                con.createConnection(MainControl.getDBProperties());
+                if (con != null) {
+                    int opcion = JOptionPane.showConfirmDialog(null, "Datos guardados con exito \nClick en SI para continuar con el Login o en NO para cambiar los datos de conexion nuevamente ");
+                    if (opcion == JOptionPane.OK_OPTION) {
+                        Login login = new Login();
+                        login.setVisible(true);
+                        //para que cuando esta ventana se llame de nuevo desde la aplicacion no entre aca
+                        inicio =false;
+                        this.dispose();
+//                        this
+                    }else {
+                        //El usuario se queda en esta ventana
+                    }
+                }
+                //la conexion es nulla, pues los datos estan incorrectos
+                else{
+                    JOptionPane.showMessageDialog(null, "Ocurrio un error al intentar conectar a la base de datos. \nFavor verifique los datos e intente de nuevo", "Datos incorrecto", JOptionPane.ERROR_MESSAGE);
+                    txtServidor.setFocusable(true);
+                }
+            }
+            //Se llamo esta ventana despues de estar logueado
+            else{
+                btnSave.setEnabled(false);
+                enableComponents(jPanel1.getComponents(), false);
+                btnChangeConfig.setEnabled(true);
+                MainControl mc = new MainControl();
+                mc.setProperties(txtServidor.getText().trim(), txtUser.getText().trim(), txtPass.getText().trim(), txtPort.getText().trim(), txtDataBase.getText().trim());
+    //            JOptionPane.showMessageDialog(rootPane, "Debe reiniciar la aplicacion para que los cambios surtan efecto", "Datos cambiados con exito", JOptionPane.INFORMATION_MESSAGE);
+                con.createConnection(MainControl.getDBProperties());
+                if (con != null) {
+                    JOptionPane.showMessageDialog(null, "Datos guardados con exito \nLa conexion a la base de datos fue exitosa");
+                    enableComponents(jPanel1.getComponents(), false);
+                }
+                //la conexion es nulla, pues los datos estan incorrectos
+                else{
+                    JOptionPane.showMessageDialog(null, "Ocurrio un error al intentar conectar a la base de datos. \nFavor verifique los datos e intente de nuevo", "Datos incorrecto", JOptionPane.ERROR_MESSAGE);
+                    txtServidor.setFocusable(true);
+                }
+            }
+            
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnSaveKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSaveKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnSaveActionPerformed(null);
+        }
+    }//GEN-LAST:event_btnSaveKeyPressed
     public void enableComponents (Component [] comp, boolean enable) {
         for (int i = 0; i < comp.length; i++) {
             if (comp[i] instanceof JTextField) {
@@ -239,6 +308,7 @@ public class ConfigProperties extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChangeConfig;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

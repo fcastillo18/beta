@@ -8,7 +8,6 @@ package ViewsReception;
 
 import conexionDB.Conexion;
 import ClassesReception.MainControl;
-import ViewsInventory.MainFrame;
 import de.javasoft.plaf.synthetica.SyntheticaBlackMoonLookAndFeel;
 import de.javasoft.plaf.synthetica.SyntheticaWhiteVisionLookAndFeel;
 import java.awt.event.ActionEvent;
@@ -32,7 +31,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         this.setLocationRelativeTo(null);
-        new Conexion().createConnection(MainControl.getDBProperties());
+//        new Conexion().createConnection(MainControl.getDBProperties());
     }
     /**
      * This method is called from within the constructor to initialize the form.

@@ -50,14 +50,16 @@ public class Conexion {
            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
        }catch (ClassNotFoundException e) {
            JOptionPane.showMessageDialog(null, "No se ha podido establecer conexion con la base de datos "+e.getMessage(), "Error de Conexion", JOptionPane.ERROR_MESSAGE);
+           return null;
        }
        
        try {
            conexion = DriverManager.getConnection(properties.getProperty("database"), properties.getProperty("user"), properties.getProperty("pass"));
            System.out.println("Se conecto correctamente a la base de datos");
        } catch (SQLException ex) {
-          JOptionPane.showMessageDialog(null, "Error "+ ex.getSQLState() + "---"+ex.getMessage(), "Error de Conexion", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, "Error al intentar conectar con la base de datos", "Error de Conexion", JOptionPane.ERROR_MESSAGE);
           ex.printStackTrace();
+          return null;
           
        }
 

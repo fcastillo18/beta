@@ -7,6 +7,7 @@ package ViewsReception;
 
 import ClassesReception.MainControl;
 import ClassesReception.User;
+import java.awt.event.KeyEvent;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Vector;
@@ -255,6 +256,11 @@ public class JUsers extends javax.swing.JInternalFrame {
             public Object getElementAt(int i) { return strings[i]; }
         });
         jListDisponibles.setEnabled(false);
+        jListDisponibles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListDisponiblesMouseClicked(evt);
+            }
+        });
         jListDisponibles.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jListDisponiblesKeyPressed(evt);
@@ -269,6 +275,11 @@ public class JUsers extends javax.swing.JInternalFrame {
                 btnAddActionPerformed(evt);
             }
         });
+        btnAdd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAddKeyPressed(evt);
+            }
+        });
 
         btnDelete.setText("< Eliminar");
         btnDelete.setEnabled(false);
@@ -277,8 +288,18 @@ public class JUsers extends javax.swing.JInternalFrame {
                 btnDeleteActionPerformed(evt);
             }
         });
+        btnDelete.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnDeleteKeyPressed(evt);
+            }
+        });
 
         jListUsuario.setEnabled(false);
+        jListUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListUsuarioMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(jListUsuario);
 
         btnAddAll.setText("Añadir todos >>");
@@ -461,6 +482,26 @@ public class JUsers extends javax.swing.JInternalFrame {
         jcbCategory.setEnabled(true);
         vectorMenuesUsuario.clear();
     }//GEN-LAST:event_btnNewActionPerformed
+
+    private void jListDisponiblesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListDisponiblesMouseClicked
+        btnAdd.setFocusable(true);
+    }//GEN-LAST:event_jListDisponiblesMouseClicked
+
+    private void btnAddKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAddKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnAddActionPerformed(null);
+        }
+    }//GEN-LAST:event_btnAddKeyPressed
+
+    private void jListUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUsuarioMouseClicked
+        btnDelete.setFocusable(true);
+    }//GEN-LAST:event_jListUsuarioMouseClicked
+
+    private void btnDeleteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDeleteKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            btnDeleteActionPerformed(null);
+        }
+    }//GEN-LAST:event_btnDeleteKeyPressed
     private void sortVector(Vector<String> vector){
         Collections.sort(vector);
     }
