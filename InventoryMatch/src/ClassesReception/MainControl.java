@@ -633,8 +633,13 @@ public class MainControl extends Thread{
       public  void setProperties(String servidor, String user, String pass, String port, String dbName){
             Properties propiedades = new Properties();
             OutputStream salida = null;
-
+            
             try {
+            File folder = new File("c:\\conexion");
+            if (folder.exists() == false) {
+                    folder.mkdirs();
+            }
+                    
               salida = new FileOutputStream("c:/conexion/configDB.properties");
 
              //Completar URL con parametros recibidos
