@@ -25,9 +25,9 @@ public class JUsers extends javax.swing.JInternalFrame {
      */
     public JUsers() {
         initComponents();
-        mn = new MainControl();
-        tblUser.setModel(mn.getDataFromTableUser());
-        jListDisponibles.setListData(mn.listModelMenues());
+        mc = new MainControl();
+        tblUser.setModel(mc.getDataFromTableUser());
+        jListDisponibles.setListData(mc.listModelMenues());
         /*una vez se carguen los  menues a la lista en la sentencia de arriba
             procedo a llenar el vector1 con esos datos
         */
@@ -37,9 +37,10 @@ public class JUsers extends javax.swing.JInternalFrame {
             cont++;
         }
     }
-    MainControl mn;
+    MainControl mc;
     Vector<String> vectorMenuesDisponibles = new Vector<String>();
     Vector<String> vectorMenuesUsuario = new Vector<String>();
+    boolean modificar = false;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -179,6 +180,11 @@ public class JUsers extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUserMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblUser);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -209,6 +215,11 @@ public class JUsers extends javax.swing.JInternalFrame {
 
         btnModified.setText("Modificar");
         btnModified.setEnabled(false);
+        btnModified.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifiedActionPerformed(evt);
+            }
+        });
 
         btnDelete00.setText("Eliminar");
         btnDelete00.setEnabled(false);
@@ -448,33 +459,37 @@ public class JUsers extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jListDisponiblesKeyPressed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        //si alguno de los campos requeridos estan incompletos no continua la accion de guardado
-        if (txtName.getText().trim().equals("") | txtUser.getText().trim().equals("") | txtPass.getText().trim().equals("") | jListUsuario.getSelectedIndices().length < 0) {
-            JOptionPane.showMessageDialog(null, "Uno o mas campos obligatorios estan incompletos \nFavor completar para poder continuar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-        else{
-            User user = new User(txtName.getText(), txtLastName.getText(), txtUser.getText(), txtPass.getText(), jcbCategory.getSelectedItem().toString(), jCheckBox1.isSelected());
-            mn.createUser(user);
-            int cont = 0;
-            while (cont < vectorMenuesUsuario.size()) {            
-                mn.insertMenuesAccess(mn.getLastUserID(), vectorMenuesUsuario.get(cont));
-                cont++;
+        if (modificar == false) {
+                //si alguno de los campos requeridos estan incompletos no continua la accion de guardado
+            if (txtName.getText().trim().equals("") | txtUser.getText().trim().equals("") | txtPass.getText().trim().equals("") | jListUsuario.getSelectedIndices().length < 0) {
+                JOptionPane.showMessageDialog(null, "Uno o mas campos obligatorios estan incompletos \nFavor completar para poder continuar", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
-            tblUser.setModel(mn.getDataFromTableUser());
-            JOptionPane.showMessageDialog(null, "Datos insertados con exito", "Datos guardados", JOptionPane.INFORMATION_MESSAGE);
-            mn.enableComponents(jpDatosUsuario.getComponents(), false, true);
-            jListUsuario.setEnabled(false);
-            jListDisponibles.setEnabled(false);
-            jListDisponibles.setListData(mn.listModelMenues());
-            jListUsuario.setListData(new Vector<String>());
-            btnSave.setEnabled(false);
-            btnAdd.setEnabled(false);
-            btnDelete.setEnabled(false);
+            else{
+                User user = new User(txtName.getText(), txtLastName.getText(), txtUser.getText(), txtPass.getText(), jcbCategory.getSelectedItem().toString(), jCheckBox1.isSelected());
+                mc.createUser(user);
+                int cont = 0;
+                while (cont < vectorMenuesUsuario.size()) {            
+                    mc.insertMenuesAccess(mc.getLastUserID(), vectorMenuesUsuario.get(cont));
+                    cont++;
+                }
+                tblUser.setModel(mc.getDataFromTableUser());
+                JOptionPane.showMessageDialog(null, "Datos insertados con exito", "Datos guardados", JOptionPane.INFORMATION_MESSAGE);
+                mc.enableComponents(jpDatosUsuario.getComponents(), false, true);
+                jListUsuario.setEnabled(false);
+                jListDisponibles.setEnabled(false);
+                jListDisponibles.setListData(mc.listModelMenues());
+                jListUsuario.setListData(new Vector<String>());
+                btnSave.setEnabled(false);
+                btnAdd.setEnabled(false);
+                btnDelete.setEnabled(false);
+            }
+        }else{
+            //guardar dato modificado
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        mn.enableComponents(jpDatosUsuario.getComponents(), true, true);
+        mc.enableComponents(jpDatosUsuario.getComponents(), true, true);
         jListUsuario.setEnabled(true);
         jListDisponibles.setEnabled(true);
         btnSave.setEnabled(true);
@@ -502,6 +517,38 @@ public class JUsers extends javax.swing.JInternalFrame {
             btnDeleteActionPerformed(null);
         }
     }//GEN-LAST:event_btnDeleteKeyPressed
+
+    private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
+        btnModified.setEnabled(true);
+        int row = tblUser.getSelectedRow();
+        String userName = tblUser.getValueAt(row, 0).toString();
+        //creo objeto con valores 
+        User user = mc.findUser(userName);
+        //primero seteo textbox con valores del elemento seleccionado en la tabla
+        txtName.setText(user.getFirstName());
+        txtLastName.setText(user.getLastName());
+        txtUser.setText(user.getUserName());
+        txtPass.setText(user.getPassword());
+        //luego lleno la lista de menues de usuario
+        vectorMenuesUsuario = mc.listUserMenues(user.getId());
+        jListUsuario.setListData(vectorMenuesUsuario); 
+        //elimino los menues de la primera lista que ya estan en la segunda
+        int cont = 0;
+        for (String menu : vectorMenuesDisponibles) {
+            //si el menu disponible ya esta en la lista menu de usuarios, eliminar
+            if (menu.equals(vectorMenuesUsuario.get(cont))) {
+                vectorMenuesDisponibles.remove(menu);
+            }
+            else{
+                //se queda el menu en su lista
+            }
+            cont++;
+        }
+    }//GEN-LAST:event_tblUserMouseClicked
+
+    private void btnModifiedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifiedActionPerformed
+        modificar = true;
+    }//GEN-LAST:event_btnModifiedActionPerformed
     private void sortVector(Vector<String> vector){
         Collections.sort(vector);
     }

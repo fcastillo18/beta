@@ -401,6 +401,43 @@ public class MainControl extends Thread{
         Collections.sort(listModel);
         return listModel;
     }
+    /*Este metodo retornara los menues por ID de usuario*/
+    public Vector<String> listUserMenues (int userID){
+        Vector<String> listUserMenues = new Vector<String>();
+        ResultSet resultSet ;
+//        listaDeMenues = new ArrayList<>();
+        try {
+            resultSet = queryToDB("select * from tbl_MenuesAccess where usID = " + userID);
+            while (resultSet.next()) {                
+                listUserMenues.addElement(resultSet.getString("mnaAccessTo"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Collections.sort(listUserMenues);
+        return listUserMenues;
+    }
+    
+    public User findUser(String userName){
+        User user = new User();
+        ResultSet result = null;
+        try {
+            CallableStatement callStm = Conexion.getConnection().prepareCall("select * from tbl_User where usUserName = " + userName);
+            result = callStm.executeQuery();         
+            while (result.next()) {                
+                user.setId(result.getInt("usID"));
+                user.setFirstName(result.getString("usFirstName"));
+                user.setLastName(result.getString("usLastName"));
+                user.setUserName(result.getString("usUserName"));
+                user.setPassword(result.getString("usPassword"));
+                user.setCategory(result.getString("usCategory"));
+                user.setToChangePass(result.getBoolean("usToChangePassword"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user;
+    }
     
     public DefaultTableModel getDataFromTableUser(){
         String [][] data = {};
@@ -408,7 +445,7 @@ public class MainControl extends Thread{
         DefaultTableModel model = new DefaultTableModel(data, columns);
         model.setRowCount(0);
         try {
-            ResultSet resultSet = queryToDB("select usUserName, usFirstName, usLastName, usCategory from tbl_User");
+            ResultSet resultSet = queryToDB("select * from tbl_User");
             while (resultSet.next()) {                
                 Object[] row = {resultSet.getString("usUserName"),resultSet.getString("usFirstName")+" "+ resultSet.getString("usLastName"), resultSet.getString("usCategory")};
 //                Arrays.sort(row);
