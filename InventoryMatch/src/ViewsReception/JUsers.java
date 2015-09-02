@@ -31,11 +31,7 @@ public class JUsers extends javax.swing.JInternalFrame {
         /*una vez se carguen los  menues a la lista en la sentencia de arriba
             procedo a llenar el vector1 con esos datos
         */
-        int cont = 0;
-        while (cont < jListDisponibles.getModel().getSize()) {
-            vectorMenuesDisponibles.add(jListDisponibles.getModel().getElementAt(cont).toString());
-            cont++;
-        }
+        fillVectorDisponibles();
     }
     MainControl mc;
     Vector<String> vectorMenuesDisponibles = new Vector<String>();
@@ -496,6 +492,9 @@ public class JUsers extends javax.swing.JInternalFrame {
         btnAdd.setEnabled(true);
         jcbCategory.setEnabled(true);
         vectorMenuesUsuario.clear();
+        jLabel7.setEnabled(true);
+        fillVectorDisponibles();
+        
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void jListDisponiblesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListDisponiblesMouseClicked
@@ -519,6 +518,7 @@ public class JUsers extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeleteKeyPressed
 
     private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
+        
         btnModified.setEnabled(true);
         int row = tblUser.getSelectedRow();
         String userName = tblUser.getValueAt(row, 0).toString();
@@ -532,27 +532,50 @@ public class JUsers extends javax.swing.JInternalFrame {
         //luego lleno la lista de menues de usuario
         vectorMenuesUsuario = mc.listUserMenues(user.getId());
         jListUsuario.setListData(vectorMenuesUsuario); 
+        //*****************************************************
+        //lleno el vector con todos los menues de la aplicacion para la comparacion mas abajo
+        Vector<String> vectorMenues = mc.listModelMenues();
+        //*****************************************************
         //elimino los menues de la primera lista que ya estan en la segunda
-        int cont = 0;
-        for (String menu : vectorMenuesDisponibles) {
+//        int cont = 0;
+        for (String mnDisponible : vectorMenues) {
             //si el menu disponible ya esta en la lista menu de usuarios, eliminar
-            if (menu.equals(vectorMenuesUsuario.get(cont))) {
-                vectorMenuesDisponibles.remove(menu);
+            for (String mnUsuario : vectorMenuesUsuario) {
+                if (mnDisponible.equals(mnUsuario)) {
+//                    elimino el menu del usuario que haga macth en la lista de los disponibles
+                    vectorMenuesDisponibles.remove(mnUsuario);
+                    System.out.println("Entro menu: " + mnUsuario);
+                }
             }
-            else{
-                //se queda el menu en su lista
-            }
-            cont++;
+            //cargo la lista de disponibles con el elemento eliminado (mas bien, esta en la lista de menues de usuario)
+            
         }
+        jListDisponibles.setListData(vectorMenuesDisponibles);
     }//GEN-LAST:event_tblUserMouseClicked
 
     private void btnModifiedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifiedActionPerformed
         modificar = true;
+        mc.enableComponents(jpDatosUsuario.getComponents(), true, false);
+        jListUsuario.setEnabled(true);
+        jListDisponibles.setEnabled(true);
+        btnSave.setEnabled(true);
+        btnAdd.setEnabled(true);
+        jcbCategory.setEnabled(true);
+        jLabel7.setEnabled(true);
+        fillVectorDisponibles();
+        
     }//GEN-LAST:event_btnModifiedActionPerformed
     private void sortVector(Vector<String> vector){
         Collections.sort(vector);
     }
-
+    public void fillVectorDisponibles(){
+        int cont = 0;
+        while (cont < jListDisponibles.getModel().getSize()) {
+//            vectorMenuesDisponibles.clear();
+            vectorMenuesDisponibles.add(jListDisponibles.getModel().getElementAt(cont).toString());
+            cont++;
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAddAll;

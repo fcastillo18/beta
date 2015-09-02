@@ -70,7 +70,13 @@ public class MainControl extends Thread{
     private JasperReport report = null;
     private JasperPrint reportFilled = null;
     private JasperViewer viewer = null;
-    
+    /*Lista que almacenara los menues de la aplicacion completa, esta global para que se ejecute el metodo una sola vez,
+    luego si se necesita consultar, solo hay que tomar los datos de esta lista que se actualizara al insertar datos    
+    */
+    Vector<String> listModel = new Vector<String>();
+    //esta en cambio almcenara los menues de usuario
+    Vector<String> listUserMenues = new Vector<String>();
+    //creo no va a funcionar cuando se hagan cambios por tema del usId en este ultima lista menu
     
     @Override
     public void run(){
@@ -342,6 +348,7 @@ public class MainControl extends Thread{
             System.out.println("Error al insertar Usuario " + user.toString()+ ex.getMessage());
         }
     }
+    
     public void insertMenuesAccess(int usId, String menu){
         try {
             CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_insertMenueValues(?,?)}");
@@ -353,6 +360,35 @@ public class MainControl extends Thread{
             System.out.println("Error al insertar Menues" + ex.getMessage());
         }
     }
+    
+    public void modifiedUser(User user){
+        try {
+            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifiedUser (?, ?, ?, ?, ?, ?, ?)}");
+            callStm.setString(1, user.getFirstName());
+            callStm.setString(2, user.getLastName());
+            callStm.setString(3, user.getUserName());
+            callStm.setString(4, user.getPassword());
+            callStm.setBoolean(5, user.isToChangePass());
+            callStm.setString(6, user.getCategory());
+            callStm.executeUpdate();
+            callStm.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al Modificar Usuario " + user.toString()+ ex.getMessage());
+        }
+    }
+    
+    public void modifiedMenuesAccess(int usId, String menu){
+        try {
+            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifiedMenuesAccess(?,?)}");
+            callStm.setInt(1, usId);
+            callStm.setString(2, menu);
+            callStm.executeUpdate();
+            callStm.close();
+            } catch (SQLException ex) {
+            System.out.println("Error al modificar Menues" + ex.getMessage());
+        }
+    }
+    
     public int getLastUserID(){
         int userID = 0 ;
         ResultSet result = null;
@@ -386,7 +422,7 @@ public class MainControl extends Thread{
     }
     
     public Vector<String> listModelMenues (){
-        Vector<String> listModel = new Vector<String>();
+
         ResultSet resultSet ;
 //        listaDeMenues = new ArrayList<>();
         try {
@@ -403,7 +439,6 @@ public class MainControl extends Thread{
     }
     /*Este metodo retornara los menues por ID de usuario*/
     public Vector<String> listUserMenues (int userID){
-        Vector<String> listUserMenues = new Vector<String>();
         ResultSet resultSet ;
 //        listaDeMenues = new ArrayList<>();
         try {
@@ -422,7 +457,8 @@ public class MainControl extends Thread{
         User user = new User();
         ResultSet result = null;
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("select * from tbl_User where usUserName = " + userName);
+            CallableStatement callStm = Conexion.getConnection().prepareCall("select * from tbl_User where usUserName = ?");
+            callStm.setString(1, userName);
             result = callStm.executeQuery();         
             while (result.next()) {                
                 user.setId(result.getInt("usID"));
@@ -517,7 +553,7 @@ public class MainControl extends Thread{
                     System.out.println("Error al insertar menues" + ex.getMessage());
                     ex.printStackTrace();
                 }
-                System.out.println("Menues verificados e insertados con exito");
+//                System.out.println("Menues verificados e insertados con exito");
             }
 //            if (components[i] instanceof JMenuItem) {
 //                System.out.println(((JMenuItem)components[i]).getText());
@@ -576,7 +612,6 @@ public class MainControl extends Thread{
                    
                 }
             }else{
-                System.out.println("NAda");
                 for (int i = 0; i < menubar.getComponents().length; i++) {
                     if (menubar.getComponent(i) instanceof JMenu) {
                         menubar.getComponent(i).setVisible(visible);
