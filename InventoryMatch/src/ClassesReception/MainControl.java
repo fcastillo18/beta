@@ -73,9 +73,7 @@ public class MainControl extends Thread{
     /*Lista que almacenara los menues de la aplicacion completa, esta global para que se ejecute el metodo una sola vez,
     luego si se necesita consultar, solo hay que tomar los datos de esta lista que se actualizara al insertar datos    
     */
-    public Vector<String> listModelUsers = new Vector<String>();
-
-    
+        
     @Override
     public void run(){
     
@@ -420,7 +418,7 @@ public class MainControl extends Thread{
     }
     
     public Vector<String> listModelMenues (){
-
+        Vector<String> listModelUsers = new Vector<String>();
         ResultSet resultSet ;
 //        listaDeMenues = new ArrayList<>();
         try {

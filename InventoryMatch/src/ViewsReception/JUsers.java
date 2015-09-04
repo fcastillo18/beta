@@ -412,6 +412,7 @@ public class JUsers extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        
         if (jListDisponibles.getSelectedIndex() >= 0) {//si es mayor que 0 es por que se selecciono algo
                 //capturo valor seleccionado de la primera lista para pasarlo a la otra lista
             vectorMenuesUsuario.add(jListDisponibles.getSelectedValue().toString());
@@ -493,7 +494,7 @@ public class JUsers extends javax.swing.JInternalFrame {
         jcbCategory.setEnabled(true);
         vectorMenuesUsuario.clear();
         jLabel7.setEnabled(true);
-        fillVectorDisponibles();
+//        fillVectorDisponibles();
         
     }//GEN-LAST:event_btnNewActionPerformed
 
@@ -532,7 +533,7 @@ public class JUsers extends javax.swing.JInternalFrame {
         //luego lleno la lista de menues de usuario
         vectorMenuesUsuario = mc.listUserMenues(user.getId());
         jListUsuario.setListData(vectorMenuesUsuario);
-//        vectorMenuesDisponibles = mc.listModelUsers;
+
         //*****************************************************
         //lleno el vector con todos los menues de la aplicacion para la comparacion mas abajo
         Vector<String> vectorMenues = mc.listModelMenues();
@@ -552,6 +553,11 @@ public class JUsers extends javax.swing.JInternalFrame {
             
         }
         jListDisponibles.setListData(vectorMenuesDisponibles);
+        //limpio el vector para luego en la proxima linea volver a llenarlo
+        //de modo que si es usado en otr opcion como modificar, no duplique las entradas
+//        vectorMenuesDisponibles.removeAllElements();
+        vectorMenuesDisponibles = mc.listModelMenues();
+        Vector<String> v = vectorMenuesDisponibles;
     }//GEN-LAST:event_tblUserMouseClicked
 
     private void btnModifiedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifiedActionPerformed
@@ -563,8 +569,9 @@ public class JUsers extends javax.swing.JInternalFrame {
         btnAdd.setEnabled(true);
         jcbCategory.setEnabled(true);
         jLabel7.setEnabled(true);
-        fillVectorDisponibles();
-        
+//        fillVectorDisponibles();
+//        vectorMenuesDisponibles.removeAllElements();
+//        vectorMenuesDisponibles = mc.listModelMenues();
     }//GEN-LAST:event_btnModifiedActionPerformed
     private void sortVector(Vector<String> vector){
         Collections.sort(vector);
@@ -572,7 +579,7 @@ public class JUsers extends javax.swing.JInternalFrame {
     public void fillVectorDisponibles(){
         int cont = 0;
         while (cont < jListDisponibles.getModel().getSize()) {
-//            vectorMenuesDisponibles.clear();
+            vectorMenuesDisponibles.removeAllElements();
             vectorMenuesDisponibles.add(jListDisponibles.getModel().getElementAt(cont).toString());
             cont++;
         }
