@@ -73,10 +73,8 @@ public class MainControl extends Thread{
     /*Lista que almacenara los menues de la aplicacion completa, esta global para que se ejecute el metodo una sola vez,
     luego si se necesita consultar, solo hay que tomar los datos de esta lista que se actualizara al insertar datos    
     */
-    Vector<String> listModel = new Vector<String>();
-    //esta en cambio almcenara los menues de usuario
-    Vector<String> listUserMenues = new Vector<String>();
-    //creo no va a funcionar cuando se hagan cambios por tema del usId en este ultima lista menu
+    public Vector<String> listModelUsers = new Vector<String>();
+
     
     @Override
     public void run(){
@@ -428,17 +426,19 @@ public class MainControl extends Thread{
         try {
             resultSet = queryToDB("select (mnMenu) from tbl_Menues ");
             while (resultSet.next()) {                
-                listModel.addElement(resultSet.getString("mnMenu"));
+                listModelUsers.addElement(resultSet.getString("mnMenu"));
 
             }
         } catch (SQLException ex) {
             Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Collections.sort(listModel);
-        return listModel;
+        Collections.sort(listModelUsers);
+        return listModelUsers;
     }
     /*Este metodo retornara los menues por ID de usuario*/
     public Vector<String> listUserMenues (int userID){
+        
+        Vector<String> listUserMenues = new Vector<String>();
         ResultSet resultSet ;
 //        listaDeMenues = new ArrayList<>();
         try {

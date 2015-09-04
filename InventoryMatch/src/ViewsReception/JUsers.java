@@ -531,7 +531,8 @@ public class JUsers extends javax.swing.JInternalFrame {
         txtPass.setText(user.getPassword());
         //luego lleno la lista de menues de usuario
         vectorMenuesUsuario = mc.listUserMenues(user.getId());
-        jListUsuario.setListData(vectorMenuesUsuario); 
+        jListUsuario.setListData(vectorMenuesUsuario);
+//        vectorMenuesDisponibles = mc.listModelUsers;
         //*****************************************************
         //lleno el vector con todos los menues de la aplicacion para la comparacion mas abajo
         Vector<String> vectorMenues = mc.listModelMenues();
