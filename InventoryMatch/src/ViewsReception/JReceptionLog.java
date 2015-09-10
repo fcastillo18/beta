@@ -342,7 +342,8 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tblLogReceptionMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (mc.detail.getDtStatus().equals("Entregado")) {
+        if (tblLogReception.getSelectedRow() > 0) {
+            if (mc.detail.getDtStatus().equals("Entregado")) {
                 JOptionPane.showMessageDialog(null, "Este item ya esta marcado como entregado y no puede ser modificado "
                         + "\nContacte al administrado para mayor informacion");
             }else{
@@ -362,6 +363,9 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
                 }else{
                 //nada
                 }
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un archivo para poder continuar");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

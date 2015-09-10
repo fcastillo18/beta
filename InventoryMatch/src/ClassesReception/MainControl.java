@@ -70,9 +70,7 @@ public class MainControl extends Thread{
     private JasperReport report = null;
     private JasperPrint reportFilled = null;
     private JasperViewer viewer = null;
-    /*Lista que almacenara los menues de la aplicacion completa, esta global para que se ejecute el metodo una sola vez,
-    luego si se necesita consultar, solo hay que tomar los datos de esta lista que se actualizara al insertar datos    
-    */
+    public List<User> listUser = new ArrayList<>();
         
     @Override
     public void run(){
@@ -358,14 +356,16 @@ public class MainControl extends Thread{
     }
     
     public void modifiedUser(User user){
+        
         try {
             CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifiedUser (?, ?, ?, ?, ?, ?, ?)}");
-            callStm.setString(1, user.getFirstName());
-            callStm.setString(2, user.getLastName());
-            callStm.setString(3, user.getUserName());
-            callStm.setString(4, user.getPassword());
-            callStm.setBoolean(5, user.isToChangePass());
-            callStm.setString(6, user.getCategory());
+            callStm.setInt(1, user.getId());
+            callStm.setString(2, user.getFirstName());
+            callStm.setString(3, user.getLastName());
+            callStm.setString(4, user.getUserName());
+            callStm.setString(5, user.getPassword());
+            callStm.setBoolean(6, user.isToChangePass());
+            callStm.setString(7, user.getCategory());
             callStm.executeUpdate();
             callStm.close();
         } catch (SQLException ex) {
@@ -373,15 +373,29 @@ public class MainControl extends Thread{
         }
     }
     
-    public void modifiedMenuesAccess(int usId, String menu){
+//    public void modifiedMenuesAccess(int usId, String menu){
+//        try {
+//            
+//            //ahora inserto los nuevos valores
+//            insertMenuesAccess(usId, menu);
+////            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifiedMenuesAccess(?,?)}");
+////            callStm.setInt(1, usId);
+////            callStm.setString(2, menu);
+////            callStm.executeUpdate();
+////            callStm.close();
+//            } catch (SQLException ex) {
+//            System.out.println("Error al modificar Menues" + ex.getMessage());
+//        }
+//    }
+    
+    public void deleteMenuesAccess(int usId){
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_modifiedMenuesAccess(?,?)}");
-            callStm.setInt(1, usId);
-            callStm.setString(2, menu);
-            callStm.executeUpdate();
-            callStm.close();
-            } catch (SQLException ex) {
-            System.out.println("Error al modificar Menues" + ex.getMessage());
+            //primero eliminar todos los menues anteriores para luego proceder a insertar los nuevos
+            CallableStatement callStm0 = Conexion.getConnection().prepareCall("DELETE FROM tbl_MenuesAccess WHERE usID = ? ");
+            callStm0.setInt(1, usId);
+            callStm0.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainControl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -475,18 +489,20 @@ public class MainControl extends Thread{
     
     public DefaultTableModel getDataFromTableUser(){
         String [][] data = {};
-        String [] columns = {"Usuario", "Nombre", "Categoria", };
+        String [] columns = {"ID", "Usuario", "Nombre", "Categoria", };
         DefaultTableModel model = new DefaultTableModel(data, columns);
         model.setRowCount(0);
+        User user = null;
         try {
             ResultSet resultSet = queryToDB("select * from tbl_User");
             while (resultSet.next()) {                
-                Object[] row = {resultSet.getString("usUserName"),resultSet.getString("usFirstName")+" "+ resultSet.getString("usLastName"), resultSet.getString("usCategory")};
-//                Arrays.sort(row);
+                Object[] row = {resultSet.getString("usID"),resultSet.getString("usUserName"),resultSet.getString("usFirstName")+" "+ resultSet.getString("usLastName"), resultSet.getString("usCategory")};
                 model.addRow(row);
             }
         } catch (SQLException ex) {
             System.out.println("Error al leer datos de la tabla User");
+            ex.getMessage();
+            ex.printStackTrace();
         }
         
         return model;
