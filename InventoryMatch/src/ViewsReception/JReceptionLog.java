@@ -27,7 +27,7 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
      */
     public JReceptionLog() {
         initComponents();
-        tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
+        tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail("")));
         mc.enableComponents(jpData.getComponents(), false, false);
         jtaObservation.setEnabled(false);
         changeColumnSize(tblLogReception);
@@ -87,8 +87,10 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
         tblLogReception = new javax.swing.JTable();
         jbDate = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnMarcar = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jcbOrderBy = new javax.swing.JComboBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -250,7 +252,7 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
             jpLogReceptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpLogReceptionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 904, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         jpLogReceptionLayout.setVerticalGroup(
@@ -262,17 +264,31 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Fecha:");
 
-        jButton2.setText("Marcar recibido");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnMarcar.setText("Marcar recibido");
+        btnMarcar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnMarcarActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Refrescar Tabla");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnRefresh.setText("Refrescar Tabla");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Ordenar por:");
+
+        jcbOrderBy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos", "Disponible", "Pendiente", "Entregado", " ", " " }));
+        jcbOrderBy.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbOrderByItemStateChanged(evt);
+            }
+        });
+        jcbOrderBy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbOrderByActionPerformed(evt);
             }
         });
 
@@ -289,14 +305,17 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpLogReception, javax.swing.GroupLayout.DEFAULT_SIZE, 938, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
+                            .addComponent(jLabel9)
+                            .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnMarcar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jcbOrderBy, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jpLogReception, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE))
+                .addGap(37, 37, 37))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,15 +324,19 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
                     .addComponent(jLabel7)
                     .addComponent(jbDate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jpData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jcbOrderBy, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(btnMarcar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpLogReception, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         pack();
@@ -341,8 +364,8 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_tblLogReceptionMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (tblLogReception.getSelectedRow() > 0) {
+    private void btnMarcarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarcarActionPerformed
+        if (tblLogReception.getSelectedRow() >= 0) {
             if (mc.detail.getDtStatus().equals("Entregado")) {
                 JOptionPane.showMessageDialog(null, "Este item ya esta marcado como entregado y no puede ser modificado "
                         + "\nContacte al administrado para mayor informacion");
@@ -357,7 +380,7 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
                     mc.modifiedItem(mc.item, mc.detail);
                     //Guardar Log de la trasaccion
                     mc.createLogDetail(mc.detail, MainControl.getCurrentTimeStamp(), MainControl.user.getUserName());
-                    tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
+                    tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail(jcbOrderBy.getSelectedItem().toString())));
                     changeColumnSize(tblLogReception);
                     JOptionPane.showMessageDialog(null, "Realizado Exitosamente");
                 }else{
@@ -367,16 +390,24 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione un archivo para poder continuar");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnMarcarActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail("")));
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void jcbOrderByItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbOrderByItemStateChanged
+        tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail(jcbOrderBy.getSelectedItem().toString())));
+    }//GEN-LAST:event_jcbOrderByItemStateChanged
+
+    private void jcbOrderByActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbOrderByActionPerformed
+       
+    }//GEN-LAST:event_jcbOrderByActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMarcar;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -386,10 +417,12 @@ public class JReceptionLog extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel jbDate;
     private javax.swing.JComboBox jcCategory;
+    private javax.swing.JComboBox jcbOrderBy;
     private javax.swing.JComboBox jcbStatus;
     private com.toedter.calendar.JDateChooser jdcDateIn;
     private com.toedter.calendar.JDateChooser jdcDateOut;

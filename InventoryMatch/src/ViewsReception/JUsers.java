@@ -67,6 +67,7 @@ public class JUsers extends javax.swing.JInternalFrame {
         btnModified = new javax.swing.JButton();
         btnDelete00 = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jpMenuesAccess = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListDisponibles = new javax.swing.JList();
@@ -229,6 +230,8 @@ public class JUsers extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton1.setText("Add full Access");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -242,6 +245,8 @@ public class JUsers extends javax.swing.JInternalFrame {
                 .addComponent(btnDelete00)
                 .addGap(18, 18, 18)
                 .addComponent(btnSave)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -252,7 +257,8 @@ public class JUsers extends javax.swing.JInternalFrame {
                     .addComponent(btnNew)
                     .addComponent(btnModified)
                     .addComponent(btnDelete00)
-                    .addComponent(btnSave))
+                    .addComponent(btnSave)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -429,7 +435,7 @@ public class JUsers extends javax.swing.JInternalFrame {
             btnDelete.setEnabled(true);
         }
         else{
-            JOptionPane.showMessageDialog(null, "Seleccione un item de la lista de 'Menues Disponibles' para poder continuar");
+            JOptionPane.showMessageDialog(null, "Primero de clic en el boton Modificar, \nluego seleccione un item de la lista de 'Menues Disponibles' para poder continuar");
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -447,7 +453,7 @@ public class JUsers extends javax.swing.JInternalFrame {
         jListUsuario.setListData(vectorMenuesUsuario);
         }
         else{
-            JOptionPane.showMessageDialog(null, "Seleccione un item de la lista 'Menues a agregar' para poder continuar");
+            JOptionPane.showMessageDialog(null, "Primero de clic en el boton Modificar, \nluego seleccione un item de la lista 'Menues a agregar' para poder continuar");
         }
         
     }//GEN-LAST:event_btnDeleteActionPerformed
@@ -627,6 +633,7 @@ public class JUsers extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnModified;
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

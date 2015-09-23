@@ -174,10 +174,11 @@ public class MainControl extends Thread{
     
     }
     
-    public ResultSet readDataFromTableDetail(){
+    public ResultSet readDataFromTableDetail(String estado){
         ResultSet result = null;
         try {
-            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_viewFullDetails}");
+            CallableStatement callStm = Conexion.getConnection().prepareCall("{call sp_viewFullDetails (?)}");
+            callStm.setString(1, estado);
             result = callStm.executeQuery();
 //            int var = result.get
         } catch (SQLException ex) {

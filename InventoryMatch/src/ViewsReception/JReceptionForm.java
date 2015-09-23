@@ -32,7 +32,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
      */
     public JReceptionForm() {
         initComponents();
-        tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
+        tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail("")));
         mc.enableComponents(jpData.getComponents(), false, false);
         jtaObservation.setText("");
         jtaObservation.setEnabled(false);
@@ -418,7 +418,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     mc.modifiedItem(mc.item, mc.detail);
                     //Guardar Log de la trasaccion
                     mc.createLogDetail(mc.detail, MainControl.getCurrentTimeStamp(), MainControl.user.getUserName());
-                    tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
+                    tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail("")));
                     changeColumnSize(tblLogReception);
                     mc.enableComponents(jpData.getComponents(), false, true);
                     jtaObservation.setText("");
@@ -435,7 +435,7 @@ public class JReceptionForm extends javax.swing.JInternalFrame {
                     Details detail = new Details(0,mc.getLastItemID(), MainControl.getCurrentTimeStamp(),null, txtReceivedBy.getText(), jcCategory.getSelectedItem().toString(), jcbStatus.getSelectedItem().toString(), MainControl.user.getUserName(), jtaObservation.getText());
                     mc.createDetail(detail);
                     mc.createLogDetail(detail, null, null);
-                    tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail()));
+                    tblLogReception.setModel(mc.getModelDetails(mc.readDataFromTableDetail("")));
                     changeColumnSize(tblLogReception);
                     mc.enableComponents(jpData.getComponents(), false, true);
                     jtaObservation.setText("");
